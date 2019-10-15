@@ -1,0 +1,10 @@
+# import Error from "../../../shared.graphql"
+#import User from "../../../entity/User.ts"
+
+type Query {
+  bye: User
+}
+
+type Mutation {
+  register(email: String!, password: String!): [Error!]
+}

@@ -1,0 +1,103 @@
+{
+  "name": "@ourhands/server",
+  "version": "1.0.0",
+  "description": "Server for Our Hands",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon --ext js,ts,graphql --exec 'yarn run gen && ts-node --files src/index.ts' --ignore src/types/schema.d.ts",
+    "test-dev": "cross-env NODE_ENV=test TS_NODE_FILES=true jest --watchAll",
+    "test": "cross-env NODE_ENV=test TS_NODE_FILES=true jest --detectOpenHandles --forceExit",
+    "gen": "cross-env TS_NODE_FILES=true ts-node src/scripts/createTypes.ts",
+    "genereate-types": "yarn run gen -- --forceExit",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
+    "format": "npm run prettier -- --write",
+    "validate": "npm run lint && npm run test",
+    "genMigration": "npx ts-node ./node_modules/.bin/typeorm migration:generate -d ./src/migrations -c development"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run validate"
+    }
+  },
+  "devDependencies": {
+    "@gql2ts/types": "^1.9.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/connect-redis": "^0.0.11",
+    "@types/express": "^4.17.1",
+    "@types/express-rate-limit": "^3.3.3",
+    "@types/express-session": "^1.15.14",
+    "@types/glob": "^7.1.1",
+    "@types/ioredis": "^4.0.18",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "@types/node-fetch": "^2.5.2",
+    "@types/nodemailer": "^6.2.1",
+    "@types/request-promise": "^4.1.44",
+    "@types/sparkpost": "^2.1.4",
+    "@types/uuid": "^3.4.5",
+    "@types/ws": "^6.0.3",
+    "@types/yup": "^0.26.24",
+    "cross-env": "^6.0.3",
+    "gql2ts": "^1.10.1",
+    "husky": "^3.0.8",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
+    "nodemon": "^1.19.3",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "ts-node": "8.4.1",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "3.6.3"
+  },
+  "dependencies": {
+    "@gql2ts/from-schema": "^1.10.1",
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "connect-redis": "^4.0.3",
+    "dataloader": "^1.4.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "express-session": "^1.16.2",
+    "glob": "^7.1.4",
+    "graphql-import": "^0.7.1",
+    "graphql-request": "^1.8.2",
+    "graphql-tools": "^4.0.5",
+    "graphql-yoga": "^1.18.3",
+    "ioredis": "^4.14.1",
+    "merge-graphql-schemas": "^1.7.0",
+    "node-fetch": "^2.6.0",
+    "nodemailer": "^6.3.1",
+    "pg": "^7.3.0",
+    "rate-limit-redis": "^1.6.0",
+    "reflect-metadata": "^0.1.10",
+    "request-promise": "^4.2.4",
+    "sparkpost": "^2.1.4",
+    "typeorm": "0.2.19",
+    "uuid": "^3.3.3",
+    "yup": "^0.27.0"
+  },
+  "jest": {
+    "globalSetup": "./src/test-utils/callSetup.js",
+    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --no-verify --write",
+      "git add"
+    ]
+  }
+}

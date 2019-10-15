@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "ourhands",
+  "scripts": {
+    "build:server": "lerna run build --scope={@ourhands/server}"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/rimraf",
+      "**/rimraf/**"
+    ]
+  },
+  "devDependencies": {
+    "lerna": "^3.17.0"
+  }
+}
