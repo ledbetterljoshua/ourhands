@@ -21,7 +21,7 @@ declare namespace GQL {
   }
 
   interface IQuery {
-    __typename: "Query";
+    __typename: 'Query';
     findPosts: Array<IPost>;
     dummy2: string | null;
     bye2: string | null;
@@ -31,7 +31,7 @@ declare namespace GQL {
   }
 
   interface IPost {
-    __typename: "Post";
+    __typename: 'Post';
     id: string;
     title: string;
     details: string;
@@ -42,21 +42,21 @@ declare namespace GQL {
   }
 
   interface IUser {
-    __typename: "User";
+    __typename: 'User';
     id: string;
     email: string;
     posts: Array<IPost>;
   }
 
   interface IUpvote {
-    __typename: "Upvote";
+    __typename: 'Upvote';
     id: string;
     postId: string | null;
     users: Array<IUser> | null;
   }
 
   interface IMutation {
-    __typename: "Mutation";
+    __typename: 'Mutation';
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
     upvotePost: Array<IPostResponse> | null;
@@ -104,14 +104,14 @@ declare namespace GQL {
   }
 
   interface IPostResponse {
-    __typename: "PostResponse";
+    __typename: 'PostResponse';
     path: string;
     message: string;
     post: IPost | null;
   }
 
   interface IError {
-    __typename: "Error";
+    __typename: 'Error';
     path: string;
     message: string;
   }

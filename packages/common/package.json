@@ -1,0 +1,22 @@
+{
+  "name": "@ourhands/common",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./dist && tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/yup": "^0.26.24",
+    "rimraf": "^3.0.0",
+    "tslint": "^5.20.0",
+    "tslint-config": "^0.0.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "yup": "^0.27.0"
+  }
+}

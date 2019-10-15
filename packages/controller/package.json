@@ -1,0 +1,32 @@
+{
+  "name": "@ourhands/controller",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "rm-auto-gen-folder": "rimraf ./__generated__",
+    "build": "yarn run gen-types && yarn run rm-auto-gen-folder && rimraf ./dist && tsc",
+    "generate": "apollo client:codegen --target typescript",
+    "introspect": "apollo schema:download --endpoint=http://localhost:4000",
+    "gen-types": "npm run introspect && npm run generate",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/yup": "^0.26.24",
+    "apollo": "^2.19.1",
+    "rimraf": "^3.0.0",
+    "tslint": "^5.20.0",
+    "tslint-config": "^0.0.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.10.2",
+    "react-apollo": "^3.1.2",
+    "react-dom": "^16.10.2",
+    "yup": "^0.27.0"
+  }
+}
