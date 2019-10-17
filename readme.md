@@ -1,4 +1,3 @@
-We are buidling a thing:
 ![landing][landing]
 ![app-view][app-view]
 
