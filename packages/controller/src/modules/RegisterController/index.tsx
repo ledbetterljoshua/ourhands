@@ -1,35 +1,6 @@
-import * as React from "react";
-import { ChildMutateProps, graphql } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  RegisterMutation,
-  RegisterMutationVariables
-} from "./__generated__/RegisterMutation";
 
-interface Props {
-  children: (data: {
-    submit: (values: RegisterMutationVariables) => Promise<null>;
-  }) => JSX.Element | null;
-}
-
-export class C extends React.PureComponent<
-  ChildMutateProps<Props, RegisterMutation, RegisterMutationVariables>
-> {
-  submit = async (values: RegisterMutationVariables) => {
-    console.log(values);
-    const response = await this.props.mutate({
-      variables: values
-    });
-    console.log("response: ", response);
-    return null;
-  };
-
-  render() {
-    return this.props.children({ submit: this.submit });
-  }
-}
-
-const registerMutation = gql`
+export const registerMutation = gql`
   mutation RegisterMutation($email: String!, $password: String!) {
     register(email: $email, password: $password) {
       path
@@ -38,8 +9,39 @@ const registerMutation = gql`
   }
 `;
 
-export const RegisterController = graphql<
-  Props,
-  RegisterMutation,
-  RegisterMutationVariables
->(registerMutation)(C);
+export const loginMutation = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      path
+      message
+    }
+  }
+`;
+
+export const meQuery = gql`
+  query MeQuery {
+    me {
+      id
+      email
+      posts {
+        id
+        title
+        details
+        upvoted
+        upvoteCount
+      }
+    }
+  }
+`;
+
+// export const createPostMutation = gql`
+//   mutation CreatePostMutation($title: String!, $details: String) {
+//     createPost(input: { title: $title, details: $details }) {
+//       path
+//       message
+//       post {
+//         id
+//       }
+//     }
+//   }
+// `;

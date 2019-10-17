@@ -18,6 +18,13 @@ const confirmEmailError = {
   message: confirmEmailAddress
 };
 
+/**
+ * PASSWORDLESS AUTH
+ * user initiates register with email
+ * we store their email in redis along with a uuid for 15 mins, and send them an email with a link to /auth/<id>
+ * we look up the id in redis, and if we find it we log them in
+ */
+
 export const resolvers: ResolverMap = {
   Query: {
     bye2: () => "die"
