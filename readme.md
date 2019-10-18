@@ -18,6 +18,8 @@ Run `yarn install`
 
 Set up a postgresql database, one for dev and another for testing. These can be configured in `/ormconfig.json`, but to get them running, set up your dev database name to be `ourhands` on port `4321`, and your test database name to be `testing`, also on port `4321`.
 
+Install Redis and run `redis-server` in your terminal.
+
 After this, you should be able to run `yarn test`.
 
 You can also run `yarn start`, and view the graphql playground on `localhost:4000`
