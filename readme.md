@@ -30,5 +30,5 @@ You can also run `yarn start`, and view the graphql playground on `localhost:400
 
 ![app-view][app-view]
 
-[landing]: https://raw.githubusercontent.com/ledbetterljoshua/ourhands/master/resources/ourhands-landing.png?token=ABSBGNPNBLEKYLO5QZTC6R25U63HM "Our Hands Landing"
-[app-view]: https://raw.githubusercontent.com/ledbetterljoshua/ourhands/master/resources/ourhands-app-view.png?token=ABSBGNMUDYIG7JXPTZO4LNS5U63IW "Our Hands App View"
+[landing]: resources/ourhands-landing.png?raw=true "Our Hands Landing"
+[app-view]: resources/ourhands-app-view.png?raw=true "Our Hands App View"
