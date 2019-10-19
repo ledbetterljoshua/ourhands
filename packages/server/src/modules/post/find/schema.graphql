@@ -15,5 +15,5 @@ type Post {
 }
 
 type Query {
-  findPosts: [Post!]!
+  findPosts: [Post]!
 }

@@ -5,7 +5,6 @@ import { createTestConn } from "../../../test-utils/createTestConn";
 
 let conn: Connection;
 const email = "bob3@bob.com";
-const password = "jlkajoioiqwe";
 
 const client = new TestClient();
 
@@ -13,7 +12,6 @@ beforeAll(async () => {
   conn = await createTestConn();
   await User.create({
     email,
-    password,
     confirmed: true
   }).save();
 });
@@ -29,7 +27,7 @@ describe("me", () => {
   });
 
   test("get current user", async () => {
-    await client.login(email, password);
+    await client.register(email);
     const response = await client.me();
 
     expect(response.data.me.email).toEqual(email);

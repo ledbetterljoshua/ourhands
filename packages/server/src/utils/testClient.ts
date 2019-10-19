@@ -2,17 +2,9 @@ import { post, jar } from "request-promise";
 
 const url = process.env.TEST_HOST as string;
 
-const registerQuery = (email: string, password: string) => `
+const registerQuery = (email: string) => `
 mutation {
-  register(email: "${email}", password: "${password}") {
-    path
-    message
-  }
-}
-`;
-const loginQuery = (email: string, password: string) => `
-mutation {
-  login(email: "${email}", password: "${password}") {
+  register(email: "${email}") {
     path
     message
   }
@@ -42,6 +34,20 @@ mutation {
   deletePost(id: "${id}") {
     path
     message
+  }
+}
+`;
+const findPostsQuery = () => `
+{
+  findPosts {
+    id
+    title
+    upvoteCount
+    upvoted
+    user {
+      email
+      domain
+    }
   }
 }
 `;
@@ -86,19 +92,20 @@ export class TestClient {
     });
   }
 
-  async register(email: string, password: string) {
+  async findPosts() {
     return post(url, {
       ...this.options,
       body: {
-        query: registerQuery(email, password)
+        query: findPostsQuery()
       }
     });
   }
-  async login(email: string, password: string) {
+
+  async register(email: string) {
     return post(url, {
       ...this.options,
       body: {
-        query: loginQuery(email, password)
+        query: registerQuery(email)
       }
     });
   }
@@ -123,21 +130,6 @@ export class TestClient {
             me {
               id
               email
-            }
-          }
-        `
-      }
-    });
-  }
-  async forgotPasswordChange(newPassword: string, key: string) {
-    return post(url, {
-      ...this.options,
-      body: {
-        query: `
-          mutation {
-            forgotPasswordChange(newPassword: "${newPassword}", key: "${key}") {
-              path
-              message
             }
           }
         `

@@ -6,7 +6,6 @@ import { notAuthenticatedError } from "./resolvers";
 
 let conn: Connection;
 const email = "createPostTest@bob.com";
-const password = "jlkajoioiqwe";
 
 const client = new TestClient();
 
@@ -14,7 +13,6 @@ beforeAll(async () => {
   conn = await createTestConn();
   await User.create({
     email,
-    password,
     confirmed: true
   }).save();
 });
@@ -30,7 +28,7 @@ describe("create post", () => {
   });
 
   test("should create post with logged in user", async () => {
-    await client.login(email, password);
+    await client.register(email);
     const response = await client.createPost("title", "description");
     expect(response.data.createPost[0].post).toHaveProperty("id");
   });

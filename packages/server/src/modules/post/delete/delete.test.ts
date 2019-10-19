@@ -12,7 +12,6 @@ import {
 let conn: Connection;
 const email = "deletePostTest@bob.com";
 const email2 = "deleteSecondPostTest@bob.com";
-const password = "jlkajoioiqwe";
 const fakePostId = "0753b019-6006-414a-9c9b-2f7cf7f1b666";
 
 const client = new TestClient();
@@ -21,12 +20,10 @@ beforeAll(async () => {
   conn = await createTestConn();
   await User.create({
     email,
-    password,
     confirmed: true
   }).save();
   await User.create({
     email: email2,
-    password,
     confirmed: true
   }).save();
 });
@@ -42,7 +39,7 @@ describe("delete post", () => {
   });
 
   test("fail with fake post id", async () => {
-    await client.login(email, password);
+    await client.register(email);
     const response = await client.deletePost(fakePostId);
     expect(response.data.deletePost).toEqual([postDoesNotExistError]);
   });
@@ -56,7 +53,7 @@ describe("delete post", () => {
       }
     ] = createPostResponse;
     await client.logout();
-    await client.login(email2, password);
+    await client.register(email2);
     const response = await client.deletePost(postId);
     expect(response.data.deletePost).toEqual([userNotAuthorizedError]);
   });
@@ -69,9 +66,7 @@ describe("delete post", () => {
         post: { id: postId }
       }
     ] = createPostResponse;
-    console.log("postId", postId);
     const response = await client.deletePost(postId);
-    console.log("response", response);
     expect(response.data.deletePost).toEqual([successObject]);
   });
 });

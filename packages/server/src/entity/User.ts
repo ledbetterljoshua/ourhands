@@ -1,4 +1,3 @@
-import * as bcrypt from "bcryptjs";
 import {
   Entity,
   Column,
@@ -20,8 +19,8 @@ export class User extends BaseEntity {
   @Column("varchar", { length: 255 })
   email: string;
 
-  @Column("text")
-  password: string;
+  @Column("varchar", { length: 255, nullable: true })
+  domain: string;
 
   @Column("boolean", { default: false })
   confirmed: boolean;
@@ -35,10 +34,5 @@ export class User extends BaseEntity {
   @BeforeInsert()
   async setId() {
     this.id = v4();
-  }
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
   }
 }

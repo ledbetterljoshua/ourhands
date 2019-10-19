@@ -1,6 +1,7 @@
 import { User } from "../entity/User";
 import { Response, Request } from "express";
 import { redis } from "../redis";
+import { userSessionIdPrefix } from "../constants";
 
 export const confirmEmail = async (req: Request, res: Response) => {
   try {
@@ -10,6 +11,12 @@ export const confirmEmail = async (req: Request, res: Response) => {
       return res.send("invalid");
     }
     await User.update({ id: userId }, { confirmed: true });
+
+    req!.session!.userId = userId;
+    if (req.sessionID) {
+      await redis.lpush(`${userSessionIdPrefix}${userId}`, req.sessionID);
+    }
+
     await redis.del(id);
     return res.send("ok");
   } catch (err) {

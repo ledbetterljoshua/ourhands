@@ -10,7 +10,6 @@ import { upvoteRemoveSuccessObject, upvoteSuccessObject } from "./resolvers";
 
 let conn: Connection;
 const email = "upvotePostTest@bob.com";
-const password = "jlkajoioiqwe";
 const fakePostId = "0753b019-6006-414a-9c9b-2f7cf7f1b666";
 
 const client = new TestClient();
@@ -19,7 +18,6 @@ beforeAll(async () => {
   conn = await createTestConn();
   await User.create({
     email,
-    password,
     confirmed: true
   }).save();
 });
@@ -35,7 +33,7 @@ describe("upvoting a post", () => {
   });
 
   test("it fails when the post does not exist", async () => {
-    await client.login(email, password);
+    await client.register(email);
     const response = await client.upvotePost(fakePostId);
     expect(response.data.upvotePost).toEqual([postDoesNotExistError]);
   });
