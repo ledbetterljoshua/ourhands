@@ -5,7 +5,8 @@ import { TestClient } from "../../../utils/testClient";
 
 import { emailNotLongEnough, invalidEmail } from "../shared/errorMessages";
 
-const email = "test2@gmail.com";
+const domain = "gmail.com";
+const email = `test2@${domain}`;
 
 const client = new TestClient();
 
@@ -25,6 +26,7 @@ describe("A register mutation", () => {
     const users = await User.find({ where: { email } });
     expect(users).toHaveLength(1);
     expect(users[0].email).toEqual(email);
+    expect(users[0].domain).toEqual(domain);
     expect(users[0].confirmed).toBeFalsy();
   });
 

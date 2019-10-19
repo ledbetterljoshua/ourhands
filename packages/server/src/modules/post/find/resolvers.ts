@@ -24,6 +24,7 @@ export const resolvers: ResolverMap = {
   },
   Query: {
     findPosts: async (_, __, { viewer }) => {
+      if (!viewer) return [];
       const posts = await getConnection()
         .createQueryBuilder()
         .select("post")

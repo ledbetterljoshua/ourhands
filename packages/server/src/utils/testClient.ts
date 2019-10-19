@@ -37,6 +37,20 @@ mutation {
   }
 }
 `;
+const findPostsQuery = () => `
+{
+  findPosts {
+    id
+    title
+    upvoteCount
+    upvoted
+    user {
+      email
+      domain
+    }
+  }
+}
+`;
 
 export class TestClient {
   options: {
@@ -74,6 +88,15 @@ export class TestClient {
       ...this.options,
       body: {
         query: deletePostQuery(id)
+      }
+    });
+  }
+
+  async findPosts() {
+    return post(url, {
+      ...this.options,
+      body: {
+        query: findPostsQuery()
       }
     });
   }
