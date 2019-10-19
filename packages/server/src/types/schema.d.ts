@@ -23,8 +23,6 @@ declare namespace GQL {
   interface IQuery {
     __typename: 'Query';
     findPosts: Array<IPost>;
-    dummy2: string | null;
-    bye2: string | null;
     dummy: string | null;
     me: IUser | null;
     bye: IUser | null;
@@ -46,6 +44,7 @@ declare namespace GQL {
     id: string;
     email: string;
     posts: Array<IPost>;
+    domain: string | null;
   }
 
   interface IUpvote {
@@ -60,9 +59,6 @@ declare namespace GQL {
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
     upvotePost: Array<IPostResponse> | null;
-    sendForgotPasswordEmail: boolean | null;
-    forgotPasswordChange: Array<IError> | null;
-    login: Array<IError> | null;
     logout: boolean | null;
     register: Array<IError> | null;
   }
@@ -79,23 +75,8 @@ declare namespace GQL {
     id?: string | null;
   }
 
-  interface ISendForgotPasswordEmailOnMutationArguments {
-    email: string;
-  }
-
-  interface IForgotPasswordChangeOnMutationArguments {
-    newPassword: string;
-    key: string;
-  }
-
-  interface ILoginOnMutationArguments {
-    email: string;
-    password: string;
-  }
-
   interface IRegisterOnMutationArguments {
     email: string;
-    password: string;
   }
 
   interface ICreatePostInput {

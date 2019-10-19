@@ -2,7 +2,6 @@ import * as React from "react";
 
 interface FormValues {
   email: string;
-  password: string;
 }
 
 interface Props {
@@ -10,5 +9,5 @@ interface Props {
 }
 
 export const Register = ({ submit }: Props) => (
-  <div onClick={() => submit({ email: "", password: "" })}>register here</div>
+  <div onClick={() => submit({ email: "" })}>register here</div>
 );

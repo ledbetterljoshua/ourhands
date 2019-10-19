@@ -1,15 +1,5 @@
 import * as yup from "yup";
-import {
-  passwordNotLongEnough,
-  emailNotLongEnough,
-  invalidEmail
-} from "./errorMessages";
-
-export const passwordValidation = yup
-  .string()
-  .min(3, passwordNotLongEnough)
-  .max(255)
-  .required();
+import { emailNotLongEnough, invalidEmail } from "./errorMessages";
 
 export const emailValidation = yup
   .string()

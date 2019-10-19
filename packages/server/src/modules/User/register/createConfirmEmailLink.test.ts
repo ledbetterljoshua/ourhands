@@ -13,8 +13,7 @@ let conn: Connection;
 beforeAll(async () => {
   conn = await createTestConn();
   const user = await User.create({
-    email: "bob4@bob.com",
-    password: "jlkajoioiqwe"
+    email: "bob4@bob.com"
   }).save();
   userId = user.id;
 });

@@ -5,14 +5,12 @@ import { createTestConn } from "../../../test-utils/createTestConn";
 
 let conn: Connection;
 const email = "bob2@bob.com";
-const password = "jlkajoioiqwe";
 
 let userId: string;
 beforeAll(async () => {
   conn = await createTestConn();
   const user = await User.create({
     email,
-    password,
     confirmed: true
   }).save();
   userId = user.id;
@@ -29,8 +27,8 @@ describe("logout", () => {
     // computer 2
     const sess2 = new TestClient();
 
-    await sess1.login(email, password);
-    await sess2.login(email, password);
+    await sess1.register(email);
+    await sess2.register(email);
     expect(await sess1.me()).toEqual(await sess2.me());
     await sess1.logout();
     const loggedOutSession = await sess1.me();
@@ -41,7 +39,7 @@ describe("logout", () => {
   test("single session", async () => {
     const client = new TestClient();
 
-    await client.login(email, password);
+    await client.register(email);
 
     const response = await client.me();
 
