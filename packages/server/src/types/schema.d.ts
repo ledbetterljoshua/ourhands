@@ -22,7 +22,7 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    findPosts: Array<IPost>;
+    findPosts: Array<IPost | null>;
     dummy: string | null;
     me: IUser | null;
     bye: IUser | null;
