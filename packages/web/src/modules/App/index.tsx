@@ -5,36 +5,30 @@ import { FeedView } from "./Feed";
 import { MeView } from "./Me";
 import { CreateView } from "./Create";
 import { Header } from "../../components/Header";
-
-export const views = {
-  ME: "me",
-  FEED: "feed",
-  SETTINGS: "settings",
-  NEW_POST: "new-post"
-};
+import { Route, Switch } from "react-router-dom";
+import { usePageViews } from "../../hooks/usePageViews";
+import { Modal } from "../../components/Modal";
 
 export const AppView = (props: any) => {
-  const [view, setView] = useState(views.FEED);
-  const ContentSwicth = (view: string) => {
-    switch (view) {
-      case views.FEED:
-        return <FeedView />;
-      case views.ME:
-        return <MeView />;
-      case views.NEW_POST:
-        return <CreateView setView={setView} />;
-      default:
-        return <div>nothing here</div>;
-    }
-  };
+  usePageViews();
   return (
     <>
-      <Header view={view} setView={setView} />
+      <Header />
       <Container>
         <ContentWrapper>
-          <LeftMenu setView={setView} current={view} domain={props.me.domain} />
+          <LeftMenu />
           <Content>
-            <InnerContent>{ContentSwicth(view)}</InnerContent>
+            <InnerContent>
+              <Switch>
+                <Route exact path="/">
+                  <FeedView />
+                </Route>
+                <Route path={`/me`}>
+                  <MeView />
+                </Route>
+                <Route path={`/create`} component={CreateView} />
+              </Switch>
+            </InnerContent>
           </Content>
         </ContentWrapper>
       </Container>
@@ -65,8 +59,11 @@ const InnerContent = styled.div`
   vertical-align: top;
   padding-left: 39px;
   padding-right: 9px;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 84px;
+  @media (max-width: 930px) {
+    padding-left: 9px;
+  }
 `;
 const Content = styled.div`
   margin-left: 0;
@@ -80,5 +77,9 @@ const Content = styled.div`
   border-right: 1px solid #f1f1f1;
   min-height: calc(100vh);
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
+  @media (max-width: 930px) {
+    width: 100%;
+    margin-left: 0;
+  }
 `;
 const SideBar = styled.div``;

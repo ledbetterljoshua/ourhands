@@ -1,9 +1,10 @@
 import * as React from "react";
 import { graphql, ChildProps } from "react-apollo";
-import { RouteProps, Route, RouteComponentProps, Redirect } from "react-router";
+import { RouteProps, Route } from "react-router-dom";
 import gql from "graphql-tag";
 import { Landing } from "../modules/Landing";
 import { AppView } from "../modules/App";
+import { UserContext } from "../modules/App/context/userContext";
 
 type Props = RouteProps;
 
@@ -12,7 +13,7 @@ interface MeQuery {
 }
 
 class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
-  renderRoute = (routeProps: RouteComponentProps<{}>) => {
+  renderRoute = () => {
     const { data } = this.props;
     console.log("data", data);
 
@@ -23,15 +24,18 @@ class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
 
     if (!data.me) {
       // user not logged in
-      return <Landing {...routeProps} />;
+      return <Landing />;
     }
 
-    return <AppView {...routeProps} me={data.me} />;
+    return (
+      <UserContext.Provider value={data.me}>
+        <AppView />;
+      </UserContext.Provider>
+    );
   };
 
   render() {
-    const { data: _, component: __, ...rest } = this.props;
-    return <Route {...rest} render={this.renderRoute} />;
+    return this.renderRoute();
   }
 }
 

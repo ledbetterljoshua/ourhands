@@ -13,7 +13,7 @@ export const MeView = (props: RouteProps) => {
   }
   return (
     <Container>
-      <PostList posts={data.me.posts} />
+      <PostList posts={data.me.posts} mine />
     </Container>
   );
 };

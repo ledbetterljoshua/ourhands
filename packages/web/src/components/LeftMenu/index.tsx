@@ -1,37 +1,60 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
-import { views } from "../../modules/App/index";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
+import { Link, useLocation } from "react-router-dom";
+import { useMutation } from "react-apollo";
+import { logoutMutation } from "@ourhands/controller";
+import { UserContext } from "../../modules/App/context/userContext";
+import {
+  useSideBarState,
+  useSideBarDispatch
+} from "../../modules/App/context/sideNavContext";
 
-export const LeftMenu = ({ domain, setView, current }: any) => {
-  const renderItem = (
-    view: string,
-    icon: string,
-    name: string,
-    current: string
-  ) => {
-    const isCurrent = current === view;
+export const LeftMenu = () => {
+  const { pathname } = useLocation();
+  const { open } = useSideBarState();
+  const me = useContext(UserContext);
+  const [logout] = useMutation(logoutMutation);
+  const onLogout = async () => {
+    const { data } = await logout();
+    if (data.logout) {
+      window.location.reload();
+    }
+  };
+  const renderItem = (view: string, icon: string, name: string) => {
+    const isCurrent = pathname === view;
+
     return (
-      <Item onClick={() => setView(view)}>
-        <IconWrapper>
-          <Icon color={isCurrent ? "dark" : "body"} name={icon} />
-        </IconWrapper>
-        <InnerItem>
-          <Text
-            color={isCurrent ? "dark" : "body"}
-            weight={isCurrent ? "bold" : "regular"}
-          >
-            {name}
-          </Text>
-        </InnerItem>
-      </Item>
+      <Link to={view}>
+        <Item>
+          <IconWrapper>
+            <Icon color={isCurrent ? "dark" : "body"} name={icon} />
+          </IconWrapper>
+          <InnerItem>
+            <Text
+              color={isCurrent ? "dark" : "body"}
+              weight={isCurrent ? "bold" : "regular"}
+            >
+              {name}
+            </Text>
+          </InnerItem>
+        </Item>
+      </Link>
     );
   };
+  console.log("open", open);
   return (
-    <Container>
-      {renderItem(views.FEED, "home", `@${domain}`, current)}
-      {renderItem(views.ME, "user", "My Questions", current)}
+    <Container className={open ? "active" : ""}>
+      <div>
+        {renderItem("/", "home", `@${me.domain}`)}
+        {renderItem("/me", "user", "My Questions")}
+      </div>
+      <div>
+        <Text type="button-text" onClick={onLogout}>
+          logout
+        </Text>
+      </div>
     </Container>
   );
 };
@@ -62,7 +85,7 @@ export const Item = styled.div`
 export const Container = styled.div`
   user-select: none !important;
   width: 266px;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 100px);
   padding-top: 74px;
   padding-left: 32px;
   margin-left: -32px;
@@ -70,4 +93,18 @@ export const Container = styled.div`
   overflow-x: hidden;
   overflow-y: hidden;
   border-right: 1px solid #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fafafa;
+  @media (max-width: 930px) {
+    transition: transform 0.2s ease-in-out;
+    z-index: 300;
+    width: 100%;
+    transform: translateX(-1000px);
+    margin-left: 0rem;
+    &.active {
+      transform: translateX(0px);
+    }
+  }
 `;

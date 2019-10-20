@@ -14,3 +14,38 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 1.6rem;
 }
+a {
+  text-decoration: none;
+}
+
+.modal {
+  background: #fff;
+  outline: 0;
+  min-width: 250px;
+  max-width: 500px;
+  border-radius: 4px;
+}
+
+.modal--animated {
+  opacity: 0.3;
+  transform: scale(1.1) translateY(-10px);
+  -webkit-transform: scale(1.1) translateY(-10px);
+  transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+}
+
+.modal--animated.has-entered {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  -webkit-transform: scale(1) translateY(0);
+}
+
+.underlay {
+  background-color: rgba(0, 0, 0, 0);
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.1s linear;
+}
+
+.underlay.has-entered {
+  background-color: rgba(0, 0, 0, 0.5);
+}
