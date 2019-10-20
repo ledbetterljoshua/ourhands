@@ -17,9 +17,9 @@ export const resolvers: ResolverMap = {
       const userUpvoted = post.upvotes.map(getUpvoted);
       return Boolean(userUpvoted.length);
     },
-    user: async (post, __, { userLoader }) => {
-      // const isMine = viewer && post.user.id === viewer.id;
-      return userLoader.load(post!.user.id);
+    user: async (post, __, { viewer, userLoader }) => {
+      const isMine = viewer && post.user.id === viewer.id;
+      return isMine ? userLoader.load(post!.user.id) : null;
     }
   },
   Query: {
@@ -32,6 +32,7 @@ export const resolvers: ResolverMap = {
         .leftJoinAndSelect("post.user", "user")
         .leftJoinAndSelect("post.upvotes", "upvote")
         .where("user.domain = :domain", { domain: viewer!.domain })
+        .orderBy("upvote", "ASC")
         .getMany();
       return posts;
     }

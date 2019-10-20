@@ -18,5 +18,4 @@ export interface RegisterMutation {
 
 export interface RegisterMutationVariables {
   email: string;
-  password: string;
 }

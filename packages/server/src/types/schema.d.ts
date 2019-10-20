@@ -22,7 +22,7 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    findPosts: Array<IPost | null>;
+    findPosts: Array<IPost | null> | null;
     dummy: string | null;
     me: IUser | null;
     bye: IUser | null;
@@ -32,7 +32,7 @@ declare namespace GQL {
     __typename: 'Post';
     id: string;
     title: string;
-    details: string;
+    details: string | null;
     user: IUser | null;
     upvotes: Array<IUpvote> | null;
     upvoteCount: number;
@@ -58,7 +58,7 @@ declare namespace GQL {
     __typename: 'Mutation';
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
-    upvotePost: Array<IPostResponse> | null;
+    upvotePost: IPost | null;
     logout: boolean | null;
     register: Array<IError> | null;
   }
@@ -81,7 +81,7 @@ declare namespace GQL {
 
   interface ICreatePostInput {
     title: string;
-    details: string;
+    details?: string | null;
   }
 
   interface IPostResponse {
