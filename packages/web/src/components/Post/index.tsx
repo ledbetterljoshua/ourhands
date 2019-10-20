@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { upvoteMutation, postsQuery } from "@ourhands/controller";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import moment from "moment";
 import { Text } from "../Text";
 import { Icon } from "../Icon";
 import { Action } from "./action";
-import { Flex } from "../styles";
+import { Details } from "./details";
+import { Flex, Hr } from "../styles";
+import { Comments } from "./comments";
+import { Options } from "./options";
 
 interface User {
   email: string;
@@ -19,19 +23,30 @@ interface Post {
   details: string;
   upvoteCount: number;
   upvoted: boolean;
+  createdAt: Date;
 }
 
-export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
-  const { title, details, upvoteCount, upvoted, user } = data;
-  // const client = useApolloClient();
+export const PostView = ({
+  data,
+  ndx,
+  mine
+}: {
+  data: Post;
+  ndx: number;
+  mine?: boolean;
+}) => {
+  const { title, details, createdAt, upvoted, user } = data;
+
+  const [commentsVisible, setCommentsVisible] = useState(false);
   const [upvote] = useMutation(upvoteMutation);
-  const isOwned = Boolean(user);
+  const isOwned = mine || Boolean(user);
+
   return (
     <Container>
       <Head direction="row" justify="space-between">
         <Flex className="flex" direction="row">
           <Text type="caption" color="light">
-            3 days ago
+            {moment(Number(createdAt)).fromNow()}
           </Text>
           {ndx === 0 ? (
             <>
@@ -42,7 +57,7 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
             </>
           ) : null}
         </Flex>
-        {isOwned ? <Icon color="light" name={"dots"} /> : null}
+        {isOwned ? <Options /> : null}
       </Head>
       <Body>
         <Title>
@@ -50,7 +65,7 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
             {title}
           </Text>
         </Title>
-        <Text>{details}</Text>
+        <Details details={details} />
       </Body>
       <Footer>
         <Action
@@ -60,13 +75,13 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
           text={"Upvote"}
         />
         <Action
-          onAction={() => null}
+          onAction={() => setCommentsVisible(true)}
           active={false}
           icon="comment"
           text={"Comment"}
         />
       </Footer>
-      <Hr />
+      {commentsVisible ? <Comments /> : <Hr />}
     </Container>
   );
 };
@@ -85,27 +100,30 @@ interface Post {
   upvoted: boolean;
 }
 
-const renderPost = (post: Post, ndx: number) => {
+const renderPost = (post: Post, ndx: number, mine?: boolean) => {
   return (
     <div key={post.id}>
-      <PostView data={post} ndx={ndx} />
+      <PostView mine={mine} data={post} ndx={ndx} />
     </div>
   );
 };
 
-export const PostList = ({ posts }: { posts: Post[] }) => {
-  return <List>{posts.map(renderPost)}</List>;
+export const PostList = ({
+  posts,
+  mine
+}: {
+  posts: Post[];
+  mine?: boolean;
+}) => {
+  return (
+    <List>
+      {!posts.length ? <Image src="/character.png" /> : null}
+      {posts.map((o, i) => renderPost(o, i, mine))}
+    </List>
+  );
 };
 
 const List = styled.div``;
-const Hr = styled.hr`
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #e4e4e4;
-  margin: 0.6rem 0;
-  padding: 0;
-`;
 const Title = styled.div`
   padding-bottom: 12px;
 `;
@@ -114,6 +132,11 @@ const Body = styled.div`
 `;
 const Container = styled.div`
   padding-bottom: 5rem;
+`;
+const Image = styled.img`
+  max-width: 70%;
+  display: block;
+  margin: 5rem auto;
 `;
 const Dot = styled.span`
   color: rgb(184, 184, 184);

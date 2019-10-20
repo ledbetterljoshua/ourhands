@@ -1,4 +1,4 @@
-export type colorType = "dark" | "body" | "light" | "active";
+export type colorType = "dark" | "body" | "light" | "active" | "white";
 export type weightType = "regular" | "medium" | "bold";
 export type textType =
   | "h1"
@@ -17,10 +17,11 @@ export type textType =
   | "body";
 
 export const colors = {
-  dark: "#000000",
+  dark: "#1c1e21",
   body: "#5E5E5E",
   light: "#969696",
-  active: "#2078f4"
+  active: "#2078f4",
+  white: "#fff"
 };
 
 export const weights = {

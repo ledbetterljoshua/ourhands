@@ -5,28 +5,38 @@ import {
   weightType
 } from "./getTypography";
 import styled from "@emotion/styled";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface Props {
-  children: string;
+  children: string | ReactNode;
   color?: colorType;
   type?: textType;
   weight?: weightType;
+  onClick?: any;
 }
 
 export const Text = ({
   children,
   color = "body",
   type = "body",
-  weight = "regular"
+  weight = "regular",
+  onClick
 }: Props) => {
   return (
-    <Component type={type} color={color} weight={weight}>
+    <Component
+      onClick={onClick}
+      pointer={typeof onClick === "function"}
+      type={type}
+      color={color}
+      weight={weight}
+    >
       {children}
     </Component>
   );
 };
 
 const Component: any = styled.div`
-  ${(props: any) => getTypography(props.type, props.color, props.weight)}
+  display: inline;
+  cursor: ${(props: any) => (props.pointer ? "pointer" : "inherit")};
+  ${(props: any) => getTypography(props.type, props.color, props.weight)};
 `;

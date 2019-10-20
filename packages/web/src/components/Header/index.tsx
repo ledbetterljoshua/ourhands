@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
-import { logoutMutation } from "@ourhands/controller";
-import { useMutation } from "@apollo/react-hooks";
+import { useHistory } from "react-router-dom";
 import { Flex } from "../styles";
-import { views } from "../../modules/App";
+import { Icon } from "../Icon";
+import { Link } from "react-router-dom";
+import { Button } from "../Button";
+import {
+  useSideBarDispatch,
+  useSideBarState
+} from "../../modules/App/context/sideNavContext";
 
 export const Header = (props: any) => {
-  const [logout] = useMutation(logoutMutation);
-  const onLogout = async () => {
-    const { data } = await logout();
-    console.log("res", data);
-    if (data.logout) {
-      window.location.reload();
+  const history = useHistory();
+  const dispatch = useSideBarDispatch();
+  const { open } = useSideBarState();
+
+  const toggleOpen = () => {
+    if (open) {
+      return dispatch({ type: "hide" });
     }
+    return dispatch({ type: "show" });
   };
+
   return (
     <Container>
       <Inner justify="space-between">
-        <button onClick={onLogout}>logout</button>
-        <button onClick={() => props.setView(views.NEW_POST)}>create</button>
+        <Link to="/">
+          <Icon size={11} name="logo" />
+        </Link>
+        <Flex>
+          <Button type="primary" onClick={() => history.push("/create")}>
+            Ask a question
+          </Button>
+          <Action onClick={toggleOpen}>
+            <Icon size={2.7} name="menu" />
+          </Action>
+        </Flex>
       </Inner>
     </Container>
   );
@@ -30,6 +47,13 @@ const Inner = styled(Flex)`
   padding-left: 13px;
   @media (max-width: 930px) {
     width: 100%;
+  }
+`;
+const Action = styled.div`
+  display: block;
+  margin-left: 1rem;
+  @media (min-width: 930px) {
+    display: none;
   }
 `;
 const Container = styled.div`

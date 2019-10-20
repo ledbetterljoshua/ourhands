@@ -4,6 +4,7 @@ import { postsQuery } from "@ourhands/controller";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "@emotion/styled";
 import { PostList } from "../../../components/Post";
+import { Tools } from "./tools";
 
 export const FeedView = (props: RouteProps) => {
   const { loading, error, data } = useQuery(postsQuery);
@@ -15,8 +16,10 @@ export const FeedView = (props: RouteProps) => {
     console.log("data, err", data, error);
     return <div>something went wrong</div>;
   }
+
   return (
     <Container>
+      <Tools />
       <PostList posts={data.findPosts} />
     </Container>
   );
