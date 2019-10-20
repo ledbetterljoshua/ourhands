@@ -25,6 +25,7 @@ export const meQuery = gql`
         details
         upvoted
         upvoteCount
+        createdAt
       }
     }
   }
@@ -36,6 +37,7 @@ export const postsQuery = gql`
       id
       title
       details
+      createdAt
       upvoteCount
       upvoted
       user {

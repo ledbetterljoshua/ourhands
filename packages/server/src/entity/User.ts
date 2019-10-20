@@ -4,7 +4,9 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   BeforeInsert,
-  OneToMany
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
 import { v4 } from "uuid";
 import { Post } from "./Post";
@@ -15,6 +17,12 @@ export class User extends BaseEntity {
   posts: Post[];
 
   @PrimaryGeneratedColumn("uuid") id: string;
+
+  @CreateDateColumn()
+  createdAt: string;
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt: number;
 
   @Column("varchar", { length: 255 })
   email: string;
