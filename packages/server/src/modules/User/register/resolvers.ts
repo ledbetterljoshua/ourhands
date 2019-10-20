@@ -33,7 +33,7 @@ export const resolvers: ResolverMap = {
     register: async (
       _,
       { email }: GQL.IRegisterOnMutationArguments,
-      { url, sessionID, session }
+      { url, session }
     ) => {
       try {
         await schema.validate({ email }, { abortEarly: false });
@@ -52,9 +52,9 @@ export const resolvers: ResolverMap = {
           -1
         );
         const hasSessions = sessionIds.length;
+        console.log("sessionIds", sessionIds);
         if (hasSessions || isTesting) {
-          //if the user is already authenticated, we can just add a new session for them
-          await redis.lpush(`${userSessionIdPrefix}${userInDb.id}`, sessionID);
+          //if the user is already authenticated, we can just log them in
           return null;
         }
         await sendConfirmEmailLink(url, email, userInDb.id);

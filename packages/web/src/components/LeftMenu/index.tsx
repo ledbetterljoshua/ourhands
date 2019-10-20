@@ -4,7 +4,7 @@ import { views } from "../../modules/App/index";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
 
-export const LeftMenu = ({ setView, current }: any) => {
+export const LeftMenu = ({ domain, setView, current }: any) => {
   const renderItem = (
     view: string,
     icon: string,
@@ -30,7 +30,7 @@ export const LeftMenu = ({ setView, current }: any) => {
   };
   return (
     <Container>
-      {renderItem(views.FEED, "home", "@company", current)}
+      {renderItem(views.FEED, "home", `@${domain}`, current)}
       {renderItem(views.ME, "user", "My Questions", current)}
     </Container>
   );

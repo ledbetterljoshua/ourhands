@@ -8,7 +8,7 @@ import { AppView } from "../modules/App";
 type Props = RouteProps;
 
 interface MeQuery {
-  me: { email: string } | null;
+  me: { email: string; domain: string } | null;
 }
 
 class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
@@ -26,7 +26,7 @@ class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
       return <Landing {...routeProps} />;
     }
 
-    return <AppView {...routeProps} />;
+    return <AppView {...routeProps} me={data.me} />;
   };
 
   render() {
@@ -39,6 +39,7 @@ const meQuery = gql`
   query MeQuery {
     me {
       email
+      domain
     }
   }
 `;
