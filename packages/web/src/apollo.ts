@@ -7,5 +7,14 @@ export const client = new ApolloClient({
     uri: "http://localhost:4000",
     credentials: "include"
   }),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  resolvers: {
+    Mutation: {
+      upvotePost: (parent, data, { cache }) => {
+        console.log(parent, data);
+        // const data = { visibilityFilter, __typename: "Filter" };
+        // cache.writeData({ data });
+      }
+    }
+  }
 });

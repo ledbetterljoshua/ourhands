@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.2",
+    "@emotion/core": "^10.0.21",
+    "@emotion/styled": "^10.0.17",
     "@ourhands/common": "1.0.0",
     "@ourhands/controller": "1.0.0",
     "@types/jest": "24.0.18",
@@ -22,6 +24,7 @@
     "react-dom": "^16.10.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "react-svg": "^10.0.23",
     "typescript": "3.6.4",
     "yap": "^0.0.2"
   },

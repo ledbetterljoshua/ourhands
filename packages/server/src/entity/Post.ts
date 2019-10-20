@@ -25,7 +25,7 @@ export class Post extends BaseEntity {
   @Column("varchar", { length: 100 })
   title: string;
 
-  @Column("varchar", { length: 100 })
+  @Column("varchar", { length: 10000, nullable: true })
   details: string;
 
   @Column("uuid") userId: string;

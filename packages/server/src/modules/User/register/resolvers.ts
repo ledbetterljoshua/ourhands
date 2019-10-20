@@ -8,6 +8,7 @@ import { sendEmail } from "../../../utils/sendEmail";
 import { emailValidation } from "../../../yupSchemas";
 import { userSessionIdPrefix } from "../../../constants";
 import { redis } from "../../../redis";
+import { confirmEmailAddress } from "../shared/errorMessages";
 
 const isTesting = process.env.NODE_ENV === "test";
 
@@ -57,7 +58,7 @@ export const resolvers: ResolverMap = {
           return null;
         }
         await sendConfirmEmailLink(url, email, userInDb.id);
-        return null;
+        return [{ path: "email", message: confirmEmailAddress }];
       }
 
       const user = User.create({
@@ -70,7 +71,7 @@ export const resolvers: ResolverMap = {
       session.userId = user.id;
       await sendConfirmEmailLink(url, email, user.id);
 
-      return null;
+      return [{ path: "email", message: confirmEmailAddress }];
     }
   }
 };

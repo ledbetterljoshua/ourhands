@@ -1,6 +1,6 @@
 input CreatePostInput {
   title: String!
-  details: String!
+  details: String
 }
 
 type Mutation {

@@ -7,7 +7,7 @@ type Upvote {
 type Post {
   id: ID!
   title: String!
-  details: String!
+  details: String
   user: User
   upvotes: [Upvote!]
   upvoteCount: Int!
@@ -15,5 +15,5 @@ type Post {
 }
 
 type Query {
-  findPosts: [Post]!
+  findPosts: [Post]
 }

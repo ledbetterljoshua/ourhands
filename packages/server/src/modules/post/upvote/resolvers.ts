@@ -1,8 +1,4 @@
 import { ResolverMap } from "../../../types/graphql-utils";
-import {
-  userDoesNotExistError,
-  postDoesNotExistError
-} from "../delete/resolvers";
 import { Post } from "../../../entity/Post";
 import { Upvote } from "../../../entity/Upvote";
 
@@ -16,33 +12,54 @@ export const upvoteRemoveSuccessObject = {
 };
 
 export const resolvers: ResolverMap = {
+  Post: {
+    upvoteCount: async post => {
+      return (post.upvotes && post.upvotes.length) || 0;
+    },
+    upvoted: async (post, _, { viewer }) => {
+      if (!post.upvotes) return false;
+
+      const getUpvoted = (vote: Upvote) => {
+        if (!vote || !viewer) return;
+        return vote.userId === viewer.id;
+      };
+
+      const userUpvoted = post.upvotes.map(getUpvoted);
+      return Boolean(userUpvoted.filter(Boolean).length);
+    }
+  },
   Mutation: {
     upvotePost: async (_, { id }, { viewer }) => {
       if (!viewer) {
-        return [userDoesNotExistError];
+        return null;
       }
 
-      const post = await Post.findOne({ where: { id } });
+      const getUpvote = async (postId: string) =>
+        await Upvote.findOne({
+          where: { userId: viewer.id, postId }
+        });
+
+      const getPost = async (id: string) =>
+        await Post.findOne({ where: { id }, relations: ["upvotes"] });
+
+      const post = await getPost(id);
 
       if (!post) {
-        return [postDoesNotExistError];
+        return null;
       }
 
-      const vote = await Upvote.findOne({
-        where: { userId: viewer.id, postId: post.id }
-      });
+      const vote = await getUpvote(post.id);
 
       if (vote) {
         await Upvote.remove(vote);
-        return [upvoteRemoveSuccessObject];
+        return await getPost(post.id);
       }
 
       await Upvote.create({
         userId: viewer.id,
         postId: post.id
       }).save();
-
-      return [upvoteSuccessObject];
+      return await getPost(post.id);
     }
   }
 };

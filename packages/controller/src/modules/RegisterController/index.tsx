@@ -8,6 +8,11 @@ export const registerMutation = gql`
     }
   }
 `;
+export const logoutMutation = gql`
+  mutation LogoutMutation {
+    logout
+  }
+`;
 
 export const meQuery = gql`
   query MeQuery {
@@ -25,14 +30,40 @@ export const meQuery = gql`
   }
 `;
 
-// export const createPostMutation = gql`
-//   mutation CreatePostMutation($title: String!, $details: String) {
-//     createPost(input: { title: $title, details: $details }) {
-//       path
-//       message
-//       post {
-//         id
-//       }
-//     }
-//   }
-// `;
+export const postsQuery = gql`
+  query PostsQuery {
+    findPosts {
+      id
+      title
+      details
+      upvoteCount
+      upvoted
+      user {
+        email
+        domain
+      }
+    }
+  }
+`;
+
+export const createPostMutation = gql`
+  mutation CreatePostMutation($title: String!, $details: String) {
+    createPost(input: { title: $title, details: $details }) {
+      path
+      message
+      post {
+        id
+      }
+    }
+  }
+`;
+
+export const upvoteMutation = gql`
+  mutation UpvoteMutation($id: ID!) {
+    upvotePost(id: $id) {
+      id
+      upvoteCount
+      upvoted
+    }
+  }
+`;
