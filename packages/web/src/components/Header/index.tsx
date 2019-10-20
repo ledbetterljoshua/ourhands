@@ -3,8 +3,9 @@ import styled from "@emotion/styled";
 import { logoutMutation } from "@ourhands/controller";
 import { useMutation } from "@apollo/react-hooks";
 import { Flex } from "../styles";
+import { views } from "../../modules/App";
 
-export const Header = () => {
+export const Header = (props: any) => {
   const [logout] = useMutation(logoutMutation);
   const onLogout = async () => {
     const { data } = await logout();
@@ -15,8 +16,9 @@ export const Header = () => {
   };
   return (
     <Container>
-      <Inner>
+      <Inner justify="space-between">
         <button onClick={onLogout}>logout</button>
+        <button onClick={() => props.setView(views.NEW_POST)}>create</button>
       </Inner>
     </Container>
   );

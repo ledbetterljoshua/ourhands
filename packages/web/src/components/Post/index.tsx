@@ -21,7 +21,7 @@ interface Post {
   upvoted: boolean;
 }
 
-export const PostView = ({ data }: { data: Post }) => {
+export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
   const { title, details, upvoteCount, upvoted, user } = data;
   // const client = useApolloClient();
   const [upvote] = useMutation(upvoteMutation);
@@ -33,10 +33,14 @@ export const PostView = ({ data }: { data: Post }) => {
           <Text type="caption" color="light">
             3 days ago
           </Text>
-          <Dot />
-          <Text type="caption" color="light">
-            top voted
-          </Text>
+          {ndx === 0 ? (
+            <>
+              <Dot />
+              <Text weight="bold" type="caption" color="active">
+                top voted
+              </Text>
+            </>
+          ) : null}
         </Flex>
         {isOwned ? <Icon color="light" name={"dots"} /> : null}
       </Head>
@@ -84,7 +88,7 @@ interface Post {
 const renderPost = (post: Post, ndx: number) => {
   return (
     <div key={post.id}>
-      <PostView data={post} />
+      <PostView data={post} ndx={ndx} />
     </div>
   );
 };

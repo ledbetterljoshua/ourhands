@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { RouteProps } from "react-router";
 import styled from "@emotion/styled";
 import { LeftMenu } from "../../components/LeftMenu";
 import { FeedView } from "./Feed";
 import { MeView } from "./Me";
+import { CreateView } from "./Create";
+import { Header } from "../../components/Header";
 
 export const views = {
   ME: "me",
@@ -12,28 +13,32 @@ export const views = {
   NEW_POST: "new-post"
 };
 
-const ContentSwicth = (view: string) => {
-  switch (view) {
-    case views.FEED:
-      return <FeedView />;
-    case views.ME:
-      return <MeView />;
-    default:
-      return <div>nothing here</div>;
-  }
-};
-
-export const AppView = (props: RouteProps) => {
+export const AppView = (props: any) => {
   const [view, setView] = useState(views.FEED);
+  const ContentSwicth = (view: string) => {
+    switch (view) {
+      case views.FEED:
+        return <FeedView />;
+      case views.ME:
+        return <MeView />;
+      case views.NEW_POST:
+        return <CreateView setView={setView} />;
+      default:
+        return <div>nothing here</div>;
+    }
+  };
   return (
-    <Container>
-      <ContentWrapper>
-        <LeftMenu setView={setView} current={view} />
-        <Content>
-          <InnerContent>{ContentSwicth(view)}</InnerContent>
-        </Content>
-      </ContentWrapper>
-    </Container>
+    <>
+      <Header view={view} setView={setView} />
+      <Container>
+        <ContentWrapper>
+          <LeftMenu setView={setView} current={view} domain={props.me.domain} />
+          <Content>
+            <InnerContent>{ContentSwicth(view)}</InnerContent>
+          </Content>
+        </ContentWrapper>
+      </Container>
+    </>
   );
 };
 
