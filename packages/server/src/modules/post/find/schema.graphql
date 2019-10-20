@@ -12,6 +12,7 @@ type Post {
   upvotes: [Upvote!]
   upvoteCount: Int!
   upvoted: Boolean!
+  createdAt: String
 }
 
 type Query {

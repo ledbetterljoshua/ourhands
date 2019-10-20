@@ -10,9 +10,10 @@ export interface MeQuery_me_posts {
   __typename: "Post";
   id: string;
   title: string;
-  details: string;
+  details: string | null;
   upvoted: boolean;
   upvoteCount: number;
+  createdAt: string | null;
 }
 
 export interface MeQuery_me {

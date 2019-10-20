@@ -37,6 +37,7 @@ declare namespace GQL {
     upvotes: Array<IUpvote> | null;
     upvoteCount: number;
     upvoted: boolean;
+    createdAt: string | null;
   }
 
   interface IUser {

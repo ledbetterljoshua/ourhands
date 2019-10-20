@@ -16,12 +16,13 @@ export interface PostsQuery_findPosts {
   __typename: "Post";
   id: string;
   title: string;
-  details: string;
+  details: string | null;
+  createdAt: string | null;
   upvoteCount: number;
   upvoted: boolean;
   user: PostsQuery_findPosts_user | null;
 }
 
 export interface PostsQuery {
-  findPosts: (PostsQuery_findPosts | null)[];
+  findPosts: (PostsQuery_findPosts | null)[] | null;
 }
