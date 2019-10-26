@@ -1,6 +1,6 @@
 import * as React from "react";
 import { graphql, ChildProps } from "react-apollo";
-import { RouteProps, Route } from "react-router-dom";
+import { RouteProps } from "react-router-dom";
 import gql from "graphql-tag";
 import { Landing } from "../modules/Landing";
 import { AppView } from "../modules/App";

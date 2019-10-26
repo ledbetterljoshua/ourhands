@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { AppView } from "../modules/App";
 import { LandingAuthRoute } from "./landing-auth";
-import { SideBarProvider } from "../modules/App/context/sideNavContext";
+import { useAppContext } from "../modules/App/context/appContext";
 
 export const Routes = () => {
+  const { Provider } = useAppContext();
   return (
-    <SideBarProvider>
+    <Provider>
       <Router>
         <Switch>
           <Route path="/">
@@ -14,6 +14,6 @@ export const Routes = () => {
           </Route>
         </Switch>
       </Router>
-    </SideBarProvider>
+    </Provider>
   );
 };

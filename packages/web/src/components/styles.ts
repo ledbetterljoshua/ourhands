@@ -16,3 +16,18 @@ export const Hr = styled.hr`
   margin: 0.6rem 0;
   padding: 0;
 `;
+
+export const TextArea = styled.textarea<any>`
+  width: 100%;
+  display: block;
+  resize: none;
+  overflow: hidden;
+  height: ${(props: any) => (props.lines || 1) * 17}px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const PullLeft = styled.div`
+  margin-left: -2.6rem;
+`;

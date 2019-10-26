@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { upvoteMutation, postsQuery } from "@ourhands/controller";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { upvoteMutation } from "@ourhands/controller";
+import { useMutation } from "@apollo/react-hooks";
 import moment from "moment";
 import { Text } from "../Text";
-import { Icon } from "../Icon";
 import { Action } from "./action";
 import { Details } from "./details";
 import { Flex, Hr } from "../styles";
@@ -17,7 +16,7 @@ interface User {
 }
 
 interface Post {
-  user: User;
+  user: User | undefined;
   id: string;
   title: string;
   details: string;
@@ -86,20 +85,6 @@ export const PostView = ({
   );
 };
 
-interface User {
-  email: string;
-  id: string;
-}
-
-interface Post {
-  id: string;
-  title: string;
-  details: string;
-  user: User;
-  upvoteCount: number;
-  upvoted: boolean;
-}
-
 const renderPost = (post: Post, ndx: number, mine?: boolean) => {
   return (
     <div key={post.id}>
@@ -131,7 +116,7 @@ const Body = styled.div`
   padding-bottom: 1rem;
 `;
 const Container = styled.div`
-  padding-bottom: 5rem;
+  padding-bottom: 3rem;
 `;
 const Image = styled.img`
   max-width: 70%;

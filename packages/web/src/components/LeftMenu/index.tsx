@@ -6,14 +6,29 @@ import { Link, useLocation } from "react-router-dom";
 import { useMutation } from "react-apollo";
 import { logoutMutation } from "@ourhands/controller";
 import { UserContext } from "../../modules/App/context/userContext";
-import {
-  useSideBarState,
-  useSideBarDispatch
-} from "../../modules/App/context/sideNavContext";
+import { useAppContext } from "../../modules/App/context/appContext";
+import posed from "react-pose";
+
+const Wrapper = posed.div({
+  open: {
+    delayChildren: 200,
+    staggerChildren: 50
+  },
+  initialPose: "closed"
+});
+
+const Child = posed.div({
+  open: { x: 0, opacity: 1 },
+  closed: { x: 20, opacity: 0 }
+});
 
 export const LeftMenu = () => {
+  // const [isOpen, toggleOpen] = useState(false)
+  const { useState } = useAppContext();
   const { pathname } = useLocation();
-  const { open } = useSideBarState();
+  const {
+    sideNav: { open }
+  } = useState();
   const me = useContext(UserContext);
   const [logout] = useMutation(logoutMutation);
   const onLogout = async () => {
@@ -26,40 +41,46 @@ export const LeftMenu = () => {
     const isCurrent = pathname === view;
 
     return (
-      <Link to={view}>
-        <Item>
-          <IconWrapper>
-            <Icon color={isCurrent ? "dark" : "body"} name={icon} />
-          </IconWrapper>
-          <InnerItem>
-            <Text
-              color={isCurrent ? "dark" : "body"}
-              weight={isCurrent ? "bold" : "regular"}
-            >
-              {name}
-            </Text>
-          </InnerItem>
-        </Item>
-      </Link>
+      <Child>
+        <Link to={view}>
+          <Item>
+            <IconWrapper>
+              <Icon color={isCurrent ? "dark" : "body"} name={icon} />
+            </IconWrapper>
+            <InnerItem>
+              <Text
+                color={isCurrent ? "dark" : "body"}
+                weight={isCurrent ? "bold" : "regular"}
+              >
+                {name}
+              </Text>
+            </InnerItem>
+          </Item>
+        </Link>
+      </Child>
     );
   };
-  console.log("open", open);
   return (
-    <Container className={open ? "active" : ""}>
-      <div>
-        {renderItem("/", "home", `@${me.domain}`)}
-        {renderItem("/me", "user", "My Questions")}
-      </div>
-      <div>
-        <Text type="button-text" onClick={onLogout}>
-          logout
-        </Text>
-      </div>
-    </Container>
+    <Wrapper pose="open">
+      <Container className={open ? "active" : ""}>
+        <div>
+          {renderItem("/", "home", `@${me.domain}`)}
+          {renderItem("/me", "user", "My Questions")}
+        </div>
+        <Footer>
+          <Text type="button-text" onClick={onLogout}>
+            logout
+          </Text>
+        </Footer>
+      </Container>
+    </Wrapper>
   );
 };
 
 export const IconWrapper = styled.span``;
+export const Footer = styled.div`
+  padding-bottom: 4rem;
+`;
 export const InnerItem = styled.div`
   display: inline-block;
   width: 100%;
@@ -85,7 +106,7 @@ export const Item = styled.div`
 export const Container = styled.div`
   user-select: none !important;
   width: 266px;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 74px);
   padding-top: 74px;
   padding-left: 32px;
   margin-left: -32px;

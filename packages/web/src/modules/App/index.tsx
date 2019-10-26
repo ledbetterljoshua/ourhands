@@ -5,12 +5,19 @@ import { FeedView } from "./Feed";
 import { MeView } from "./Me";
 import { CreateView } from "./Create";
 import { Header } from "../../components/Header";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { usePageViews } from "../../hooks/usePageViews";
-import { Modal } from "../../components/Modal";
+import posed, { PoseGroup } from "react-pose";
 
-export const AppView = (props: any) => {
+const RouteContainer = posed.div({
+  render: { scale: 1, opacity: 1, beforeChildren: true, delay: 300 },
+  hidden: { scale: 0.98, opacity: 0 }
+});
+
+export const AppView = () => {
+  const [createActive] = useState(false);
   usePageViews();
+  const location = useLocation();
   return (
     <>
       <Header />
@@ -19,15 +26,23 @@ export const AppView = (props: any) => {
           <LeftMenu />
           <Content>
             <InnerContent>
-              <Switch>
-                <Route exact path="/">
-                  <FeedView />
-                </Route>
-                <Route path={`/me`}>
-                  <MeView />
-                </Route>
-                <Route path={`/create`} component={CreateView} />
-              </Switch>
+              <PoseGroup>
+                <RouteContainer
+                  initialPose="hidden"
+                  pose="render"
+                  key={location.pathname}
+                >
+                  {createActive && <CreateView />}
+                  <Switch>
+                    <Route exact path="/">
+                      <FeedView />
+                    </Route>
+                    <Route path={`/me`}>
+                      <MeView />
+                    </Route>
+                  </Switch>
+                </RouteContainer>
+              </PoseGroup>
             </InnerContent>
           </Content>
         </ContentWrapper>
@@ -59,7 +74,7 @@ const InnerContent = styled.div`
   vertical-align: top;
   padding-left: 39px;
   padding-right: 9px;
-  padding-top: 60px;
+  padding-top: 90px;
   padding-bottom: 84px;
   @media (max-width: 930px) {
     padding-left: 9px;
@@ -82,4 +97,3 @@ const Content = styled.div`
     margin-left: 0;
   }
 `;
-const SideBar = styled.div``;

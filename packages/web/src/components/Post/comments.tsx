@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Text } from "../Text";
-import { Flex } from "../styles";
+import { Flex, TextArea } from "../styles";
 
 const data = [
   { text: "Beautiful ❤️ The simple things are the BEST!!!" },
@@ -60,18 +60,13 @@ export const Comments = () => {
   );
 };
 
-const Input = styled.textarea<any>`
+const Input = styled(TextArea)<any>`
   border-radius: 18px;
   background: #f2f3f5;
   padding: 0.8rem 1.2rem;
   width: 100%;
   display: block;
   border: 1px solid #c3c3c3;
-  resize: none;
-  height: ${(props: any) => (props.lines || 1) * 17}px;
-  &:focus {
-    outline: none;
-  }
 `;
 const CommentActions = styled(Flex)`
   padding: 0 1rem;
