@@ -31,8 +31,6 @@ export const resolvers: ResolverMap = {
         return [notAuthenticatedError];
       }
 
-      console.log("data", data);
-
       const post = await Post.create({
         ...data,
         userId: viewer.id

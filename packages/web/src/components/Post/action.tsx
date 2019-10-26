@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
 import { Flex } from "../styles";
+import posed from "react-pose";
 
 interface Props {
   active: Boolean;
@@ -11,12 +12,20 @@ interface Props {
   onAction: any;
 }
 
+const Popout = posed.div({
+  pressable: true,
+  init: { scale: 1 },
+  press: { scale: 0.95, transition: { type: "spring" } }
+});
+
 export const Action = ({ active, icon, text, onAction }: Props) => {
   return (
-    <Container onClick={onAction}>
-      <Icon color={active ? "active" : "body"} name={icon} />
-      <Text color={active ? "active" : "body"}>{text}</Text>
-    </Container>
+    <Popout>
+      <Container onClick={onAction}>
+        <Icon color={active ? "active" : "body"} name={icon} />
+        <Text color={active ? "active" : "body"}>{text}</Text>
+      </Container>
+    </Popout>
   );
 };
 

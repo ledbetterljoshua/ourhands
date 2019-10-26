@@ -1,16 +1,15 @@
 import { useLocation } from "react-router";
 import React from "react";
-import {
-  useSideBarDispatch,
-  useSideBarState
-} from "../modules/App/context/sideNavContext";
+import { useAppContext } from "../modules/App/context/appContext";
 
 export const usePageViews = () => {
-  const dispatch = useSideBarDispatch();
+  const { useDispatch } = useAppContext();
+
+  const dispatch = useDispatch();
   // const { open } = useSideBarState();
   let location = useLocation();
   React.useEffect(() => {
-    dispatch({ type: "hide" });
+    dispatch({ type: "hideSideNav" });
     // ga.send(["pageview", location.pathname]);
-  }, [location]);
+  }, [location, dispatch]);
 };

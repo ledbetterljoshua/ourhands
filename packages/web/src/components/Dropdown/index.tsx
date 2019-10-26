@@ -86,14 +86,14 @@ const ListItem = styled.div`
 const Component = styled.div`
   position: relative;
   display: inline-block;
-  z-index: 200;
 `;
 
 const OptionWrap = styled.div<any>`
-  position: fixed;
+  position: absolute;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
+  z-index: 700;
   margin-left: ${props => (props.direction === "right" ? "0px" : "-123px")};
   margin-top: -40px;
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.43);

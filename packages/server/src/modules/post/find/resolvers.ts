@@ -46,7 +46,7 @@ export const resolvers: ResolverMap = {
         .where("user.domain = :domain", { domain: viewer!.domain })
         .getMany();
 
-      return posts.sort(fieldSorter(["-upvotecount", "createdAt"]));
+      return posts.sort(fieldSorter(["-upvotecount", "-createdAt"]));
     }
   }
 };

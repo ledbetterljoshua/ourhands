@@ -5,10 +5,11 @@ import { useQuery } from "@apollo/react-hooks";
 import styled from "@emotion/styled";
 import { PostList } from "../../../components/Post";
 import { Tools } from "./tools";
+import { CreateView } from "../Create";
 
 export const FeedView = (props: RouteProps) => {
   const { loading, error, data } = useQuery(postsQuery);
-  console.log("loading, error, data", loading, error, data);
+  console.log("props", props);
   if (loading) {
     return <div>loading</div>;
   }
@@ -20,6 +21,7 @@ export const FeedView = (props: RouteProps) => {
   return (
     <Container>
       <Tools />
+      <CreateView />
       <PostList posts={data.findPosts} />
     </Container>
   );

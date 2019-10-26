@@ -1,25 +1,28 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { useHistory } from "react-router-dom";
 import { Flex } from "../styles";
 import { Icon } from "../Icon";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
-import {
-  useSideBarDispatch,
-  useSideBarState
-} from "../../modules/App/context/sideNavContext";
+import { useAppContext } from "../../modules/App/context/appContext";
 
 export const Header = (props: any) => {
   const history = useHistory();
-  const dispatch = useSideBarDispatch();
-  const { open } = useSideBarState();
+  const { useDispatch } = useAppContext();
+  const dispatch = useDispatch();
 
   const toggleOpen = () => {
-    if (open) {
-      return dispatch({ type: "hide" });
+    return dispatch({ type: "toggleSideNav" });
+  };
+
+  const onCreate = () => {
+    dispatch({ type: "showCreate" });
+    //if not on root, then push /
+    if (history.location.pathname !== "/") {
+      history.push("/");
     }
-    return dispatch({ type: "show" });
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -29,7 +32,7 @@ export const Header = (props: any) => {
           <Icon size={11} name="logo" />
         </Link>
         <Flex>
-          <Button type="primary" onClick={() => history.push("/create")}>
+          <Button type="primary" onClick={onCreate}>
             Ask a question
           </Button>
           <Action onClick={toggleOpen}>
@@ -62,7 +65,7 @@ const Container = styled.div`
   background-color: #fff;
   top: 0;
   position: fixed;
-  z-index: 400;
+  z-index: 300;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
