@@ -10,11 +10,15 @@ import {
 } from "typeorm";
 import { v4 } from "uuid";
 import { Post } from "./Post";
+import { Comment } from "./Comment";
 
 @Entity("users")
 export class User extends BaseEntity {
   @OneToMany(() => Post, post => post.user)
   posts: Post[];
+
+  @OneToMany(() => Comment, comment => comment.user)
+  comments: Comment[];
 
   @PrimaryGeneratedColumn("uuid") id: string;
 

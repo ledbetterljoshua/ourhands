@@ -19,6 +19,7 @@ export interface PostsQuery_findPosts {
   details: string | null;
   createdAt: string | null;
   upvoteCount: number;
+  commentCount: number;
   upvoted: boolean;
   user: PostsQuery_findPosts_user | null;
 }

@@ -41,6 +41,7 @@ export const CreateView = () => {
         upvoted: true,
         upvoteCount: 1,
         createdAt: Date.now(),
+        commentCount: 0,
         __typename: ""
       };
       cache.writeQuery({
@@ -116,7 +117,7 @@ export const CreateView = () => {
             <Text onClick={() => setActive(false)} margin="right" color="light">
               cancel
             </Text>
-            <Button type="primary" onClick={onCreate}>
+            <Button disabled={!title.length} type="primary" onClick={onCreate}>
               ask it
             </Button>
           </Footer>

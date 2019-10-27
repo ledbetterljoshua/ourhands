@@ -23,6 +23,7 @@ interface Post {
   upvoteCount: number;
   upvoted: boolean;
   createdAt: Date;
+  commentCount?: number;
 }
 
 export const PostView = ({
@@ -34,7 +35,7 @@ export const PostView = ({
   ndx: number;
   mine?: boolean;
 }) => {
-  const { title, details, createdAt, upvoted, user } = data;
+  const { id, title, details, createdAt, upvoted, user, commentCount } = data;
 
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [upvote] = useMutation(upvoteMutation);
@@ -56,7 +57,7 @@ export const PostView = ({
             </>
           ) : null}
         </Flex>
-        {isOwned ? <Options /> : null}
+        {isOwned ? <Options id={id} /> : null}
       </Head>
       <Body>
         <Title>
@@ -77,10 +78,10 @@ export const PostView = ({
           onAction={() => setCommentsVisible(true)}
           active={false}
           icon="comment"
-          text={"Comment"}
+          text={`Comment ${commentCount ? `(${commentCount})` : ""}`}
         />
       </Footer>
-      {commentsVisible ? <Comments /> : <Hr />}
+      {commentsVisible ? <Comments id={data.id} /> : <Hr />}
     </Container>
   );
 };

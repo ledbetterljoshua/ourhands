@@ -22,10 +22,34 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
+    findComments: Array<IComment> | null;
     findPosts: Array<IPost | null> | null;
     dummy: string | null;
     me: IUser | null;
     bye: IUser | null;
+  }
+
+  interface IFindCommentsOnQueryArguments {
+    postId?: string | null;
+  }
+
+  interface IComment {
+    __typename: 'Comment';
+    id: string;
+    user: IUser;
+    post: IPost;
+    text: string;
+    createdAt: string | null;
+    parentId: string | null;
+    replies: Array<IComment> | null;
+  }
+
+  interface IUser {
+    __typename: 'User';
+    id: string;
+    email: string;
+    posts: Array<IPost>;
+    domain: string | null;
   }
 
   interface IPost {
@@ -35,17 +59,11 @@ declare namespace GQL {
     details: string | null;
     user: IUser | null;
     upvotes: Array<IUpvote> | null;
+    comments: Array<IComment> | null;
     upvoteCount: number;
+    commentCount: number;
     upvoted: boolean;
     createdAt: string | null;
-  }
-
-  interface IUser {
-    __typename: 'User';
-    id: string;
-    email: string;
-    posts: Array<IPost>;
-    domain: string | null;
   }
 
   interface IUpvote {
@@ -57,11 +75,22 @@ declare namespace GQL {
 
   interface IMutation {
     __typename: 'Mutation';
+    createComment: Array<ICommentResponse> | null;
+    deleteComment: Array<IPostResponse>;
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
     upvotePost: IPost | null;
     logout: boolean | null;
     register: Array<IError> | null;
+  }
+
+  interface ICreateCommentOnMutationArguments {
+    input: ICreateCommentInput;
+  }
+
+  interface IDeleteCommentOnMutationArguments {
+    id: string;
+    isReply?: boolean | null;
   }
 
   interface ICreatePostOnMutationArguments {
@@ -80,9 +109,17 @@ declare namespace GQL {
     email: string;
   }
 
-  interface ICreatePostInput {
-    title: string;
-    details?: string | null;
+  interface ICreateCommentInput {
+    text: string;
+    postId?: string | null;
+    parentId?: string | null;
+  }
+
+  interface ICommentResponse {
+    __typename: 'CommentResponse';
+    path: string;
+    message: string;
+    comment: IComment | null;
   }
 
   interface IPostResponse {
@@ -90,6 +127,11 @@ declare namespace GQL {
     path: string;
     message: string;
     post: IPost | null;
+  }
+
+  interface ICreatePostInput {
+    title: string;
+    details?: string | null;
   }
 
   interface IError {
