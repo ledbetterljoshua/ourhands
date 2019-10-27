@@ -4,7 +4,7 @@ module.exports = {
       name: "@allhands/controller",
       // localSchemaFile: "./schema.json",
       includes: ["./src/**/*.tsx"],
-      url: "http://localhost:4000"
+      url: "https://peaceful-escarpment-19819.herokuapp.com/"
     }
   }
 };

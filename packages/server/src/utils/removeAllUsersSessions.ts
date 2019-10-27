@@ -9,7 +9,7 @@ export const removeAllUsersSessions = async (userId: string) => {
   );
 
   const promises = [];
-
+  console.log("sessionIds", sessionIds);
   for (const sess of sessionIds) {
     promises.push(redis.del(`${redisSessionPrefix}${sess}`));
   }

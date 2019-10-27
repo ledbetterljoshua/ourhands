@@ -1,13 +1,19 @@
-import * as React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { RegisterConnector } from "../modules/Register/registerConnector";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { LandingAuthRoute } from "./landing-auth";
+import { useAppContext } from "../modules/App/context/appContext";
 
 export const Routes = () => {
+  const { Provider } = useAppContext();
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/register" component={RegisterConnector} />
-      </Switch>
-    </BrowserRouter>
+    <Provider>
+      <Router>
+        <Switch>
+          <Route path="/">
+            <LandingAuthRoute />
+          </Route>
+        </Switch>
+      </Router>
+    </Provider>
   );
 };
