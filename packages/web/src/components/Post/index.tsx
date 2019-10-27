@@ -65,7 +65,7 @@ export const PostView = ({
             {title}
           </Text>
         </Title>
-        <Details details={details} />
+        {details ? <Details details={details} /> : null}
       </Body>
       <Footer>
         <Action

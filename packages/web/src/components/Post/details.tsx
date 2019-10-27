@@ -3,7 +3,7 @@ import { Text } from "../../components/Text";
 import styled from "@emotion/styled";
 
 export const Details = ({ details }: { details: string }) => {
-  const detailsTooLong = details.length > 200;
+  const detailsTooLong = (details && details.length) > 200;
   const [showFullDetails, toggleShowFullDetails] = useState(detailsTooLong);
   const [detailsToShow, setDetails] = useState(
     details.substr(0, 200).split("\n")
