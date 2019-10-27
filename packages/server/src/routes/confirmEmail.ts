@@ -18,7 +18,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
     }
 
     await redis.del(id);
-    return res.send("ok");
+    return res.redirect(process!.env.FRONTEND_HOST as string);
   } catch (err) {
     return res.send(err);
   }

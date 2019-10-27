@@ -39,10 +39,27 @@ export const postsQuery = gql`
       details
       createdAt
       upvoteCount
+      commentCount
       upvoted
       user {
         email
         domain
+      }
+    }
+  }
+`;
+export const commentsQuery = gql`
+  query CommentsQuery($postId: ID!) {
+    findComments(postId: $postId) {
+      id
+      text
+      parentId
+      createdAt
+      replies {
+        id
+        text
+        parentId
+        createdAt
       }
     }
   }
@@ -60,12 +77,46 @@ export const createPostMutation = gql`
   }
 `;
 
+export const createCommentMutation = gql`
+  mutation CreateCommentMutation($text: String!, $parentId: ID, $postId: ID) {
+    createComment(
+      input: { text: $text, parentId: $parentId, postId: $postId }
+    ) {
+      path
+      message
+      comment {
+        parentId
+        text
+        id
+      }
+    }
+  }
+`;
+
 export const upvoteMutation = gql`
   mutation UpvoteMutation($id: ID!) {
     upvotePost(id: $id) {
       id
       upvoteCount
       upvoted
+    }
+  }
+`;
+
+export const deletePostMutation = gql`
+  mutation DeletePostMutation($id: ID!) {
+    deletePost(id: $id) {
+      path
+      message
+    }
+  }
+`;
+
+export const deleteCommentMutation = gql`
+  mutation DeleteCommentMutation($id: ID!, $isReply: Boolean) {
+    deleteComment(id: $id, isReply: $isReply) {
+      path
+      message
     }
   }
 `;

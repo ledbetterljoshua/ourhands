@@ -30,4 +30,7 @@ export const TextArea = styled.textarea<any>`
 
 export const PullLeft = styled.div`
   margin-left: -2.6rem;
+  @media (max-width: 930px) {
+    margin-left: 0rem;
+  }
 `;

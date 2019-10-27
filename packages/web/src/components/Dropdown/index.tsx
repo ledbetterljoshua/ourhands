@@ -51,11 +51,13 @@ export const Dropdown = ({
 
   const renderOptions = () => {
     return options.map((o: any) => {
-      const { value, label } = o;
+      const { value, label, danger } = o;
       const isActive = selectedOption.value === value;
       return (
         <ListItem onClick={() => onSelect(o)} key={value}>
-          <Text color={isActive ? "active" : "body"}>{label}</Text>
+          <Text color={danger ? "danger" : isActive ? "active" : "body"}>
+            {label}
+          </Text>
         </ListItem>
       );
     });

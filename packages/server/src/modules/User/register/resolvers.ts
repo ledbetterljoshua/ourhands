@@ -6,8 +6,8 @@ import { createConfirmEmailLink } from "./createConfirmEmailLink";
 import { sendEmail } from "../../../utils/sendEmail";
 
 import { emailValidation } from "../../../yupSchemas";
-import { userSessionIdPrefix } from "../../../constants";
-import { redis } from "../../../redis";
+// import { userSessionIdPrefix } from "../../../constants";
+// import { redis } from "../../../redis";
 import { confirmEmailAddress } from "../shared/errorMessages";
 
 const isTesting = process.env.NODE_ENV === "test";
@@ -45,18 +45,18 @@ export const resolvers: ResolverMap = {
       const userInDb = await User.findOne({ where: { email }, select: ["id"] });
 
       if (userInDb) {
-        session.userId = userInDb.id;
-        const sessionIds = await redis.lrange(
-          `${userSessionIdPrefix}${userInDb.id}`,
-          0,
-          -1
-        );
-        const hasSessions = sessionIds.length;
-        console.log("sessionIds", sessionIds);
-        if (hasSessions || isTesting) {
-          //if the user is already authenticated, we can just log them in
-          return null;
-        }
+        // session.userId = userInDb.id;
+        // const sessionIds = await redis.lrange(
+        //   `${userSessionIdPrefix}${userInDb.id}`,
+        //   0,
+        //   -1
+        // );
+        // const hasSessions = sessionIds.length;
+        // console.log("sessionIds", sessionIds);
+        // if (hasSessions || isTesting) {
+        //   //if the user is already authenticated, we can just log them in
+        //   return null;
+        // }
         await sendConfirmEmailLink(url, email, userInDb.id);
         return [{ path: "email", message: confirmEmailAddress }];
       }

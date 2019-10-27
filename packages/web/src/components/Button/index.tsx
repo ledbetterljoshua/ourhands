@@ -9,17 +9,27 @@ interface Props {
   children: string;
   onClick: any;
   type?: buttonType;
+  disabled?: boolean;
 }
 
-export const Button = ({ children, onClick, type = "default" }: Props) => {
+export const Button = ({
+  children,
+  onClick,
+  type = "default",
+  disabled = false
+}: Props) => {
   return (
-    <Component type={type} onClick={onClick}>
+    <Component
+      disabled={disabled}
+      type={type}
+      onClick={!disabled ? onClick : undefined}
+    >
       <Text color={type === "primary" ? "white" : "dark"}>{children}</Text>
     </Component>
   );
 };
 
-const Component = styled.a`
+const Component = styled.a<any>`
   ${props =>
     props.type === "primary"
       ? `
@@ -40,9 +50,15 @@ const Component = styled.a`
   letter-spacing: 0.025em;
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  ${props =>
+    props.disabled
+      ? `
+  cursor: default;
+  `
+      : `
   &:hover {
     transform: translateY(-1px);
-    ${props =>
+    ${
       props.type === "primary"
         ? `
         box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
@@ -51,6 +67,8 @@ const Component = styled.a`
         `
         : `
         background: #e0e0e0;
-    `}
+    `
+    }
   }
+  `}
 `;
