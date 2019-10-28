@@ -5,36 +5,39 @@ import { Hr, Flex } from "../../../components/styles";
 import { Icon } from "../../../components/Icon";
 import { Text } from "../../../components/Text";
 import { UserContext } from "../context/userContext";
+import { useAppContext, rangeOptions } from "../context/appContext";
 
 type option = {
   value: string;
   label: string;
 };
 
-const options: option[] = [
-  { value: "chocolate", label: "This Week" },
-  { value: "strawberry", label: "This Month" },
-  { value: "vanilla", label: "Everything" }
-];
-
 export const Tools = () => {
-  const [selectedOption, changeSelected] = useState(options[0]);
+  const { useDispatch, useState } = useAppContext();
+
+  const { rangeOption } = useState();
+
   const me = useContext(UserContext);
+  const dispatch = useDispatch();
   const handleChange = (option: option) => {
-    changeSelected(option);
+    dispatch({
+      type: "setOptionRange",
+      payload: option
+    });
   };
+
   return (
     <Container>
       <Component>
         <Dropdown
-          selectedOption={selectedOption}
+          selectedOption={rangeOption}
           onChange={(e: option) => handleChange(e)}
-          options={options}
+          options={rangeOptions}
         >
           <Action>
             <Flex>
               <span style={{ marginRight: 5 }}>
-                <Text color="active">{selectedOption.label}</Text>
+                <Text color="active">{rangeOption.label}</Text>
               </span>
               <Icon name="carrot" />
             </Flex>

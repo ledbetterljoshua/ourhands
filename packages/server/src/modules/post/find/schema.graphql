@@ -28,5 +28,5 @@ type Post {
 }
 
 type Query {
-  findPosts: [Post]
+  findPosts(range: String): [Post]
 }

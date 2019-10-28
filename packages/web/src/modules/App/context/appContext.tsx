@@ -2,25 +2,46 @@
 import { createContext } from "react";
 import { useCustomRedux, ProviderProps } from "./customRedux";
 
+type rangeOption = {
+  value: string;
+  label: string;
+};
+
+export const rangeOptions: rangeOption[] = [
+  { value: "THIS_WEEK", label: "This Week" },
+  { value: "THIS_MONTH", label: "This Month" },
+  { value: "EVERYTHING", label: "Everything" }
+];
+
 export type State = {
   sideNav: { open: boolean };
   createNew: { active: boolean };
+  rangeOption: rangeOption;
 };
 
 type actionVariant =
+  | "setOptionRange"
   | "showSideNav"
   | "hideSideNav"
   | "toggleSideNav"
   | "showCreate"
   | "hideCreate"
   | "toggleCreate";
-export type Action = { type: actionVariant };
+
+export type Action = { type: actionVariant; payload?: any };
 export type Dispatch = (action: Action) => void;
 
-const initialState = { sideNav: { open: false }, createNew: { active: false } };
+const initialState = {
+  rangeOption: rangeOptions[0],
+  sideNav: { open: false },
+  createNew: { active: false }
+};
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
+    case "setOptionRange": {
+      return { ...state, rangeOption: action.payload };
+    }
     case "toggleSideNav": {
       return { ...state, sideNav: { open: !state.sideNav.open } };
     }

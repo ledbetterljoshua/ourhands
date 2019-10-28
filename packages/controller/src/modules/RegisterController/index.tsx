@@ -32,8 +32,8 @@ export const meQuery = gql`
 `;
 
 export const postsQuery = gql`
-  query PostsQuery {
-    findPosts {
+  query PostsQuery($range: String) {
+    findPosts(range: $range) {
       id
       title
       details

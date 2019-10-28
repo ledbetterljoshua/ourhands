@@ -33,6 +33,10 @@ declare namespace GQL {
     postId?: string | null;
   }
 
+  interface IFindPostsOnQueryArguments {
+    range?: string | null;
+  }
+
   interface IComment {
     __typename: 'Comment';
     id: string;

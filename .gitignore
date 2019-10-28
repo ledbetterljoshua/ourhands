@@ -7,6 +7,5 @@ temp/
 dump.rdb
 .env
 .env.*
-dist
+dist/
 .netlify
-build

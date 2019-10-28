@@ -27,3 +27,7 @@ export interface PostsQuery_findPosts {
 export interface PostsQuery {
   findPosts: (PostsQuery_findPosts | null)[] | null;
 }
+
+export interface PostsQueryVariables {
+  range?: string | null;
+}
