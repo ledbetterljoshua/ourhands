@@ -1,21 +1,25 @@
 import * as React from "react";
 import { graphql, ChildProps } from "react-apollo";
 import { RouteProps } from "react-router-dom";
-import gql from "graphql-tag";
+import { meQuery } from "@ourhands/controller";
 import { Landing } from "../modules/Landing";
 import { AppView } from "../modules/App";
-import { UserContext } from "../modules/App/context/userContext";
 
 type Props = RouteProps;
 
 interface MeQuery {
-  me: { email: string; domain: string } | null;
+  me: {
+    email: string;
+    domain: {
+      name: string;
+      id: string;
+    };
+  } | null;
 }
 
 class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
   renderRoute = () => {
     const { data } = this.props;
-    console.log("data", data);
 
     if (!data || data.loading) {
       // loading screen
@@ -27,25 +31,12 @@ class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
       return <Landing />;
     }
 
-    return (
-      <UserContext.Provider value={data.me}>
-        <AppView />;
-      </UserContext.Provider>
-    );
+    return <AppView />;
   };
 
   render() {
     return this.renderRoute();
   }
 }
-
-const meQuery = gql`
-  query MeQuery {
-    me {
-      email
-      domain
-    }
-  }
-`;
 
 export const LandingAuthRoute = graphql<Props, MeQuery>(meQuery)(C);

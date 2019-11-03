@@ -1,27 +1,42 @@
 import { ResolverMap } from "../../../types/graphql-utils";
 import { Post } from "../../../entity/Post";
 import { Upvote } from "../../../entity/Upvote";
-import { getConnection } from "typeorm";
-import { fieldSorter } from "../../../utils/fieldSorter";
+import { checkIsOwner } from "../../../utils/checkIsOwner";
+// import { Coun } from "typeorm";
+// import { Between } from "typeorm";
+// import { fieldSorter } from "../../../utils/fieldSorter";
 
-function getLastWeek() {
+const getDate = (range: number) => () => {
   var today = new Date();
-  var lastWeek = new Date(
+  const date = new Date(
     today.getFullYear(),
     today.getMonth(),
-    today.getDate() - 7
+    today.getDate() - range
   );
-  return lastWeek;
-}
+  return {
+    month: date.getMonth(),
+    day: date.getDate(),
+    year: date.getFullYear(),
+    date
+  };
+};
 
-var lastWeek = getLastWeek();
-var lastWeekMonth = lastWeek.getMonth() + 1;
-var lastWeekDay = lastWeek.getDate();
-var lastWeekYear = lastWeek.getFullYear();
+const getToday = getDate(0);
+const getLastWeek = getDate(7);
 
-var lastWeekDisplay = lastWeekMonth + "/" + lastWeekDay + "/" + lastWeekYear;
-var lastMonthDisplay = lastWeekMonth + "/" + "01" + "/" + lastWeekYear;
+const lastWeek = getLastWeek();
+const lastWeekMonth = lastWeek.month + 1,
+  lastWeekDay = lastWeek.day,
+  lastWeekYear = lastWeek.year;
+const now = getToday();
+const today = now.day,
+  thisMonth = now.month,
+  thisYear = now.year;
 
+const nowDisplay = thisMonth + "/" + today + "/" + thisYear;
+const lastWeekDisplay = lastWeekMonth + "/" + lastWeekDay + "/" + lastWeekYear;
+const lastMonthDisplay = lastWeekMonth + "/" + "01" + "/" + lastWeekYear;
+console.log(nowDisplay);
 type RANGE = "THIS_WEEK" | "THIS_MONTH" | "EVERYTHING";
 
 const ranges: any = {
@@ -32,6 +47,7 @@ const ranges: any = {
 
 export const resolvers: ResolverMap = {
   Post: {
+    isOwner: checkIsOwner,
     commentCount: async post => {
       return (post.comments && post.comments.length) || 0;
     },
@@ -47,31 +63,47 @@ export const resolvers: ResolverMap = {
       const userUpvoted = post.upvotes.map(getUpvoted);
       return Boolean(userUpvoted.length);
     },
-    user: async (post, __, { viewer, userLoader }) => {
-      const isMine = viewer && post.user.id === viewer.id;
-      return isMine ? userLoader.load(post!.user.id) : null;
+    owner: async (post, __, context) => {
+      if (!post.owner) return false;
+      if (post.userIsPublic) {
+        return post.owner;
+      }
+      const isOwner = checkIsOwner(post, __, context);
+      return isOwner ? post.owner : false;
     }
   },
   Query: {
     findPosts: async (_, { range }: { range: RANGE }, { viewer }) => {
       if (!viewer) return [];
       const rangeToUse = ranges[range || "THIS_WEEK"];
-      const posts = await getConnection()
-        .createQueryBuilder()
-        .select("post")
-        .from(Post, "post")
-        .leftJoinAndSelect("post.user", "user")
-        .leftJoinAndSelect("post.comments", "comment")
-        .leftJoinAndSelect("post.upvotes", "upvote")
-        .where("user.domain = :domain AND post.createdAt >= :range", {
-          domain: viewer!.domain,
-          range: rangeToUse
-        })
-        .skip(5)
-        .take(10)
-        .getMany();
-
-      return posts.sort(fieldSorter(["-upvotecount", "-createdAt"]));
+      console.log("rangeToUse", rangeToUse);
+      let posts;
+      try {
+        posts = await Post.find({
+          where: {
+            // createdAt: Raw(alias => `${alias} < ${lastWeek.date}`),
+            domain: {
+              id: viewer!.domain.id
+            }
+          },
+          order: {
+            // upvotes: "DESC",
+            createdAt: "DESC"
+          },
+          join: {
+            alias: "post",
+            leftJoinAndSelect: {
+              comments: "post.comments",
+              upvotes: "post.upvotes",
+              domain: "post.domain",
+              owner: "post.owner"
+            }
+          }
+        });
+      } catch (e) {
+        console.log("caught error", e);
+      }
+      return posts;
     }
   }
 };

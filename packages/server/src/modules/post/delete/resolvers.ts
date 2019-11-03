@@ -7,7 +7,7 @@ const isAuthenticated = (viewer: User | undefined, item: Post) => {
   if (!viewer || !viewer.confirmed || viewer.accountLocked) {
     return false;
   }
-  if (viewer.id !== item.userId) {
+  if (viewer.id !== item.ownerId) {
     return false;
   }
   return true;

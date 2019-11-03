@@ -3,7 +3,7 @@
 
 declare namespace GQL {
   interface IGraphQLResponseRoot {
-    data?: IQuery | IMutation;
+    data?: IQuery | IMutation | ISubscription;
     errors?: Array<IGraphQLResponseError>;
   }
 
@@ -24,6 +24,7 @@ declare namespace GQL {
     __typename: 'Query';
     findComments: Array<IComment> | null;
     findPosts: Array<IPost | null> | null;
+    findRooms: Array<IRoom | null> | null;
     dummy: string | null;
     me: IUser | null;
     bye: IUser | null;
@@ -46,14 +47,15 @@ declare namespace GQL {
     createdAt: string | null;
     parentId: string | null;
     replies: Array<IComment> | null;
+    isOwner: boolean | null;
   }
 
   interface IUser {
     __typename: 'User';
-    id: string;
-    email: string;
-    posts: Array<IPost>;
-    domain: string | null;
+    id: string | null;
+    email: string | null;
+    posts: Array<IPost> | null;
+    domain: IDomain | null;
   }
 
   interface IPost {
@@ -61,13 +63,14 @@ declare namespace GQL {
     id: string;
     title: string;
     details: string | null;
-    user: IUser | null;
+    owner: IUser | null;
     upvotes: Array<IUpvote> | null;
     comments: Array<IComment> | null;
     upvoteCount: number;
     commentCount: number;
     upvoted: boolean;
     createdAt: string | null;
+    isOwner: boolean | null;
   }
 
   interface IUpvote {
@@ -77,6 +80,25 @@ declare namespace GQL {
     users: Array<IUser> | null;
   }
 
+  interface IDomain {
+    __typename: 'Domain';
+    id: string;
+    name: string;
+    posts: Array<IPost> | null;
+    rooms: Array<IRoom> | null;
+  }
+
+  interface IRoom {
+    __typename: 'Room';
+    id: string;
+    owner: IUser;
+    posts: Array<IPost> | null;
+    domain: IDomain;
+    description: string | null;
+    title: string;
+    isOwner: boolean;
+  }
+
   interface IMutation {
     __typename: 'Mutation';
     createComment: Array<ICommentResponse> | null;
@@ -84,6 +106,7 @@ declare namespace GQL {
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
     upvotePost: IPost | null;
+    createRoom: IRoom;
     logout: boolean | null;
     register: Array<IError> | null;
   }
@@ -107,6 +130,10 @@ declare namespace GQL {
 
   interface IUpvotePostOnMutationArguments {
     id?: string | null;
+  }
+
+  interface ICreateRoomOnMutationArguments {
+    input: ICreatePostInput;
   }
 
   interface IRegisterOnMutationArguments {
@@ -136,12 +163,23 @@ declare namespace GQL {
   interface ICreatePostInput {
     title: string;
     details?: string | null;
+    viewability?: string | null;
+    description?: string | null;
   }
 
   interface IError {
     __typename: 'Error';
     path: string;
     message: string;
+  }
+
+  interface ISubscription {
+    __typename: 'Subscription';
+    commentAdded: IComment | null;
+  }
+
+  interface ICommentAddedOnSubscriptionArguments {
+    postId: string;
   }
 }
 

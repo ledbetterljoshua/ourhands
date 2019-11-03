@@ -13,12 +13,15 @@ import { useEffect } from "react";
 import { useAppContext } from "../context/appContext";
 import { AnonToggle } from "./anonToggle";
 import { UserContext } from "../context/userContext";
+import { usePostCreateState } from "../context/postCreateContext";
 
 export const FadeIn = posed.div({});
 
 export const CreateView = () => {
+  const [postCreateState, dispatchCreateState] = usePostCreateState();
   const { useDispatch, useState: useAppState } = useAppContext();
   const me = useContext(UserContext);
+  const bodyRef = useRef(null);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const {
@@ -29,10 +32,13 @@ export const CreateView = () => {
   const [details, setDetails] = useState("");
   const [create] = useMutation(createPostMutation, {
     update(cache, { data: { createPost } }) {
+      debugger;
       const { id } = createPost[0].post;
-      const { findPosts: posts } = cache.readQuery({
-        query: postsQuery
+      const data = cache.readQuery({
+        query: postsQuery,
+        variables: { range: "THIS_WEEK" }
       }) as any;
+      const { findPosts: posts } = data;
       const newPost = {
         id,
         title,
@@ -42,22 +48,35 @@ export const CreateView = () => {
         upvoteCount: 1,
         createdAt: Date.now(),
         commentCount: 0,
-        __typename: ""
+        __typename: "Post"
       };
       cache.writeQuery({
         query: postsQuery,
+        variables: { range: "THIS_WEEK" },
         data: { findPosts: [newPost, ...posts] }
       });
     }
   });
+
+  const onChangePostCreateState = (payload: any) => {
+    dispatchCreateState({ type: "setOption", payload });
+    if (inputRef.current) {
+      (inputRef.current as any).focus();
+    }
+  };
 
   const setActive = (val: boolean) => {
     return dispatch({ type: val ? "showCreate" : "hideCreate" });
   };
 
   const onCreate = async () => {
+    const { option } = postCreateState;
     await create({
-      variables: { title, details }
+      variables: {
+        title,
+        details,
+        viewability: option.value
+      }
     });
     setActive(false);
     setTitle("");
@@ -87,7 +106,7 @@ export const CreateView = () => {
       <PoseGroup>
         {active && (
           <FadeIn key="fade">
-            <Background onClick={() => setActive(false)} />{" "}
+            <Background onClick={() => setActive(false)} />
           </FadeIn>
         )}
       </PoseGroup>
@@ -95,7 +114,10 @@ export const CreateView = () => {
         <Content onClick={() => setActive(true)}>
           <Flex>
             <Text>Ask it</Text>
-            <AnonToggle />
+            <AnonToggle
+              state={postCreateState}
+              onChange={onChangePostCreateState}
+            />
           </Flex>
           <Input
             ref={inputRef}
@@ -106,6 +128,7 @@ export const CreateView = () => {
           {!active ? <Hr /> : null}
           {active ? (
             <Body
+              ref={bodyRef}
               placeholder="Optional: anything else you would like to add?"
               value={details}
               onChange={({ target: { value } }: any) => setDetails(value)}

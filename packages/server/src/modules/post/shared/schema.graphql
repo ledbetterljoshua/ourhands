@@ -3,3 +3,10 @@ type PostResponse {
   message: String!
   post: Post
 }
+
+type Domain {
+  id: ID!
+  name: String!
+  posts: [Post!]
+  rooms: [Room!]
+}

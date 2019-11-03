@@ -1,5 +1,6 @@
 import { ResolverMap } from "../../../types/graphql-utils";
 import { User } from "../../../entity/User";
+import { Domain } from "../../../entity/Domain";
 import * as yup from "yup";
 import { formatYupError } from "../../../utils/formatYupError";
 import { createConfirmEmailLink } from "./createConfirmEmailLink";
@@ -44,6 +45,18 @@ export const resolvers: ResolverMap = {
       const domain = email.split("@")[1];
       const userInDb = await User.findOne({ where: { email }, select: ["id"] });
 
+      let domainInDb = await Domain.findOne({
+        where: { name: domain },
+        select: ["id"]
+      });
+
+      if (!domainInDb) {
+        domainInDb = Domain.create({
+          name: domain
+        });
+        await domainInDb.save();
+      }
+
       if (userInDb) {
         // session.userId = userInDb.id;
         // const sessionIds = await redis.lrange(
@@ -63,7 +76,7 @@ export const resolvers: ResolverMap = {
 
       const user = User.create({
         email,
-        domain
+        domain: domainInDb
       });
 
       await user.save();

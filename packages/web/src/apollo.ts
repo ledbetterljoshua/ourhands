@@ -4,17 +4,8 @@ import { HttpLink } from "apollo-link-http";
 
 export const client = new ApolloClient({
   link: new HttpLink({
-    uri: process.env.REACT_APP_SERVER_URL || "http://localhost:4000",
+    uri: process.env.REACT_APP_SERVER_URL || "http://localhost:4000/graphql",
     credentials: "include"
   }),
-  cache: new InMemoryCache(),
-  resolvers: {
-    Mutation: {
-      upvotePost: (parent, data, { cache }) => {
-        console.log(parent, data);
-        // const data = { visibilityFilter, __typename: "Filter" };
-        // cache.writeData({ data });
-      }
-    }
-  }
+  cache: new InMemoryCache()
 });

@@ -1,12 +1,14 @@
 import "dotenv/config";
 import "reflect-metadata";
 import { Server } from "http";
+import * as express from "express";
+import * as bodyParser from "body-parser";
 import { createTypeormConnection } from "./utils/createTypeormConnection";
 import { confirmEmail } from "./routes/confirmEmail";
 import { getGraphqlServer } from "./utils/getGraphqlServer";
 import { getExpressSession } from "./middleware/getExpressSession";
 import { getServerPort } from "./utils/getServerPort";
-import { cors } from "./cors";
+import { cors as corsOptions } from "./cors";
 import { getExpressRateLimit } from "./middleware/getExpressRateLimit";
 import { redis } from "./redis";
 
@@ -17,14 +19,19 @@ export const startServer = async (): Promise<Server> => {
 
   const port = getServerPort();
   const server = getGraphqlServer();
+  const expressApp = express();
 
-  server.express.use(getExpressSession());
-  server.express.use(getExpressRateLimit());
+  expressApp.use(getExpressSession());
+  expressApp.use(getExpressRateLimit());
+  expressApp.use(bodyParser.json());
 
-  server.express.get("/confirm/:id", confirmEmail);
+  expressApp.get("/confirm/:id", confirmEmail);
+
+  server.applyMiddleware({ app: expressApp, cors: corsOptions });
 
   await createTypeormConnection();
 
-  const app = await server.start({ port, cors });
+  const app = await expressApp.listen({ port });
+  console.log(`server is running on ${port}${server.graphqlPath}`);
   return app;
 };

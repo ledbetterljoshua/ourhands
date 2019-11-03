@@ -12,19 +12,21 @@ type Comment {
   createdAt: String
   parentId: ID
   replies: [Comment!]
+  isOwner: Boolean
 }
 
 type Post {
   id: ID!
   title: String!
   details: String
-  user: User
+  owner: User
   upvotes: [Upvote!]
   comments: [Comment!]
   upvoteCount: Int!
   commentCount: Int!
   upvoted: Boolean!
   createdAt: String
+  isOwner: Boolean
 }
 
 type Query {

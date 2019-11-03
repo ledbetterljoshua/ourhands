@@ -4,8 +4,9 @@ import styled from "@emotion/styled";
 import { Hr, Flex } from "../../../components/styles";
 import { Icon } from "../../../components/Icon";
 import { Text } from "../../../components/Text";
-import { UserContext } from "../context/userContext";
 import { useAppContext, rangeOptions } from "../context/appContext";
+import { client } from "../../../apollo";
+import { meQuery } from "@ourhands/controller";
 
 type option = {
   value: string;
@@ -17,7 +18,11 @@ export const Tools = () => {
 
   const { rangeOption } = useState();
 
-  const me = useContext(UserContext);
+  const {
+    me: { domain }
+  }: any = client.readQuery({
+    query: meQuery
+  });
   const dispatch = useDispatch();
   const handleChange = (option: option) => {
     dispatch({
@@ -41,7 +46,7 @@ export const Tools = () => {
               </span>
               <Icon name="carrot" />
             </Flex>
-            <Text>{`@${me.domain}`}</Text>
+            <Text>{`@${domain.name}`}</Text>
           </Action>
         </Dropdown>
       </Component>

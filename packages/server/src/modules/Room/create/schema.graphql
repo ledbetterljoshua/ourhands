@@ -1,0 +1,8 @@
+input CreatePostInput {
+  title: String!
+  description: String
+}
+
+type Mutation {
+  createRoom(input: CreatePostInput!): Room!
+}

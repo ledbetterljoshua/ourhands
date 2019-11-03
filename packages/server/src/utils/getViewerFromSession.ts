@@ -11,7 +11,10 @@ export const getViewerFromSession = async (
   if (!userId) {
     return null;
   }
-  const user = await User.findOne({ where: { id: userId } });
+  const user = await User.findOne({
+    where: { id: userId },
+    relations: ["domain"]
+  });
   if (!user) {
     return null;
   }

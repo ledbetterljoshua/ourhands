@@ -25,4 +25,5 @@ export interface CreatePostMutation {
 export interface CreatePostMutationVariables {
   title: string;
   details?: string | null;
+  viewability?: string | null;
 }

@@ -3,9 +3,11 @@ import { Comment } from "../../../entity/Comment";
 import { CommentReply } from "../../../entity/CommentReply";
 // import { getConnection } from "typeorm";
 import { fieldSorter } from "../../../utils/fieldSorter";
+import { checkIsOwner } from "../../../utils/checkIsOwner";
 
 export const resolvers: ResolverMap = {
   Comment: {
+    isOwner: checkIsOwner,
     replies: async ({ id }) => {
       const replies = await CommentReply.find({
         where: {

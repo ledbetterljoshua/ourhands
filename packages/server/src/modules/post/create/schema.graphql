@@ -1,6 +1,7 @@
 input CreatePostInput {
   title: String!
   details: String
+  viewability: String
 }
 
 type Mutation {

@@ -1,18 +1,21 @@
-import { GraphQLServer } from "graphql-yoga";
+import { ApolloServer } from "apollo-server-express";
 import { getSchemas } from "./getGraphqlSchemas";
 import { getViewerFromSession } from "./getViewerFromSession";
 import { userLoader } from "../loaders/userLoader";
 
 const schemas = getSchemas();
 export const getGraphqlServer = () =>
-  new GraphQLServer({
+  new ApolloServer({
     schema: schemas,
-    context: async ({ request }) => {
-      const viewer = await getViewerFromSession(request!.session!);
+    context: async ({ req, connection }) => {
+      if (connection) {
+        return connection.context;
+      }
+      const viewer = await getViewerFromSession(req!.session!);
       return {
-        url: `${request.protocol}://${request.get("host")}`,
-        session: request.session,
-        sessionID: request.sessionID,
+        url: `${req.protocol}://${req.get("host")}`,
+        session: req.session,
+        sessionID: req.sessionID,
         userLoader: userLoader(),
         viewer
       };

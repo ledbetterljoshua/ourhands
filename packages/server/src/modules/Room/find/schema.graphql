@@ -1,0 +1,13 @@
+type Room {
+  id: ID!
+  owner: User!
+  posts: [Post!]
+  domain: Domain!
+  description: String
+  title: String!
+  isOwner: Boolean!
+}
+
+type Query {
+  findRooms: [Room]
+}

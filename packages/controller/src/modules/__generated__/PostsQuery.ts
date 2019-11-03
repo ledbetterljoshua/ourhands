@@ -3,26 +3,24 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: MeQuery
+// GraphQL query operation: PostsQuery
 // ====================================================
 
-export interface MeQuery_me_posts {
+export interface PostsQuery_findPosts {
   __typename: "Post";
   id: string;
   title: string;
   details: string | null;
-  upvoted: boolean;
-  upvoteCount: number;
   createdAt: string | null;
+  upvoteCount: number;
+  commentCount: number;
+  upvoted: boolean;
 }
 
-export interface MeQuery_me {
-  __typename: "User";
-  id: string;
-  email: string;
-  posts: MeQuery_me_posts[];
+export interface PostsQuery {
+  findPosts: (PostsQuery_findPosts | null)[] | null;
 }
 
-export interface MeQuery {
-  me: MeQuery_me | null;
+export interface PostsQueryVariables {
+  range?: string | null;
 }

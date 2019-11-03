@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "rm-auto-gen-folder": "rimraf ./__generated__",
+    "build:prod": "yarn run rm-auto-gen-folder && rimraf ./dist && tsc",
     "build": "yarn run gen-types && yarn run rm-auto-gen-folder && rimraf ./dist && tsc",
     "generate": "apollo client:codegen --target typescript",
-    "introspect": "apollo schema:download --endpoint=http://localhost:4000",
+    "introspect": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "gen-types": "npm run introspect && npm run generate",
     "watch": "tsc --watch"
   },

@@ -6,19 +6,34 @@ import {
   BeforeInsert,
   OneToMany,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne
 } from "typeorm";
 import { v4 } from "uuid";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
+import { Domain } from "./Domain";
+import { Room } from "./Room";
 
 @Entity("users")
 export class User extends BaseEntity {
-  @OneToMany(() => Post, post => post.user)
+  @OneToMany(() => Post, post => post.owner, {
+    cascade: true,
+    onDelete: "CASCADE"
+  })
   posts: Post[];
 
-  @OneToMany(() => Comment, comment => comment.user)
+  @OneToMany(() => Room, room => room.owner, {
+    cascade: true,
+    onDelete: "CASCADE"
+  })
+  rooms: Room[];
+
+  @OneToMany(() => Comment, comment => comment.owner)
   comments: Comment[];
+
+  @ManyToOne(() => Domain, domain => domain.users)
+  domain: Domain;
 
   @PrimaryGeneratedColumn("uuid") id: string;
 
@@ -30,9 +45,6 @@ export class User extends BaseEntity {
 
   @Column("varchar", { length: 255 })
   email: string;
-
-  @Column("varchar", { length: 255, nullable: true })
-  domain: string;
 
   @Column("boolean", { default: false })
   confirmed: boolean;

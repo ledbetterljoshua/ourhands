@@ -6,12 +6,10 @@ import { RouteProps } from "react-router";
 import { Button } from "../../components/Button";
 
 export const Landing = (props: RouteProps) => {
-  console.log("props", props);
   const [register] = useMutation(registerMutation);
   const [email, setEmail] = useState("");
   const onSubmit = async () => {
     const { data } = await register({ variables: { email } });
-    console.log(data);
     if (!data.register) {
       window.location.reload();
     }

@@ -1,31 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dropdown } from "../../../components/Dropdown";
 import { Icon } from "../../../components/Icon";
 import styled from "@emotion/styled-base";
 import { Text } from "../../../components/Text";
 import { Flex } from "../../../components/styles";
+import { options } from "../context/postCreateContext";
 
-const options = [
-  {
-    label: "anonymously",
-    value: "anonymous"
-  },
-  {
-    label: "publicly",
-    value: "public"
-  },
-  {
-    label: "super anonymously",
-    value: "super"
-  }
-];
+export const AnonToggle = ({ state, onChange }: any) => {
+  // const { useDispatch, useState, Provider } = usePostCreateContext();
+  // const dispatch = useDispatch();
+  // const { option } = useState();
 
-export const AnonToggle = () => {
-  const [selected, onSelect] = useState(options[0]);
   return (
-    <Dropdown onChange={onSelect} options={options} selectedOption={selected}>
+    <Dropdown
+      onChange={onChange}
+      options={options}
+      selectedOption={state.option}
+    >
       <Toggle>
-        <Text type="subtitle2">{selected.label}</Text>
+        <Text type="subtitle2">{state.option.label}</Text>
         <Icon margin="left" color="light" name="carrot" />
       </Toggle>
     </Dropdown>

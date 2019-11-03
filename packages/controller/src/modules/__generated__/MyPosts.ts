@@ -3,16 +3,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: PostsQuery
+// GraphQL query operation: MyPosts
 // ====================================================
 
-export interface PostsQuery_findPosts_user {
-  __typename: "User";
-  email: string;
-  domain: string | null;
-}
-
-export interface PostsQuery_findPosts {
+export interface MyPosts_me_posts {
   __typename: "Post";
   id: string;
   title: string;
@@ -21,13 +15,14 @@ export interface PostsQuery_findPosts {
   upvoteCount: number;
   commentCount: number;
   upvoted: boolean;
-  user: PostsQuery_findPosts_user | null;
 }
 
-export interface PostsQuery {
-  findPosts: (PostsQuery_findPosts | null)[] | null;
+export interface MyPosts_me {
+  __typename: "User";
+  id: string;
+  posts: MyPosts_me_posts[] | null;
 }
 
-export interface PostsQueryVariables {
-  range?: string | null;
+export interface MyPosts {
+  me: MyPosts_me | null;
 }

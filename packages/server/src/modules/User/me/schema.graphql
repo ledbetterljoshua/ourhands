@@ -1,8 +1,8 @@
 type User {
-  id: ID!
-  email: String!
-  posts: [Post!]!
-  domain: String
+  id: ID
+  email: String
+  posts: [Post!]
+  domain: Domain
 }
 
 type Query {

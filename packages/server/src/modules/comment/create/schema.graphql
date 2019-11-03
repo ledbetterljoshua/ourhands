@@ -13,3 +13,7 @@ type CommentResponse {
 type Mutation {
   createComment(input: CreateCommentInput!): [CommentResponse!]
 }
+
+type Subscription {
+  commentAdded(postId: ID!): Comment
+}

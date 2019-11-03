@@ -11,5 +11,5 @@ export const buildComment = (
   createdAt: Date.now(),
   parentId: "",
   replies: [],
-  __typename: ""
+  __typename: "Comment"
 });

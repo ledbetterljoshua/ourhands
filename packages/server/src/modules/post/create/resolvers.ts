@@ -3,6 +3,7 @@ import { Post } from "../../../entity/Post";
 import { User } from "../../../entity/User";
 import { notAuthenticated } from "../shared/errorMessages";
 import { Upvote } from "../../../entity/Upvote";
+import { Domain } from "../../../entity/Domain";
 
 export const notAuthenticatedError = {
   post: null,
@@ -15,6 +16,9 @@ export const successObject = {
   message: "success!"
 };
 
+const PUBLIC = "PUBLIC";
+const ANONYMOUS = "ANONYMOUS";
+
 const isAuthenticated = (viewer: User | undefined) => {
   if (!viewer || !viewer.confirmed || viewer.accountLocked) {
     return false;
@@ -24,16 +28,34 @@ const isAuthenticated = (viewer: User | undefined) => {
 
 export const resolvers: ResolverMap = {
   Mutation: {
-    createPost: async (_, { input: { ...data } }, { viewer }) => {
+    createPost: async (
+      _,
+      { input: { title, details, viewability } },
+      { viewer }
+    ) => {
       // isAuthenticated(session);
       // const pictureUrl = picture ? await processUpload(picture) : null;
       if (!viewer || !isAuthenticated(viewer)) {
-        return [notAuthenticatedError];
+        throw Error("not authenticated");
+      }
+
+      const domain = viewer.domain.name;
+
+      let domainInDb = await Domain.findOne({
+        where: { name: domain },
+        select: ["id"]
+      });
+
+      if (!domainInDb) {
+        throw Error("no domain");
       }
 
       const post = await Post.create({
-        ...data,
-        userId: viewer.id
+        title,
+        details,
+        userIsPublic: viewability === PUBLIC,
+        ownerId: viewability === ANONYMOUS ? undefined : viewer.id,
+        domain: domainInDb
       }).save();
 
       await Upvote.create({

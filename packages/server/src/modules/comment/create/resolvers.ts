@@ -3,6 +3,7 @@ import { User } from "../../../entity/User";
 import { Comment } from "../../../entity/Comment";
 import { notAuthenticated } from "../../post/shared/errorMessages";
 import { CommentReply } from "../../../entity/CommentReply";
+import { PubSub } from "graphql-subscriptions";
 
 export const notAuthenticatedError = {
   post: null,
@@ -22,6 +23,8 @@ const isAuthenticated = (viewer: User | undefined) => {
   return true;
 };
 
+export const pubsub = new PubSub();
+
 export const resolvers: ResolverMap = {
   Mutation: {
     createComment: async (
@@ -29,8 +32,6 @@ export const resolvers: ResolverMap = {
       { input: { text, postId, parentId } },
       { viewer }
     ) => {
-      // isAuthenticated(session);
-      // const pictureUrl = picture ? await processUpload(picture) : null;
       if (!viewer || !isAuthenticated(viewer)) {
         return [notAuthenticatedError];
       }
@@ -50,7 +51,7 @@ export const resolvers: ResolverMap = {
       }
 
       // redis.lpush(listingCacheKey, JSON.stringify(listing));
-
+      pubsub.publish("commentAdded", { commentAdded: comment });
       return [{ ...successObject, comment }];
     }
   }

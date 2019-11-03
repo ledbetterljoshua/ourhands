@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
+import useIsInViewport from "use-is-in-viewport";
 import { upvoteMutation } from "@ourhands/controller";
 import { useMutation } from "@apollo/react-hooks";
 import moment from "moment";
@@ -9,6 +10,7 @@ import { Details } from "./details";
 import { Flex, Hr } from "../styles";
 import { Comments } from "./comments";
 import { Options } from "./options";
+import { useEffect } from "react";
 
 interface User {
   email: string;
@@ -36,13 +38,22 @@ export const PostView = ({
   mine?: boolean;
 }) => {
   const { id, title, details, createdAt, upvoted, user, commentCount } = data;
+  const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
+
+  // useEffect(() => {
+  //   if (isInViewport) {
+  //     console.log(`${title} is now in view`);
+  //   } else {
+  //     console.log(`${title} is now out of view`);
+  //   }
+  // }, [isInViewport]);
 
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [upvote] = useMutation(upvoteMutation);
   const isOwned = mine || Boolean(user);
 
   return (
-    <Container>
+    <Container ref={targetRef}>
       <Head direction="row" justify="space-between">
         <Flex className="flex" direction="row">
           <Text type="caption" color="light">
@@ -59,7 +70,7 @@ export const PostView = ({
         </Flex>
         {isOwned ? <Options id={id} /> : null}
       </Head>
-      <Body>
+      <Body hasDetails={details && details.length > 0}>
         <Title>
           <Text color="dark" type="h5" weight="bold">
             {title}
@@ -103,8 +114,11 @@ export const PostList = ({
 }) => {
   return (
     <List>
-      {!posts.length ? <Image src="/character.png" /> : null}
-      {posts.map((o, i) => renderPost(o, i, mine))}
+      {!posts || (posts && posts.length < 1) ? (
+        <Image src="/character.png" />
+      ) : (
+        posts.map((o, i) => renderPost(o, i, mine))
+      )}
     </List>
   );
 };
@@ -113,8 +127,8 @@ const List = styled.div``;
 const Title = styled.div`
   padding-bottom: 12px;
 `;
-const Body = styled.div`
-  padding-bottom: 1rem;
+const Body = styled.div<any>`
+  padding-bottom: ${props => (props.hasDetails ? "1rem" : "")};
 `;
 const Container = styled.div`
   padding-bottom: 3rem;

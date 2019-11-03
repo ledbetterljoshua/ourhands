@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { RouteProps } from "react-router";
 import { postsQuery } from "@ourhands/controller";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "@emotion/styled";

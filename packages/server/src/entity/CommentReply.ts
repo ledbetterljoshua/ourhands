@@ -18,7 +18,7 @@ export class CommentReply extends BaseEntity {
     cascade: true,
     onDelete: "CASCADE"
   })
-  user: User;
+  owner: User;
 
   @ManyToMany(() => Comment)
   @JoinTable()

@@ -3,11 +3,13 @@ import styled from "@emotion/styled";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
 import { Link, useLocation } from "react-router-dom";
-import { useMutation } from "react-apollo";
-import { logoutMutation } from "@ourhands/controller";
+import { useMutation, useQuery } from "react-apollo";
+import { logoutMutation, meQuery } from "@ourhands/controller";
 import { UserContext } from "../../modules/App/context/userContext";
 import { useAppContext } from "../../modules/App/context/appContext";
 import posed from "react-pose";
+import gql from "graphql-tag";
+import { client } from "../../apollo";
 
 const Wrapper = posed.div({
   open: {
@@ -23,13 +25,16 @@ const Child = posed.div({
 });
 
 export const LeftMenu = () => {
-  // const [isOpen, toggleOpen] = useState(false)
+  const {
+    me: { domain }
+  }: any = client.readQuery({
+    query: meQuery
+  });
   const { useState } = useAppContext();
   const { pathname } = useLocation();
   const {
     sideNav: { open }
   } = useState();
-  const me = useContext(UserContext);
   const [logout] = useMutation(logoutMutation);
   const onLogout = async () => {
     const { data } = await logout();
@@ -43,7 +48,7 @@ export const LeftMenu = () => {
     return (
       <Child>
         <Link to={view}>
-          <Item>
+          <Item isCurrent={isCurrent}>
             <IconWrapper>
               <Icon color={isCurrent ? "dark" : "body"} name={icon} />
             </IconWrapper>
@@ -64,7 +69,7 @@ export const LeftMenu = () => {
     <Wrapper pose="open">
       <Container className={open ? "active" : ""}>
         <div>
-          {renderItem("/", "home", `@${me.domain}`)}
+          {renderItem("/", "home", `@${domain.name}`)}
           {renderItem("/me", "user", "My Questions")}
         </div>
         <Footer>
@@ -88,7 +93,7 @@ export const InnerItem = styled.div`
   min-height: 24px;
   line-height: 24px;
 `;
-export const Item = styled.div`
+export const Item = styled.div<any>`
   min-height: 24px;
   font-size: 14px;
   color: #333;
@@ -102,6 +107,7 @@ export const Item = styled.div`
   display: flex;
   border-radius: 3px;
   align-items: center;
+  background-color: ${props => (props.isCurrent ? "#fff" : "")};
 `;
 export const Container = styled.div`
   user-select: none !important;

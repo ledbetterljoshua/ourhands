@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Text } from "../Text";
 import { Flex, TextArea } from "../styles";
 import { useQuery, useMutation } from "react-apollo";
-import { commentsQuery, createCommentMutation } from "@ourhands/controller";
+import { commentsQuery, createCommentMutation } from "@ourhands/common";
 import { UserContext } from "../../modules/App/context/userContext";
 import moment from "moment";
 import { addCommentToCache } from "../../utils/addCommentToCache";
@@ -92,7 +92,6 @@ export const Comments = (props: { id: string }) => {
   });
 
   const onCreateComment = async () => {
-    console.log("text", text);
     await create({
       variables: {
         text,
@@ -102,7 +101,6 @@ export const Comments = (props: { id: string }) => {
     setText("");
   };
   const onCreateReply = async (text: string, parentId: string) => {
-    console.log("text", text, parentId);
     await create({
       variables: {
         text,
