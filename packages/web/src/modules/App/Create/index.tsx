@@ -170,17 +170,17 @@ const Footer = styled(Flex)`
   margin: 0;
 `;
 
-const Input = styled(TextArea)`
+const Input = styled(TextArea)<any>`
   width: 90%;
   padding: 1.6rem 0;
   border: none;
-  ${getTypography("h5", "dark", "bold")}
+  ${props => getTypography(props.theme, "h5", "dark", "bold")}
   margin: 0 0 2rem 0;
 `;
-const Body = styled(TextArea)`
+const Body = styled(TextArea)<any>`
   width: 90%;
   border: none;
-  ${getTypography("body")}
+  ${props => getTypography(props.theme, "body")}
   margin-bottom: 4rem;
   ::placeholder {
     color: #a7a7a7;

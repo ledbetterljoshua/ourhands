@@ -20,6 +20,7 @@ export type textType =
   | "caption"
   | "overline"
   | "p"
+  | "document"
   | "body";
 
 export const colors = {
@@ -37,58 +38,70 @@ export const weights = {
   bold: 700
 };
 
-const base = () => {
+type FontType = "serif" | "sans-serif";
+type theme = {
+  fontType: FontType;
+};
+
+const base = (fontFamily: FontType) => {
   return `
     font-smoothing: antialiased;
-    font-family: 'Roboto', 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, Sans-Serif;
+    font-family: ${
+      fontFamily === "serif"
+        ? 'Georgia,Cambria,"Times New Roman",Times,serif'
+        : "Roboto"
+    }, 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, Sans-Serif;
     margin: 0;
     `;
 };
 
-const getSize = (
-  size: number,
-  spacing: number,
+const initBase = (
+  fontFamily: FontType = "sans-serif",
   color: colorType = "body",
   weight: weightType = "regular"
-) => {
+) => (size: number, spacing: number) => {
   return `
-    ${base()}
+    ${base(fontFamily)}
     font-size: ${size}rem;
     letter-spacing: ${spacing / size}rem;
+    line-height: 1.58;
     color: ${colors[color]};
     font-weight: ${weights[weight]};
   `;
 };
 
 export const getTypography = (
+  theme: theme,
   size: textType = "body",
-  color: colorType = "body",
+  color: colorType = "dark",
   weight: weightType = "regular"
 ) => {
+  const getSize = initBase(theme.fontType, color, weight);
+
   switch (size) {
     case "h1": {
-      return getSize(9.6, -1.5, color, weight);
+      return getSize(9.6, -1.5);
     }
     case "h2": {
-      return getSize(6, -0.5, color, weight);
+      return getSize(6, -0.5);
     }
     case "h3": {
-      return getSize(4.8, 0, color, weight);
+      return getSize(4.8, 0);
     }
     case "h4": {
-      return getSize(3.4, 0.25, color, weight);
+      return getSize(3.4, 0.25);
     }
     case "h5": {
-      return getSize(2.4, 0, color, weight);
+      return getSize(2.4, 0);
     }
     case "h6": {
-      return getSize(2, 0.15, color, weight);
+      return getSize(2, 0.15);
     }
     case "subtitle": {
-      return getSize(1.6, 0.15, color, weight);
+      return getSize(1.6, 0.15);
     }
     case "subtitle2": {
-      return getSize(1.4, 0.1, color, weight);
+      return getSize(1.4, 0.1);
     }
     case "button-text": {
       return `${getSize(
@@ -97,17 +110,20 @@ export const getTypography = (
       )} text-align: center; font-weight: bold;, color`;
     }
     case "link": {
-      return getSize(1.4, 0.1, color, weight);
+      return getSize(1.4, 0.1);
     }
     case "caption": {
-      return getSize(1.2, 0.1, color, weight);
+      return getSize(1.2, 0.1);
     }
     case "overline": {
-      return getSize(1, 0, color, weight);
+      return getSize(1, 0);
+    }
+    case "document": {
+      return getSize(2.2, 0);
     }
     case "p":
     case "body":
     default:
-      return getSize(1.6, 0, color, weight);
+      return getSize(1.6, 0);
   }
 };

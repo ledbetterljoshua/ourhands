@@ -41,6 +41,7 @@ export const Text = ({
 const Component: any = styled.div`
   display: inline;
   cursor: ${(props: any) => (props.pointer ? "pointer" : "inherit")};
-  ${(props: any) => getTypography(props.type, props.color, props.weight)};
+  ${(props: any) =>
+    getTypography(props.theme, props.type, props.color, props.weight)};
   margin${(props: any) => (props.margin ? `-${props.margin}: 1rem` : ": 0px")};
 `;

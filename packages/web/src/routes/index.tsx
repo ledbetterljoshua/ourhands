@@ -12,6 +12,7 @@ export const Routes = () => {
           <Route path="/">
             <LandingAuthRoute />
           </Route>
+          <Route>nothing here</Route>
         </Switch>
       </Router>
     </Provider>

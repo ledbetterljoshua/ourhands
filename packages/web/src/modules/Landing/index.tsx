@@ -1,39 +1,45 @@
 import React, { useState } from "react";
-import { registerMutation } from "@ourhands/controller";
-import { useMutation } from "@apollo/react-hooks";
-import styled from "@emotion/styled";
-import { RouteProps } from "react-router";
-import { Button } from "../../components/Button";
+import { Header } from "../../components/Header";
+import { useLocation } from "react-router-dom";
+import { usePageViews } from "../../hooks/usePageViews";
+import posed, { PoseGroup } from "react-pose";
+import {
+  Container,
+  ContentWrapper,
+  Content,
+  InnerContent
+} from "../../components/styles";
+import { AboutContent } from "../About";
 
-export const Landing = (props: RouteProps) => {
-  const [register] = useMutation(registerMutation);
-  const [email, setEmail] = useState("");
-  const onSubmit = async () => {
-    const { data } = await register({ variables: { email } });
-    if (!data.register) {
-      window.location.reload();
-    }
-  };
+const RouteContainer = posed.div({
+  render: { scale: 1, opacity: 1, beforeChildren: true, delay: 300 },
+  hidden: { scale: 0.98, opacity: 0 }
+});
+
+export const Landing = () => {
+  usePageViews();
+  const location = useLocation();
   return (
-    <Form>
-      <Input
-        value={email}
-        placeholder={"your email goes here"}
-        onChange={({ target: { value } }) => setEmail(value)}
-      />
-      <Button type="primary" onClick={onSubmit}>
-        register here
-      </Button>
-    </Form>
+    <>
+      <Header />
+      <Container>
+        <ContentWrapper>
+          {/* <LeftMenu /> */}
+          <Content>
+            <InnerContent>
+              <PoseGroup>
+                <RouteContainer
+                  initialPose="hidden"
+                  pose="render"
+                  key={location.pathname}
+                >
+                  <AboutContent />
+                </RouteContainer>
+              </PoseGroup>
+            </InnerContent>
+          </Content>
+        </ContentWrapper>
+      </Container>
+    </>
   );
 };
-
-const Form = styled.div``;
-const Input = styled.input`
-  width: 90%;
-  padding: 1.6rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 1.8rem;
-  margin: 2rem 0;
-`;

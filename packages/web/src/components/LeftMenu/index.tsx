@@ -73,9 +73,12 @@ export const LeftMenu = () => {
           {renderItem("/me", "user", "My Questions")}
         </div>
         <Footer>
-          <Text type="button-text" onClick={onLogout}>
+          <Text margin="right" type="button-text" onClick={onLogout}>
             logout
           </Text>
+          <Link to="/about">
+            <Text type="button-text">About</Text>
+          </Link>
         </Footer>
       </Container>
     </Wrapper>

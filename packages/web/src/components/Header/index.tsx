@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useHistory } from "react-router-dom";
 import { Flex } from "../styles";
@@ -6,8 +6,15 @@ import { Icon } from "../Icon";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import { useAppContext } from "../../modules/App/context/appContext";
+import { client } from "../../apollo";
+import { Register } from "./register";
+import { meQuery } from "@ourhands/controller";
 
 export const Header = (props: any) => {
+  const { me }: any = client.readQuery({
+    query: meQuery
+  });
+  const [showRegister, setShowRegister] = useState(false);
   const history = useHistory();
   const { useDispatch } = useAppContext();
   const dispatch = useDispatch();
@@ -26,15 +33,23 @@ export const Header = (props: any) => {
   };
 
   return (
-    <Container>
+    <Container isTall={!Boolean(me)}>
       <Inner justify="space-between">
         <Link to="/">
           <Icon size={11} name="logo" />
         </Link>
         <Flex>
-          <Button type="primary" onClick={onCreate}>
-            Ask a question
-          </Button>
+          {me ? (
+            <Button type="primary" onClick={onCreate}>
+              Ask a question
+            </Button>
+          ) : showRegister ? (
+            <Register />
+          ) : (
+            <Button type="primary" onClick={() => setShowRegister(true)}>
+              Get Started
+            </Button>
+          )}
           <Action onClick={toggleOpen}>
             <Icon size={2.7} name="menu" />
           </Action>
@@ -59,10 +74,10 @@ const Action = styled.div`
     display: none;
   }
 `;
-const Container = styled.div`
+const Container = styled.div<any>`
   box-sizing: border-box;
-  height: 44px;
-  background-color: #fff;
+  height: ${props => (props.isTall ? "64" : "44")}px;
+  background-color: #fff
   top: 0;
   position: fixed;
   z-index: 300;
