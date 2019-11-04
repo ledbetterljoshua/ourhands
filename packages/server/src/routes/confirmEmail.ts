@@ -1,7 +1,7 @@
 import { User } from "../entity/User";
 import { Response, Request } from "express";
 import { redis } from "../redis";
-import { userSessionIdPrefix } from "../constants";
+import { addUserSession } from "../utils/addUserSession";
 
 export const confirmEmail = async (req: Request, res: Response) => {
   try {
@@ -12,12 +12,14 @@ export const confirmEmail = async (req: Request, res: Response) => {
     }
     await User.update({ id: userId }, { confirmed: true });
 
-    req!.session!.userId = userId;
-    if (req.sessionID) {
-      await redis.lpush(`${userSessionIdPrefix}${userId}`, req.sessionID);
+    if (req.session) {
+      await addUserSession(req.session, req.sessionID!, userId);
     }
 
     await redis.del(id);
+    if (process.env.NODE_ENV === "test") {
+      return res.send("ok");
+    }
     return res.redirect(process!.env.FRONTEND_HOST as string);
   } catch (err) {
     return res.send(err);

@@ -32,7 +32,10 @@ export class User extends BaseEntity {
   @OneToMany(() => Comment, comment => comment.owner)
   comments: Comment[];
 
-  @ManyToOne(() => Domain, domain => domain.users)
+  @ManyToOne(() => Domain, domain => domain.users, {
+    cascade: true,
+    onDelete: "CASCADE"
+  })
   domain: Domain;
 
   @PrimaryGeneratedColumn("uuid") id: string;

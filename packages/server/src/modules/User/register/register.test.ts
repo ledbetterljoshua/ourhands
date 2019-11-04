@@ -3,7 +3,11 @@ import { Connection } from "typeorm";
 import { createTestConn } from "../../../test-utils/createTestConn";
 import { TestClient } from "../../../utils/testClient";
 
-import { emailNotLongEnough, invalidEmail } from "../shared/errorMessages";
+import {
+  emailNotLongEnough,
+  invalidEmail,
+  confirmEmailAddress
+} from "../shared/errorMessages";
 
 const domain = "gmail.com";
 const email = `test2@${domain}`;
@@ -21,18 +25,14 @@ afterAll(async () => {
 describe("A register mutation", () => {
   it("should register a valid user", async () => {
     const response = await client.register(email);
-    expect(response.data).toEqual({ register: null });
+    expect(response.data).toEqual({
+      register: [{ path: "email", message: confirmEmailAddress }]
+    });
 
-    const users = await User.find({ where: { email } });
+    const users = await User.find({ where: { email }, relations: ["domain"] });
     expect(users).toHaveLength(1);
     expect(users[0].email).toEqual(email);
-    expect(users[0].domain).toEqual(domain);
-    expect(users[0].confirmed).toBeFalsy();
-  });
-
-  it("if user exists, we should log them in", async () => {
-    const response: any = await client.register(email);
-    expect(response.data).toEqual({ register: null });
+    expect(users[0].domain.name).toEqual(domain);
   });
 
   it("should not register a user with an invalid email", async () => {

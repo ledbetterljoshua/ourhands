@@ -6,6 +6,7 @@ export const setup = async () => {
   const addressData = app.address();
   const port = (addressData! as AddressInfo).port;
   if (port) {
-    process.env.TEST_HOST = `http://127.0.0.1:${port}`;
+    process.env.TEST_HOST_ROOT = `http://127.0.0.1:${port}`;
+    process.env.TEST_HOST = `http://127.0.0.1:${port}/graphql`;
   }
 };

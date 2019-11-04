@@ -33,8 +33,6 @@ export const resolvers: ResolverMap = {
       { input: { title, details, viewability } },
       { viewer }
     ) => {
-      // isAuthenticated(session);
-      // const pictureUrl = picture ? await processUpload(picture) : null;
       if (!viewer || !isAuthenticated(viewer)) {
         throw Error("not authenticated");
       }

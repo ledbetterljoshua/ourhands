@@ -105,6 +105,7 @@ declare namespace GQL {
     deleteComment: Array<IPostResponse>;
     createPost: Array<IPostResponse> | null;
     deletePost: Array<IPostResponse>;
+    editPost: IPost;
     upvotePost: IPost | null;
     createRoom: IRoom;
     logout: boolean | null;
@@ -126,6 +127,10 @@ declare namespace GQL {
 
   interface IDeletePostOnMutationArguments {
     id: string;
+  }
+
+  interface IEditPostOnMutationArguments {
+    input: IEditPostInput;
   }
 
   interface IUpvotePostOnMutationArguments {
@@ -167,6 +172,13 @@ declare namespace GQL {
     description?: string | null;
   }
 
+  interface IEditPostInput {
+    id: string;
+    title?: string | null;
+    details?: string | null;
+    viewability?: string | null;
+  }
+
   interface IError {
     __typename: 'Error';
     path: string;
@@ -180,6 +192,7 @@ declare namespace GQL {
 
   interface ICommentAddedOnSubscriptionArguments {
     postId: string;
+    viewability?: string | null;
   }
 }
 

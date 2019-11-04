@@ -1,5 +1,6 @@
 import { ResolverMap } from "../../../types/graphql-utils";
 import { User } from "../../../entity/User";
+import { Post } from "../../../entity/Post";
 import { Comment } from "../../../entity/Comment";
 import { notAuthenticated } from "../../post/shared/errorMessages";
 import { CommentReply } from "../../../entity/CommentReply";
@@ -35,6 +36,13 @@ export const resolvers: ResolverMap = {
       if (!viewer || !isAuthenticated(viewer)) {
         return [notAuthenticatedError];
       }
+
+      const postInDb = await Post.findOne({ where: { id: postId } });
+
+      if (!postInDb) {
+        throw Error("post does not exist");
+      }
+
       let comment;
       if (parentId) {
         comment = await CommentReply.create({

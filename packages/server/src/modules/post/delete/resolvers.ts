@@ -34,20 +34,17 @@ export const resolvers: ResolverMap = {
   Mutation: {
     deletePost: async (_, { id }, { viewer }) => {
       if (!viewer) {
-        return [userDoesNotExistError];
+        throw Error("Unauthorized");
       }
 
       const post = await Post.findOne({ where: { id } });
 
       if (!post) {
-        return [postDoesNotExistError];
+        throw Error("Not Found");
       }
 
       if (!isAuthenticated(viewer, post)) {
-        console.log(
-          `this user ${viewer.id} is trying to delete a post they don't own`
-        );
-        return [userNotAuthorizedError];
+        throw Error("Unauthorized");
       }
 
       await Post.remove(post);

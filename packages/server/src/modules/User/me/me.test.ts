@@ -27,9 +27,8 @@ describe("me", () => {
   });
 
   test("get current user", async () => {
-    await client.register(email);
+    const x = await client.register(email);
     const response = await client.me();
-
     expect(response.data.me.email).toEqual(email);
   });
 });

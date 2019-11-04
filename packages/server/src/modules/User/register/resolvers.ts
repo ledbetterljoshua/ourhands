@@ -10,6 +10,7 @@ import { emailValidation } from "../../../yupSchemas";
 // import { userSessionIdPrefix } from "../../../constants";
 // import { redis } from "../../../redis";
 import { confirmEmailAddress } from "../shared/errorMessages";
+import { addUserSession } from "../../../utils/addUserSession";
 
 const isTesting = process.env.NODE_ENV === "test";
 
@@ -19,9 +20,8 @@ const schema = yup.object().shape({
 
 const sendConfirmEmailLink = async (url: string, email: string, id: string) => {
   const link = await createConfirmEmailLink(url, id);
-
+  console.log("link", link);
   if (!isTesting) {
-    console.log("should send email with link", link);
     await sendEmail(email, url, link);
   }
 };
@@ -34,7 +34,7 @@ export const resolvers: ResolverMap = {
     register: async (
       _,
       { email }: GQL.IRegisterOnMutationArguments,
-      { url, session }
+      { url, session, sessionID }
     ) => {
       try {
         await schema.validate({ email }, { abortEarly: false });
@@ -43,7 +43,11 @@ export const resolvers: ResolverMap = {
       }
 
       const domain = email.split("@")[1];
-      const userInDb = await User.findOne({ where: { email }, select: ["id"] });
+      const userInDb = await User.findOne({
+        where: { email },
+        select: ["id", "domain"],
+        relations: ["domain"]
+      });
 
       let domainInDb = await Domain.findOne({
         where: { name: domain },
@@ -58,24 +62,21 @@ export const resolvers: ResolverMap = {
       }
 
       if (userInDb) {
-        // session.userId = userInDb.id;
-        // const sessionIds = await redis.lrange(
-        //   `${userSessionIdPrefix}${userInDb.id}`,
-        //   0,
-        //   -1
-        // );
-        // const hasSessions = sessionIds.length;
-        // console.log("sessionIds", sessionIds);
-        // if (hasSessions || isTesting) {
-        //   //if the user is already authenticated, we can just log them in
-        //   return null;
+        // if (!userInDb.domain) {
+        //   await User.update({ domain: domainInDb }, { id: userInDb.id });
         // }
-        await sendConfirmEmailLink(url, email, userInDb.id);
+
+        if (isTesting) {
+          await addUserSession(session, sessionID!, userInDb.id);
+        } else {
+          await sendConfirmEmailLink(url, email, userInDb.id);
+        }
         return [{ path: "email", message: confirmEmailAddress }];
       }
 
       const user = User.create({
         email,
+        confirmed: isTesting,
         domain: domainInDb
       });
 
@@ -83,6 +84,10 @@ export const resolvers: ResolverMap = {
 
       session.userId = user.id;
       await sendConfirmEmailLink(url, email, user.id);
+
+      if (isTesting) {
+        await addUserSession(session, sessionID!, user.id);
+      }
 
       return [{ path: "email", message: confirmEmailAddress }];
     }

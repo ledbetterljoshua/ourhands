@@ -14,11 +14,6 @@ import { Comment } from "./Comment";
 import { Domain } from "./Domain";
 import { Room } from "./Room";
 
-const cascade = {
-  cascade: true,
-  onDelete: "CASCADE"
-};
-
 @Entity("posts")
 export class Post extends BaseEntity {
   @ManyToOne(() => User, user => user.posts, { nullable: true })
@@ -30,10 +25,10 @@ export class Post extends BaseEntity {
   @ManyToOne(() => Domain, domain => domain.posts)
   domain: Domain;
 
-  @OneToMany(() => Upvote, upvote => upvote.post, cascade as any)
+  @OneToMany(() => Upvote, upvote => upvote.post)
   upvotes: Upvote[];
 
-  @OneToMany(() => Comment, comment => comment.post, cascade as any)
+  @OneToMany(() => Comment, comment => comment.post)
   comments: Comment[];
 
   @PrimaryGeneratedColumn("uuid") id: string;

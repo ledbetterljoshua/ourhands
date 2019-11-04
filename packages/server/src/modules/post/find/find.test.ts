@@ -46,7 +46,7 @@ describe("create post", () => {
     await client.register(email1);
     const {
       data: { createPost: post1 }
-    } = await client.createPost("title", "description");
+    } = await client.createPost("title", "description", "");
     const postId = post1[0].post.id;
     const {
       data: { findPosts: posts1 }
@@ -56,7 +56,7 @@ describe("create post", () => {
     await client.register(email2);
     const {
       data: { createPost: post2 }
-    } = await client.createPost("title", "description");
+    } = await client.createPost("title", "description", "");
     const {
       data: { findPosts: posts2 }
     } = await client.findPosts();

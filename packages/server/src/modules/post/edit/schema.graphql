@@ -1,0 +1,10 @@
+input EditPostInput {
+  id: ID!
+  title: String
+  details: String
+  viewability: String
+}
+
+type Mutation {
+  editPost(input: EditPostInput!): Post!
+}

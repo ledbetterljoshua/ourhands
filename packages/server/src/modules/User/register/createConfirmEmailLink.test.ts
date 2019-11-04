@@ -21,7 +21,7 @@ afterAll(async () => {
   await conn.close();
 });
 
-const HOST = process.env.TEST_HOST as string;
+const HOST = process.env.TEST_HOST_ROOT as string;
 
 describe("test createConfirmEmailLink", () => {
   test("Make sure it confirms user and clears key in redis", async () => {

@@ -17,7 +17,7 @@ export const resolvers: ResolverMap = {
           alias: "comment",
           leftJoinAndSelect: {
             replies: "comment.replies",
-            user: "comment.user"
+            owner: "comment.owner"
           }
         }
       });
@@ -40,7 +40,7 @@ export const resolvers: ResolverMap = {
           alias: "comment",
           leftJoinAndSelect: {
             post: "comment.post",
-            user: "comment.user"
+            owner: "comment.owner"
           }
         }
       });

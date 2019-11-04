@@ -10,9 +10,50 @@ mutation {
   }
 }
 `;
-const createPostQuery = (title: string, details: string) => `
+const createCommentQuery = (
+  text: string,
+  postId: string,
+  parentId?: string
+) => `
 mutation {
-  createPost(input: {title: "${title}", details: "${details}"}) {
+  createComment(
+    input: { text: "${text}", parentId: "${parentId}", postId: "${postId}" }
+  ) {
+    path
+    message
+    comment {
+      parentId
+      text
+      id
+    }
+  }
+}
+`;
+const editPostQuery = (
+  title?: string,
+  details?: string,
+  viewability?: string
+) => `
+mutation {
+  createPost(input: {title: "${title}", details: "${details}", viewability: "${viewability}"}) {
+    post { 
+      id
+      title
+      description
+      owner {
+        id
+      }
+    }
+  }
+}
+`;
+const createPostQuery = (
+  title: string,
+  details: string,
+  viewability?: string
+) => `
+mutation {
+  createPost(input: {title: "${title}", details: "${details}", viewability: "${viewability}"}) {
     path
     message
     post { 
@@ -24,8 +65,7 @@ mutation {
 const upvotePostQuery = (id: string) => `
 mutation {
   upvotePost(id: "${id}") {
-    path
-    message
+    id
   }
 }
 `;
@@ -44,9 +84,12 @@ const findPostsQuery = () => `
     title
     upvoteCount
     upvoted
-    user {
+    owner {
       email
-      domain
+      domain {
+        id
+        name
+      }
     }
   }
 }
@@ -66,11 +109,27 @@ export class TestClient {
     };
   }
 
-  async createPost(title: string, details: string) {
+  async createPost(title: string, details: string, viewability?: string) {
     return post(url, {
       ...this.options,
       body: {
-        query: createPostQuery(title, details)
+        query: createPostQuery(title, details, viewability)
+      }
+    });
+  }
+  async editPost(title?: string, details?: string, viewability?: string) {
+    return post(url, {
+      ...this.options,
+      body: {
+        query: editPostQuery(title, details, viewability)
+      }
+    });
+  }
+  async createComment(text: string, postId: string, parentId?: string) {
+    return post(url, {
+      ...this.options,
+      body: {
+        query: createCommentQuery(text, postId, parentId)
       }
     });
   }
