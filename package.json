@@ -3,7 +3,7 @@
   "name": "ourhands",
   "scripts": {
     "build:server": "lerna run build --scope={@ourhands/server}",
-    "build:web": "lerna run build --scope={@ourhands/common,@ourhands/web}"
+    "build:web": "lerna run build --scope={@ourhands/controller,@ourhands/web}"
   },
   "workspaces": {
     "packages": [
