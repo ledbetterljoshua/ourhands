@@ -30,6 +30,8 @@ export const FeedView = () => {
     return <div>something went wrong</div>;
   }
 
+  console.log(data);
+
   return (
     <Container>
       <Tools />

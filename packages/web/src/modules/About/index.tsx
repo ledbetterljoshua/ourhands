@@ -14,8 +14,8 @@ export const AboutContent = () => {
           Our Hands
         </Text>
         <Text color="dark" type="h5">
-          What is it? Why did you build it? What do you mean by "private"? How
-          does it work? All these questions and more will be answered here.
+          What is it? Why did you build it? How does it work? All these
+          questions and more will be answered here.
         </Text>
       </Section>
       <Section>
@@ -29,7 +29,7 @@ export const AboutContent = () => {
       <Section>
         <Text type="document">
           OurHands has been built to give you a voice while keeping you
-          anonymous within your company. I want to build a space where you can
+          anonymous within your company. I wanted to build a space where you can
           speak out without fear; a place visible only to your company and your
           coworkers, closed off to the outside world, while still giving you the
           anonymity you need to speak out.
@@ -37,20 +37,9 @@ export const AboutContent = () => {
       </Section>
       <Section>
         <Text type="document">
-          Another service like this exists already: Blind. I downloaded it and
-          was not impressed. For one, they are trying very hard to be a social
-          media company. Posts are public outside of your company. They bombard
-          you with polls and ads. And, they say they have a patentable way to
-          keep your email private; I have yet to see the patent. I am sure they
-          would be happy to sell all of the data collected on the site to
-          whoever happens to be buying.
-        </Text>
-      </Section>
-      <Section>
-        <Text type="document">
-          For Our Hands, I thought I would go ahead and detail out everything we
-          are doing here. I'd rather be open about everything than lie and say
-          we have some patent that magically keeps your data private.
+          I thought I would go ahead and detail out everything we are doing
+          here. I'd rather be open about everything than lie and say we have
+          some patent that magically keeps your data private.
         </Text>
       </Section>
       <Section>
@@ -65,15 +54,15 @@ export const AboutContent = () => {
         <Text type="document">
           If you are the only person at your company who signs up with us and
           posts a question, it would be rather trivial for your boss to figure
-          out it was you who posted it - they would simply search through
-          everyone's emails, see an OurHands confirmation email, and know it was
-          you right away.
+          out you were behind it - they would simply search through everyone's
+          emails, see an OurHands confirmation email, and know it was you right
+          away. Seeing as you decided to use this site, that wouldn't be ideal.
         </Text>
       </Section>
       <Section>
         <Text type="document">
           If you are the only person at your company using the platform, this is
-          a tricky problem to get around, but we have come up with a solution.
+          a tricky problem to get around; but we have come up with a solution.
         </Text>
       </Section>
       <Section>
@@ -109,7 +98,7 @@ export const AboutContent = () => {
       <Section>
         <Text type="document">
           For <b>anonymous</b> posts, your user account is not associated with
-          the post on our databases. This means you cannot edit or delete the
+          the post in our databases. This means you cannot edit or delete the
           post after it's been created, but, you are guaranteed to never have it
           come back to haunt you.
         </Text>
@@ -129,11 +118,12 @@ export const AboutContent = () => {
       </Section>
       <Section>
         <Text type="document">
-          I've decided to go a different route. After a post or comment has been
-          active on the site for 7 days the foreign key to its' creator is
-          deleted, meaning there is no connection between you and your posts
-          after 7 days. If there is a data breach, the data won't be very
-          interesting.
+          In the case of this app, I am pretty sure the data collected would be
+          valuable to a lot of people. Because of this, I've decided to go a
+          different route. After a post or comment has been active on the site
+          for 7 days the foreign key to its' creator is deleted, meaning there
+          is no connection between you and your posts after 7 days. If there is
+          a data breach, the data won't be very interesting.
         </Text>
       </Section>
       <Section>

@@ -8,7 +8,7 @@
 
 export interface MeQuery_me_domain_rooms_owner {
   __typename: "User";
-  email: string;
+  email: string | null;
 }
 
 export interface MeQuery_me_domain_rooms {
@@ -28,8 +28,8 @@ export interface MeQuery_me_domain {
 
 export interface MeQuery_me {
   __typename: "User";
-  id: string;
-  email: string;
+  id: string | null;
+  email: string | null;
   domain: MeQuery_me_domain | null;
 }
 

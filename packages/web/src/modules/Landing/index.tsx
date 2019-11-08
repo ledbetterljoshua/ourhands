@@ -10,6 +10,7 @@ import {
   InnerContent
 } from "../../components/styles";
 import { AboutContent } from "../About";
+import styled from "@emotion/styled";
 
 const RouteContainer = posed.div({
   render: { scale: 1, opacity: 1, beforeChildren: true, delay: 300 },
@@ -22,10 +23,9 @@ export const Landing = () => {
   return (
     <>
       <Header />
-      <Container>
-        <ContentWrapper>
-          {/* <LeftMenu /> */}
-          <Content>
+      <Container style={{ backgroundColor: "#fff" }}>
+        <ContentWrapper style={{ maxWidth: "740px" }}>
+          <ContentClear>
             <InnerContent>
               <PoseGroup>
                 <RouteContainer
@@ -34,12 +34,18 @@ export const Landing = () => {
                   key={location.pathname}
                 >
                   <AboutContent />
+                  {/* landing */}
                 </RouteContainer>
               </PoseGroup>
             </InnerContent>
-          </Content>
+          </ContentClear>
         </ContentWrapper>
       </Container>
     </>
   );
 };
+
+const ContentClear = styled(Content)`
+  margin-left: auto;
+  border: none;
+`;

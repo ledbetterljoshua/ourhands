@@ -36,7 +36,7 @@ export const PullLeft = styled.div`
 `;
 
 export const Container = styled.div`
-  background-color: #fafafa;
+  background-color: #eaebee;
   animation-name: effect-fade-in;
   animation-duration: 120ms;
   display: flex;
@@ -65,7 +65,6 @@ export const InnerContent = styled.div`
   }
 `;
 export const Content = styled.div`
-  margin-left: 0;
   width: auto !important;
   padding: 0;
   z-index: 100;
@@ -73,7 +72,7 @@ export const Content = styled.div`
   min-height: 380px;
   background-color: #fff;
   margin-left: 266px;
-  border-right: 1px solid #f1f1f1;
+  border-right: 1px solid #dcdcdc;
   min-height: calc(100vh);
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
   @media (max-width: 930px) {

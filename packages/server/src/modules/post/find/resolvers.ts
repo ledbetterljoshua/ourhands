@@ -65,11 +65,10 @@ export const resolvers: ResolverMap = {
     },
     owner: async (post, __, context) => {
       if (!post.owner) return false;
-      if (post.userIsPublic) {
+      const isOwner = checkIsOwner(post, __, context);
+      if (post.userIsPublic || isOwner) {
         return post.owner;
       }
-      const isOwner = checkIsOwner(post, __, context);
-      return isOwner ? post.owner : false;
     }
   },
   Query: {

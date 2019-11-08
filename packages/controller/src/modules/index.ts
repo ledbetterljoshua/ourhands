@@ -61,6 +61,10 @@ export const postsQuery = gql`
       upvoteCount
       commentCount
       upvoted
+      owner {
+        id
+        email
+      }
     }
   }
 `;

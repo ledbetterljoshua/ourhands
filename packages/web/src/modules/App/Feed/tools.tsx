@@ -46,7 +46,7 @@ export const Tools = () => {
               </span>
               <Icon name="carrot" />
             </Flex>
-            <Text>{`@${domain.name}`}</Text>
+            {domain ? <Text>{`@${domain.name}`}</Text> : null}
           </Action>
         </Dropdown>
       </Component>

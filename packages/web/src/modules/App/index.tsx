@@ -3,7 +3,13 @@ import { LeftMenu } from "../../components/LeftMenu";
 import { FeedView } from "./Feed";
 import { MeView } from "./Me";
 import { Header } from "../../components/Header";
-import { Route, Switch, useLocation } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useLocation,
+  useHistory,
+  useRouteMatch
+} from "react-router-dom";
 import { usePageViews } from "../../hooks/usePageViews";
 import posed, { PoseGroup } from "react-pose";
 import {
@@ -22,6 +28,8 @@ const RouteContainer = posed.div({
 export const AppView = () => {
   usePageViews();
   const location = useLocation();
+  const match = useRouteMatch();
+  console.log("match.url", match!.url);
   return (
     <>
       <Header />
@@ -37,14 +45,11 @@ export const AppView = () => {
                   key={location.pathname}
                 >
                   <Switch>
-                    <Route exact path="/">
+                    <Route exact path={`${match!.url}`}>
                       <FeedView />
                     </Route>
-                    <Route path={`/me`}>
+                    <Route path={`${match!.url}me`}>
                       <MeView />
-                    </Route>
-                    <Route path={`/about`}>
-                      <AboutContent />
                     </Route>
                   </Switch>
                 </RouteContainer>

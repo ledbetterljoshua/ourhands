@@ -19,7 +19,7 @@ export interface MyPosts_me_posts {
 
 export interface MyPosts_me {
   __typename: "User";
-  id: string;
+  id: string | null;
   posts: MyPosts_me_posts[] | null;
 }
 

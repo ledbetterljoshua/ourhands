@@ -26,10 +26,11 @@ const Child = posed.div({
 
 export const LeftMenu = () => {
   const {
-    me: { domain }
+    me: { domain, ...rest }
   }: any = client.readQuery({
     query: meQuery
   });
+  console.log("rest", rest);
   const { useState } = useAppContext();
   const { pathname } = useLocation();
   const {
@@ -69,7 +70,7 @@ export const LeftMenu = () => {
     <Wrapper pose="open">
       <Container className={open ? "active" : ""}>
         <div>
-          {renderItem("/", "home", `@${domain.name}`)}
+          {domain ? renderItem("/", "home", `@${domain.name}`) : null}
           {renderItem("/me", "user", "My Questions")}
         </div>
         <Footer>
@@ -108,9 +109,10 @@ export const Item = styled.div<any>`
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  border-radius: 3px;
+  border-radius: 2px;
   align-items: center;
-  background-color: ${props => (props.isCurrent ? "#fff" : "")};
+  background-color: ${props => (props.isCurrent ? "#f5f6f7" : "")};
+  border: ${props => (props.isCurrent ? "1px solid #f5f6f7" : "")};
 `;
 export const Container = styled.div`
   user-select: none !important;
@@ -122,11 +124,11 @@ export const Container = styled.div`
   position: fixed;
   overflow-x: hidden;
   overflow-y: hidden;
-  border-right: 1px solid #f1f1f1;
+  border-right: 1px solid #dcdcdc;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #fafafa;
+  background: transparent;
   @media (max-width: 930px) {
     transition: transform 0.2s ease-in-out;
     z-index: 300;

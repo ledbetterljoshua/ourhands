@@ -26,6 +26,9 @@ interface Post {
   upvoted: boolean;
   createdAt: Date;
   commentCount?: number;
+  owner?: {
+    email: string;
+  };
 }
 
 export const PostView = ({
@@ -37,9 +40,18 @@ export const PostView = ({
   ndx: number;
   mine?: boolean;
 }) => {
-  const { id, title, details, createdAt, upvoted, user, commentCount } = data;
+  const {
+    id,
+    title,
+    details,
+    createdAt,
+    upvoted,
+    user,
+    commentCount,
+    owner
+  } = data;
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
-
+  console.log("data", data);
   // useEffect(() => {
   //   if (isInViewport) {
   //     console.log(`${title} is now in view`);
@@ -55,6 +67,11 @@ export const PostView = ({
   return (
     <Container ref={targetRef}>
       <Head direction="row" justify="space-between">
+        {owner && owner.email ? (
+          <Text color="light">{owner.email}</Text>
+        ) : (
+          <Text color="light">Anonymous</Text>
+        )}
         <Flex className="flex" direction="row">
           <Text type="caption" color="light">
             {moment(Number(createdAt)).fromNow()}

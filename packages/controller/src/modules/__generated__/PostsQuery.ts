@@ -6,6 +6,12 @@
 // GraphQL query operation: PostsQuery
 // ====================================================
 
+export interface PostsQuery_findPosts_owner {
+  __typename: "User";
+  id: string | null;
+  email: string | null;
+}
+
 export interface PostsQuery_findPosts {
   __typename: "Post";
   id: string;
@@ -15,6 +21,7 @@ export interface PostsQuery_findPosts {
   upvoteCount: number;
   commentCount: number;
   upvoted: boolean;
+  owner: PostsQuery_findPosts_owner | null;
 }
 
 export interface PostsQuery {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { graphql, ChildProps } from "react-apollo";
+import { graphql, ChildProps, useQuery } from "react-apollo";
 import { RouteProps } from "react-router-dom";
 import { meQuery } from "@ourhands/controller";
 import { Landing } from "../modules/Landing";
@@ -17,26 +17,18 @@ interface MeQuery {
   } | null;
 }
 
-class C extends React.PureComponent<ChildProps<Props, MeQuery>> {
-  renderRoute = () => {
-    const { data } = this.props;
+export const LandingAuthRoute = () => {
+  const { data } = useQuery(meQuery);
 
-    if (!data || data.loading) {
-      // loading screen
-      return null;
-    }
-
-    if (!data.me) {
-      // user not logged in
-      return <Landing />;
-    }
-
-    return <AppView />;
-  };
-
-  render() {
-    return this.renderRoute();
+  console.log("data.me", data);
+  if (!data || data.loading) {
+    // loading screen
+    return null;
   }
-}
+  if (!data.me) {
+    // user not logged in
+    return <Landing />;
+  }
 
-export const LandingAuthRoute = graphql<Props, MeQuery>(meQuery)(C);
+  return <AppView />;
+};
