@@ -1,11 +1,27 @@
 import styled from "@emotion/styled";
 
+export const Backdrop = styled.div`
+  opacity: 0.6;
+  background: #000;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+`;
+
 export const Flex: any = styled.div`
   display: flex;
   margin-right: 5px;
   flex-direction: ${(props: any) => props.direction || "row"};
   align-items: ${(props: any) => props.align || "center"};
   justify-content: ${(props: any) => props.justify || "start"};
+`;
+export const Bit: any = styled(Flex)`
+  margin-left: 10px;
+  padding: 0.8rem 2.2rem;
+  border-radius: 500px;
+  background: #f3f3f3;
 `;
 
 export const Hr = styled.hr`

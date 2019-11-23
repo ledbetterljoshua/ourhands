@@ -3,7 +3,7 @@ import { Dropdown } from "../../../components/Dropdown";
 import { Icon } from "../../../components/Icon";
 import styled from "@emotion/styled-base";
 import { Text } from "../../../components/Text";
-import { Flex } from "../../../components/styles";
+import { Bit } from "../../../components/styles";
 import { options } from "../context/postCreateContext";
 
 export const AnonToggle = ({ state, onChange }: any) => {
@@ -25,10 +25,6 @@ export const AnonToggle = ({ state, onChange }: any) => {
   );
 };
 
-const Toggle = styled(Flex)`
-  margin-left: 10px;
-  padding: 0.8rem 2.2rem;
-  border-radius: 500px;
-  background: #f3f3f3;
+const Toggle = styled(Bit)`
   cursor: pointer;
 `;

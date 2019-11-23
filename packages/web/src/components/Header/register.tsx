@@ -1,27 +1,31 @@
-import React, { useState, useRef } from "react";
-import { registerMutation } from "@ourhands/controller";
-import { useMutation } from "@apollo/react-hooks";
+import React from "react";
 import styled from "@emotion/styled";
 import { Button } from "../../components/Button";
-import { Text } from "../../components/Text";
+import {
+  useOnboardingContext,
+  safty_in_numbers
+} from "../../modules/App/context/onboardingContext";
 
 export const Register = () => {
-  const [register] = useMutation(registerMutation);
-  const [submitted, setSubmitted] = useState(false);
-  const [email, setEmail] = useState("");
   const onSubmit = async () => {
-    const { data } = await register({ variables: { email } });
-    setSubmitted(true);
-    if (!data.register) {
-      window.location.reload();
-    }
+    dispatch({ type: "setStage", payload: safty_in_numbers });
   };
+
+  const { useDispatch, useState: useOState } = useOnboardingContext();
+  const dispatch = useDispatch();
+
+  const { registerEmail } = useOState();
+
+  const setEmail = (email: string) => {
+    dispatch({ type: "setRegisterEmail", payload: email });
+  };
+
   return (
     <div>
       <Form>
         <Input
           autoFocus
-          value={email}
+          value={registerEmail}
           placeholder={"Your Work Email"}
           onChange={({ target: { value } }) => setEmail(value)}
         />
@@ -29,7 +33,6 @@ export const Register = () => {
           Submit
         </Button>
       </Form>
-      {submitted ? <Text>check your email</Text> : null}
     </div>
   );
 };

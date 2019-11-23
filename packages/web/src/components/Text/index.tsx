@@ -14,10 +14,12 @@ interface Props {
   weight?: weightType;
   onClick?: any;
   margin?: "left" | "right";
+  display?: "inline" | "block";
 }
 
 export const Text = ({
   children,
+  display = "inline",
   color = "body",
   type = "body",
   weight = "regular",
@@ -28,6 +30,7 @@ export const Text = ({
     <Component
       onClick={onClick}
       pointer={typeof onClick === "function"}
+      display={display}
       type={type}
       color={color}
       weight={weight}
@@ -39,7 +42,7 @@ export const Text = ({
 };
 
 const Component: any = styled.div`
-  display: inline;
+  display: ${(props: any) => props.display};
   cursor: ${(props: any) => (props.pointer ? "pointer" : "inherit")};
   ${(props: any) =>
     getTypography(props.theme, props.type, props.color, props.weight)};

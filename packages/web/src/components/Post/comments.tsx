@@ -120,6 +120,7 @@ export const Comments = (props: { id: string }) => {
       (input!.current as any).onkeyup = onSubmit;
     }
   }, [input, onSubmit]);
+
   return (
     <PullLeft>
       <Component>

@@ -16,10 +16,12 @@ export const rangeOptions: rangeOption[] = [
 export type State = {
   sideNav: { open: boolean };
   createNew: { active: boolean };
+  registerEmail: string;
   rangeOption: rangeOption;
 };
 
 type actionVariant =
+  | "setRegisterEmail"
   | "setOptionRange"
   | "showSideNav"
   | "hideSideNav"
@@ -59,6 +61,9 @@ function reducer(state: State, action: Action) {
     }
     case "hideCreate": {
       return { ...state, createNew: { active: false } };
+    }
+    case "setRegisterEmail": {
+      return { ...state, registerEmail: action.payload };
     }
     default: {
       throw new Error(`Unhandled action type: ${action!.type}`);

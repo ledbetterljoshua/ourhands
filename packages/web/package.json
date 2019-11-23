@@ -19,6 +19,7 @@
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
     "body-parser": "^1.19.0",
+    "downshift": "^3.4.1",
     "emotion-theming": "^10.0.19",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",

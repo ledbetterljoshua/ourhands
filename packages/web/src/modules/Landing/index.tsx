@@ -11,6 +11,7 @@ import {
 } from "../../components/styles";
 import { AboutContent } from "../About";
 import styled from "@emotion/styled";
+import { Onboarding } from "../Onboarding";
 
 const RouteContainer = posed.div({
   render: { scale: 1, opacity: 1, beforeChildren: true, delay: 300 },
@@ -24,7 +25,7 @@ export const Landing = () => {
     <>
       <Header />
       <Container style={{ backgroundColor: "#fff" }}>
-        <ContentWrapper style={{ maxWidth: "740px" }}>
+        <ContentWrapper>
           <ContentClear>
             <InnerContent>
               <PoseGroup>
@@ -33,7 +34,7 @@ export const Landing = () => {
                   pose="render"
                   key={location.pathname}
                 >
-                  <AboutContent />
+                  <Onboarding />
                   {/* landing */}
                 </RouteContainer>
               </PoseGroup>
