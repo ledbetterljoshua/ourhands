@@ -1,7 +1,7 @@
 import { Connection } from "typeorm";
 import { User } from "../../../entity/User";
 import { Domain } from "../../../entity/Domain";
-import { TestClient } from "../../../utils/TestClient";
+import { TestClient } from "../../../utils/testClient";
 import { createTestConn } from "../../../test-utils/createTestConn";
 import { Post } from "../../../entity/Post";
 

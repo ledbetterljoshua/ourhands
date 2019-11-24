@@ -1,6 +1,6 @@
 import { Connection } from "typeorm";
 import { User } from "../../../entity/User";
-import { TestClient } from "../../../utils/TestClient";
+import { TestClient } from "../../../utils/testClient";
 import { createTestConn } from "../../../test-utils/createTestConn";
 
 let conn: Connection;
