@@ -64,7 +64,7 @@ const initBase = (
     ${base(fontFamily)}
     font-size: ${size}rem;
     letter-spacing: ${spacing / size}rem;
-    line-height: 1.58;
+    line-height: 150%;
     color: ${colors[color]};
     font-weight: ${weights[weight]};
   `;
@@ -104,10 +104,11 @@ export const getTypography = (
       return getSize(1.4, 0.1);
     }
     case "button-text": {
-      return `${getSize(
-        1.4,
-        0.1
-      )} text-align: center; font-weight: bold;, color`;
+      return `${getSize(1.8, 0.1)} 
+      text-align: center; 
+      font-weight: bold;
+      text-transform: uppercase;
+      `;
     }
     case "link": {
       return getSize(1.4, 0.1);

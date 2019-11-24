@@ -15467,6 +15467,11 @@ use-is-in-viewport@^1.0.3:
   dependencies:
     observe-element-in-viewport "0.0.11"
 
+use-media-query-hook@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/use-media-query-hook/-/use-media-query-hook-0.3.0.tgz#1699b269782cc163a071ba16513935d20e12c8f0"
+  integrity sha512-Cp10sI9vbRlq/ayZATC/e3YoArngQg1tQXt4XHwLTlMqCtq6RYV/brSKkGe6gyWkT6sQ+h1MLB7Un8urLmhzng==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"

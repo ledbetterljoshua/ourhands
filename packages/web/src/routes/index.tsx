@@ -13,11 +13,11 @@ export const Routes = () => {
   const { Provider } = useAppContext();
   const { Provider: OnboardingProvider } = useOnboardingContext();
   const { data } = useQuery(meQuery);
-  if (!data || data.loading) {
-    // loading screen
-    return <>loading</>;
-  }
-  return (
+  // if (!data || data.loading) {
+  //   // loading screen
+  //   return <>loading</>;
+  // }
+  return data && !data.loading ? (
     <Provider>
       <OnboardingProvider>
         <Router>
@@ -33,5 +33,5 @@ export const Routes = () => {
         </Router>
       </OnboardingProvider>
     </Provider>
-  );
+  ) : null;
 };

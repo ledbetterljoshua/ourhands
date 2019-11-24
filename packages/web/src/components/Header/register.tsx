@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import { Button } from "../../components/Button";
 import {
   useOnboardingContext,
   safty_in_numbers
 } from "../../modules/App/context/onboardingContext";
+import { useEnterOnInput } from "../../hooks/useEnterOnInput";
 
 export const Register = () => {
+  const input = useRef(null);
+  const { useDispatch, useState: useOState } = useOnboardingContext();
+  const dispatch = useDispatch();
+
   const onSubmit = async () => {
     dispatch({ type: "setStage", payload: safty_in_numbers });
   };
-
-  const { useDispatch, useState: useOState } = useOnboardingContext();
-  const dispatch = useDispatch();
 
   const { registerEmail } = useOState();
 
@@ -20,11 +22,14 @@ export const Register = () => {
     dispatch({ type: "setRegisterEmail", payload: email });
   };
 
+  useEnterOnInput(input, onSubmit);
+
   return (
     <div>
       <Form>
         <Input
           autoFocus
+          ref={input}
           value={registerEmail}
           placeholder={"Your Work Email"}
           onChange={({ target: { value } }) => setEmail(value)}

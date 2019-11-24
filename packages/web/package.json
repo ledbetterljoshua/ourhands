@@ -34,6 +34,7 @@
     "react-svg": "^10.0.23",
     "typescript": "3.6.4",
     "use-is-in-viewport": "^1.0.3",
+    "use-media-query-hook": "^0.3.0",
     "yap": "^0.0.2"
   },
   "scripts": {

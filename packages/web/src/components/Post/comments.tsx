@@ -7,6 +7,7 @@ import { commentsQuery, createCommentMutation } from "@ourhands/common";
 import { UserContext } from "../../modules/App/context/userContext";
 import moment from "moment";
 import { addCommentToCache } from "../../utils/addCommentToCache";
+import { useEnterOnInput } from "../../hooks/useEnterOnInput";
 
 const CommentComp = ({
   text,
@@ -21,18 +22,14 @@ const CommentComp = ({
   const [replyActive, setReplyActive] = useState(false);
 
   const onSubmit = (e: any) => {
-    if (e.key === "Enter" && Boolean(text.split("\n").join("").length)) {
+    if (Boolean(text.split("\n").join("").length)) {
       reply(commentText, parentId || id);
       setText("");
       setReplyActive(false);
     }
   };
 
-  useEffect(() => {
-    if (input.current) {
-      (input!.current as any).onkeyup = onSubmit;
-    }
-  }, [input, onSubmit]);
+  useEnterOnInput(input, onSubmit);
 
   return (
     <CommentWrap style={isReponse ? { marginLeft: "3rem" } : {}} key={id}>
@@ -78,7 +75,10 @@ export const Comments = (props: { id: string }) => {
   const [create] = useMutation(createCommentMutation, {
     update(cache, { data: { createComment } }) {
       const { id, parentId, text } = createComment[0].comment;
-      addCommentToCache(cache, me)({
+      addCommentToCache(
+        cache,
+        me
+      )({
         id,
         text,
         parentId,
@@ -110,16 +110,12 @@ export const Comments = (props: { id: string }) => {
   };
 
   const onSubmit = (e: any) => {
-    if (e.key === "Enter" && Boolean(text.split("\n").join("").length)) {
+    if (Boolean(text.split("\n").join("").length)) {
       onCreateComment();
     }
   };
 
-  useEffect(() => {
-    if (input.current) {
-      (input!.current as any).onkeyup = onSubmit;
-    }
-  }, [input, onSubmit]);
+  useEnterOnInput(input, onSubmit);
 
   return (
     <PullLeft>

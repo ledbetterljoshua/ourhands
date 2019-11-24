@@ -34,7 +34,7 @@ export const Header = (props: any) => {
 
   return (
     <Container isTall={!Boolean(me)}>
-      <Inner justify="space-between">
+      <Inner isTall={!Boolean(me)} justify="space-between">
         <Link to="/">
           <Icon size={11} name="logo" />
         </Link>
@@ -46,13 +46,15 @@ export const Header = (props: any) => {
           ) : showRegister ? (
             <Register />
           ) : (
-            <Button type="primary" onClick={() => setShowRegister(true)}>
+            <Button type="default" onClick={() => setShowRegister(true)}>
               Get Started
             </Button>
           )}
-          <Action onClick={toggleOpen}>
-            <Icon size={2.7} name="menu" />
-          </Action>
+          {me ? (
+            <Action onClick={toggleOpen}>
+              <Icon size={2.7} name="menu" />
+            </Action>
+          ) : null}
         </Flex>
       </Inner>
     </Container>
@@ -61,7 +63,7 @@ export const Header = (props: any) => {
 
 const Inner = styled(Flex)`
   height: 100%;
-  width: 922px;
+  width: ${props => (props.isTall ? "1224px" : "922px")};
   padding-left: 13px;
   @media (max-width: 930px) {
     width: 100%;
@@ -75,10 +77,10 @@ const Action = styled.div`
   }
 `;
 const Container = styled.div<any>`
+  top: 0;
   box-sizing: border-box;
   height: ${props => (props.isTall ? "64" : "44")}px;
-  background-color: #fff
-  top: 0;
+  background-color: #fff;
   position: fixed;
   z-index: 300;
   display: -webkit-box;

@@ -52,6 +52,7 @@ export const PullLeft = styled.div`
 `;
 
 export const Container = styled.div`
+  max-width: 1224px;
   background-color: #eaebee;
   animation-name: effect-fade-in;
   animation-duration: 120ms;
@@ -59,7 +60,8 @@ export const Container = styled.div`
   justify-content: center;
   min-height: calc(100vh);
   margin-left: calc(100vw - 100%);
-  margin-right: 0;
+  margin: 0 auto;
+  margin-top: 64px;
 `;
 export const ContentWrapper = styled.div`
   width: 922px;
@@ -96,3 +98,5 @@ export const Content = styled.div`
     margin-left: 0;
   }
 `;
+
+export const Br = styled.br``;

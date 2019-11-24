@@ -8,6 +8,7 @@ import {
   useOnboardingContext,
   safty_in_numbers
 } from "../../modules/App/context/onboardingContext";
+import { useEnterOnInput } from "../../hooks/useEnterOnInput";
 
 export const emailValidation = yup
   .string()
@@ -29,7 +30,7 @@ const renderBits = (onDelete: any) => (bit: any, ndx: number) => {
 };
 
 export const Onboarding = () => {
-  const input = useRef(null);
+  const input1 = useRef(null);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [emailList, setEmailList] = useState();
@@ -51,20 +52,12 @@ export const Onboarding = () => {
     }
   };
 
-  const onSubmit = async (e: any) => {
-    if (e.key === "Enter") {
-      const isValid = await isValidEmail(email);
-      if (!isValid) return;
-      setEmailList([...(emailList || []), email]);
-      setEmail("");
-    }
+  const onSubmit = async () => {
+    const isValid = await isValidEmail(email);
+    if (!isValid) return;
+    setEmailList([...(emailList || []), email]);
+    setEmail("");
   };
-
-  useEffect(() => {
-    if (input.current) {
-      (input!.current as any).onkeyup = onSubmit;
-    }
-  }, [input, onSubmit]);
 
   useEffect(() => {
     if (email && error) {
@@ -78,6 +71,8 @@ export const Onboarding = () => {
   };
 
   const renderEmails = renderBits(onDelete);
+
+  useEnterOnInput(input1, onSubmit);
 
   return stage === safty_in_numbers ? (
     <>
@@ -102,7 +97,7 @@ export const Onboarding = () => {
             {(emailList || []).map(renderEmails)}
             <Input
               autoFocus
-              ref={input}
+              ref={input1}
               value={email}
               placeholder={"your coworkers email"}
               onChange={({ target: { value } }) => setEmail(value)}
@@ -147,6 +142,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 `;
 const EmailBit = styled(Bit)`
   margin-bottom: 1rem;
