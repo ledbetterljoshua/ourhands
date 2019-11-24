@@ -2,7 +2,7 @@ import * as yup from "yup";
 import {
   emailNotLongEnough,
   invalidEmail
-} from "./modules/user/shared/errorMessages";
+} from "./modules/User/shared/errorMessages";
 
 export const emailValidation = yup
   .string()
