@@ -1,0 +1,11 @@
+export declare const registerMutation: any;
+export declare const logoutMutation: any;
+export declare const myPosts: any;
+export declare const meQuery: any;
+export declare const postsQuery: any;
+export declare const commentsQuery: any;
+export declare const createPostMutation: any;
+export declare const createCommentMutation: any;
+export declare const upvoteMutation: any;
+export declare const deletePostMutation: any;
+export declare const deleteCommentMutation: any;

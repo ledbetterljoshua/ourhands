@@ -8,4 +8,5 @@ dump.rdb
 .env
 .env.*
 dist/
+!packages/controller/dist/
 .netlify

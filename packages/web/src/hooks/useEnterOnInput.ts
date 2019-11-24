@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export const useEnterOnInput = (input: any, submit: any) => {
   useEffect(() => {
     const onSubmit = async (e: any) => {
-      console.log(e);
       if (e.key === "Enter") {
         submit(e);
       }
