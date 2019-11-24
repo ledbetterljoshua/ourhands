@@ -12,7 +12,8 @@
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format": "npm run prettier -- --write",
     "validate": "npm run lint && npm run test",
-    "genMigration": "npx ts-node ./node_modules/.bin/typeorm migration:generate -d ./src/migrations -c development"
+    "genMigration": "npx ts-node ./node_modules/.bin/typeorm migration:generate -d ./src/migrations -c development",
+    "build": "rimraf ./dist && tsc --allowSyntheticDefaultImports"
   },
   "husky": {
     "hooks": {
@@ -44,6 +45,7 @@
     "lint-staged": "^9.4.2",
     "nodemon": "^1.19.3",
     "prettier": "^1.18.2",
+    "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
     "ts-node": "8.4.1",
     "tslint": "^5.20.0",

@@ -108,6 +108,7 @@ declare namespace GQL {
     editPost: IPost;
     upvotePost: IPost | null;
     createRoom: IRoom;
+    deleteRoom: Array<IPostResponse>;
     logout: boolean | null;
     register: Array<IError> | null;
   }
@@ -139,6 +140,10 @@ declare namespace GQL {
 
   interface ICreateRoomOnMutationArguments {
     input: ICreatePostInput;
+  }
+
+  interface IDeleteRoomOnMutationArguments {
+    id: string;
   }
 
   interface IRegisterOnMutationArguments {

@@ -2,7 +2,7 @@
   "private": true,
   "name": "ourhands",
   "scripts": {
-    "build:server": "lerna run build --scope=@ourhands/server",
+    "build:server": "lerna run build --scope={@ourhands/common,@ourhands/server}",
     "build:web": "lerna run build --scope={@ourhands/controller,@ourhands/web}",
     "build:web-prod": "lerna run build --scope={@ourhands/common,@ourhands/web}"
   },
