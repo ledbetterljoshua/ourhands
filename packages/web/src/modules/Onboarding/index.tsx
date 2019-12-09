@@ -3,12 +3,59 @@ import styled from "@emotion/styled";
 import * as yup from "yup";
 import { Text } from "../../components/Text";
 import { Button } from "../../components/Button";
-import { Flex, Bit, Backdrop } from "../../components/styles";
+import { Flex, Image, Br, Hr } from "../../components/styles";
+import { Icon } from "../../components/Icon";
 import {
   useOnboardingContext,
-  safty_in_numbers
+  submitted,
+  register,
+  not_started
 } from "../../modules/App/context/onboardingContext";
 import { useEnterOnInput } from "../../hooks/useEnterOnInput";
+import { Register } from "../../mutations/register";
+import { makeStyles } from "@material-ui/styles";
+import {
+  Theme,
+  createStyles,
+  useMediaQuery,
+  IconButton
+} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import Chip from "@material-ui/core/Chip";
+import Close from "@material-ui/icons/Close";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    submitButton: {
+      position: "absolute",
+      bottom: "40px",
+      maxWidth: "90%",
+      margin: "0 auto",
+      width: "100%",
+      left: "0",
+      right: "0"
+    },
+    root: {
+      display: "flex",
+      justifyContent: "start",
+      flexWrap: "wrap",
+      flexDirection: "row",
+      "& > *": {
+        margin: theme.spacing(0.5)
+      }
+    },
+    innerInput: {
+      display: "flex",
+      width: "auto",
+      flex: 1,
+      padding: 10,
+      margin: "0 !important",
+      paddingTop: 7,
+      minWidth: "150px !important"
+    }
+  })
+);
 
 export const emailValidation = yup
   .string()
@@ -22,40 +69,57 @@ const schema = yup.object().shape({
 });
 
 const renderBits = (onDelete: any) => (bit: any, ndx: number) => {
+  const isInit = ndx === 0;
   return (
-    <EmailBit onClick={() => (ndx !== 0 ? onDelete(ndx) : null)} key={ndx}>
-      {bit}
-    </EmailBit>
+    <Chip
+      key={ndx}
+      size="medium"
+      avatar={<Avatar>{bit[0]}</Avatar>}
+      label={bit}
+      onDelete={!isInit ? () => onDelete(ndx) : undefined}
+      disabled={isInit}
+      color={isInit ? "primary" : "default"}
+    />
   );
 };
 
-export const Onboarding = () => {
+export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
   const input1 = useRef(null);
+  const input2 = useRef(null);
+  const [registerEmail, setRegisterEmail] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [emailList, setEmailList] = useState();
-
-  const { useState: useOState } = useOnboardingContext();
-
-  const { stage, registerEmail } = useOState();
-
-  useEffect(() => {
-    setEmailList([registerEmail]);
-  }, [registerEmail]);
+  const [emailList, setEmailList] = useState([] as any);
+  const { useDispatch, useState: useOnboardingState } = useOnboardingContext();
+  const { stage } = useOnboardingState();
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
   const isValidEmail = async (email: string) => {
     try {
       await schema.validate({ email }, { abortEarly: false });
-      return true;
+      const usedEmail = Boolean(emailList.find((x: string) => x === email));
+      if (usedEmail) {
+        setEmail("");
+      }
+      return !usedEmail;
     } catch (e) {
       setError("Email not valid");
     }
   };
 
-  const onSubmit = async () => {
+  const onAddRegisterEmail = async (email: string) => {
     const isValid = await isValidEmail(email);
     if (!isValid) return;
-    setEmailList([...(emailList || []), email]);
+    const [n, ...o] = emailList;
+    setEmailList([email, ...o] as any);
+    setEmail("");
+    setError("");
+  };
+  const onSubmit = async (email: string) => {
+    const isValid = await isValidEmail(email);
+    if (!isValid) return;
+    setEmailList([...((emailList || []) as any), email]);
     setEmail("");
   };
 
@@ -72,125 +136,146 @@ export const Onboarding = () => {
 
   const renderEmails = renderBits(onDelete);
 
-  useEnterOnInput(input1, onSubmit);
+  useEnterOnInput(input1, () => onSubmit(email));
+  useEnterOnInput(input2, () => onAddRegisterEmail(registerEmail));
+  const isMobile = useMediaQuery("(max-width: 750px)");
 
-  return stage === safty_in_numbers ? (
-    <>
-      <Backdrop />
-      <Container>
-        <Header align="flex-start" direction="column">
-          <Text weight="bold" color="dark" type="h5">
-            Getting Started
+  const renderSubmitted = () => (
+    <Box style={{ marginBottom: 20 }}>
+      <Box style={{ maxWidth: 160, padding: 20, margin: "0 auto" }}>
+        <Image src="email-conf.png" />
+      </Box>
+      <Hr />
+      <Box style={{ marginTop: 30, marginBottom: 20 }}>
+        <Text display="block" align="center" type="h5" family="serif">
+          Confirm Your Email
+        </Text>
+      </Box>
+      <Text display="block" align="center" type="body">
+        We sent an invite link to your email. Follow the link to access the app.
+      </Text>
+    </Box>
+  );
+
+  const renderRegister = () => (
+    <Register emails={emailList}>
+      {({ submit }: any) => (
+        <InputContent align="flex-start">
+          <Text color="dark" family="serif" type="h5">
+            Start With Your Company Email
           </Text>
-        </Header>
-        <Body align="flex-start">
-          <Content>
-            <Text display="block" color="dark" type="h6">
-              Safety In Numbers
-            </Text>
-            <Text display="block">
-              Ensure you are not the only one at your company on here. Add your
-              coworkers below. Learn more.
-            </Text>
-          </Content>
           <InputWrap>
-            {(emailList || []).map(renderEmails)}
             <Input
+              ref={input2}
+              name="register"
               autoFocus
-              ref={input1}
-              value={email}
-              placeholder={"your coworkers email"}
-              onChange={({ target: { value } }) => setEmail(value)}
+              value={registerEmail}
+              onChange={({ target: { value } }) => setRegisterEmail(value)}
+              placeholder="joshua@ourhands.app"
             />
-            {error ? <Text color="danger">{error}</Text> : null}
+            <Icon size={3} margin="right" name="mail" />
           </InputWrap>
-          <EmailContent>
-            <Text>email being sent goes here</Text>
-          </EmailContent>
-        </Body>
-        <Footer justify="flex-end">
-          <Button type="text" onClick={() => null}>
-            skip
-          </Button>
-          <Button
-            type="primary"
-            disabled={!emailList || !emailList.length}
-            onClick={() => null}
+          {Boolean(emailList.length) ? (
+            <>
+              <Br />
+              <Br />
+              <Text color="dark" family="serif" type="subtitle">
+                Invite Your Coworkers (optional)
+              </Text>
+              <InputWrap>
+                <div className={classes.root}>
+                  {(emailList || []).map(renderEmails)}
+                  <Input
+                    autoFocus
+                    ref={input1}
+                    value={email}
+                    placeholder={"your coworkers email"}
+                    className={classes.innerInput}
+                    onChange={({ target: { value } }) => setEmail(value)}
+                  />
+                </div>
+              </InputWrap>
+              <Text color="light" family="serif" type="overline">
+                The email will come from us, and will not disclose who invited
+                them. This option is available for your security. Read more.
+              </Text>
+            </>
+          ) : null}
+          {error ? <Text color="danger">{error}</Text> : null}
+          <Br />
+          <Br />
+          <Box className={isMobile && isModal ? classes.submitButton : ""}>
+            <Button
+              fullWidth
+              disabled={!registerEmail}
+              onClick={() =>
+                Boolean(emailList.length) ? submit() : onSubmit(registerEmail)
+              }
+              variant="contained"
+              color="secondary"
+            >
+              {Boolean(emailList.length) ? "Sign Up" : "Continue"}
+            </Button>
+          </Box>
+        </InputContent>
+      )}
+    </Register>
+  );
+
+  const render = () => {
+    switch (stage) {
+      case submitted:
+        return renderSubmitted();
+      case register:
+      default:
+        return renderRegister();
+    }
+  };
+
+  return (
+    <>
+      {isModal && isMobile ? (
+        <Box style={{ position: "fixed", top: 20, right: 20 }}>
+          <IconButton
+            onClick={() => dispatch({ payload: not_started, type: "setStage" })}
           >
-            Send
-          </Button>
-        </Footer>
-      </Container>
+            <Close fontSize="large" />
+          </IconButton>
+        </Box>
+      ) : null}
+      {render()}
     </>
-  ) : null;
+  );
 };
 
-const Container = styled.div`
-  overflow: hidden;
-  z-index: 10;
-  background: #fff;
-  position: fixed;
-  max-width: 100%;
-  width: 812px;
-  bottom: 0;
-  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  min-height: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  left: 0;
-  right: 0;
+const InputContent = styled.div<any>`
   margin: 0 auto;
-`;
-const EmailBit = styled(Bit)`
-  margin-bottom: 1rem;
-`;
-const EmailContent = styled(Flex)`
-  align-items: center;
-  justify-content: center;
-  flex: 1;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  min-width: 300px;
   width: 100%;
+  max-width: 90%;
+  @media (min-width: 930px) {
+    max-width: 566px;
+  }
 `;
-const Body = styled(Flex)`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-`;
-const Header = styled(Flex)`
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #ddd;
-  margin: 0;
-`;
+
 const Input = styled.input`
-  padding: 1rem 2rem;
   background: #fff;
   border: none;
   display: flex;
-  margin-bottom: 1rem;
+  margin: 1.6rem 1rem;
+  width: 100%;
   &:focus {
     outline: none;
   }
 `;
 
-const Content = styled.div`
-  padding: 1rem 2rem;
-`;
-const InputWrap = styled(Content)`
-  display: flex;
+const InputWrap = styled(Flex)`
+  border: 1px solid #ddd;
   border-radius: 4px;
-  border-bottom: 1px solid #ddd;
-  max-width: 100%;
-  margin-left: -10px;
-  flex-wrap: wrap;
-  align-self: stretch;
-`;
-const Footer = styled(Flex)`
-  background: #fafafa;
-  padding: 1.2rem 1rem;
-  border-top: 1px solid #c3c3c3;
-  margin: 0;
+  padding-right: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 0;
 `;

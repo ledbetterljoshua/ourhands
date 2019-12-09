@@ -3,9 +3,11 @@ import { createContext } from "react";
 import { useCustomRedux, ProviderProps } from "./customRedux";
 
 export const not_started = "not_started";
-export const safty_in_numbers = "safty_in_numbers";
+export const register = "register";
+export const login = "login";
+export const submitted = "submitted";
 
-type onboardingStage = "not_started" | "safty_in_numbers";
+type onboardingStage = "not_started" | "submitted" | "register" | "login";
 
 export type State = {
   registerEmail: string;

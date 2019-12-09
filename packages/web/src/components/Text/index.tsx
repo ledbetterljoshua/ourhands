@@ -16,6 +16,7 @@ interface Props {
   margin?: "left" | "right";
   display?: "inline" | "block";
   align?: "center" | "left" | "right";
+  family?: "sans-serif" | "serif";
 }
 
 export const Text = ({
@@ -24,6 +25,7 @@ export const Text = ({
   color = "body",
   type = "body",
   weight = "regular",
+  family = "sans-serif",
   align = "left",
   margin,
   onClick
@@ -38,6 +40,7 @@ export const Text = ({
       weight={weight}
       margin={margin}
       align={align}
+      family={family}
     >
       {children}
     </Component>
@@ -49,6 +52,6 @@ const Component: any = styled.div`
   text-align: ${(props: any) => props.align};
   cursor: ${(props: any) => (props.pointer ? "pointer" : "inherit")};
   ${(props: any) =>
-    getTypography(props.theme, props.type, props.color, props.weight)};
+    getTypography(props.family, props.type, props.color, props.weight)};
   margin${(props: any) => (props.margin ? `-${props.margin}: 1rem` : ": 0px")};
 `;

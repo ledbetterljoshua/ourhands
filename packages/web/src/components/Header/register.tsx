@@ -3,42 +3,34 @@ import styled from "@emotion/styled";
 import { Button } from "../../components/Button";
 import {
   useOnboardingContext,
-  safty_in_numbers
+  login,
+  register
 } from "../../modules/App/context/onboardingContext";
-import { useEnterOnInput } from "../../hooks/useEnterOnInput";
+import Box from "@material-ui/core/Box";
 
-export const Register = () => {
-  const input = useRef(null);
-  const { useDispatch, useState: useOState } = useOnboardingContext();
+export const RegisterComponent = () => {
+  const { useDispatch } = useOnboardingContext();
   const dispatch = useDispatch();
 
-  const onSubmit = async () => {
-    dispatch({ type: "setStage", payload: safty_in_numbers });
+  const onSubmit = async (stage: string) => {
+    dispatch({ type: "setStage", payload: stage });
   };
-
-  const { registerEmail } = useOState();
-
-  const setEmail = (email: string) => {
-    dispatch({ type: "setRegisterEmail", payload: email });
-  };
-
-  useEnterOnInput(input, onSubmit);
 
   return (
-    <div>
-      <Form>
-        <Input
-          autoFocus
-          ref={input}
-          value={registerEmail}
-          placeholder={"Your Work Email"}
-          onChange={({ target: { value } }) => setEmail(value)}
-        />
-        <Button type="primary" onClick={onSubmit}>
-          Submit
+    <>
+      <Box mr={1}>
+        <Button variant="text" color="default" onClick={() => onSubmit(login)}>
+          Login
         </Button>
-      </Form>
-    </div>
+      </Box>
+      <Button
+        variant="outlined"
+        color="default"
+        onClick={() => onSubmit(register)}
+      >
+        Get Started
+      </Button>
+    </>
   );
 };
 

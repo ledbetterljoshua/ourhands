@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import { useAppContext } from "../../modules/App/context/appContext";
 import { client } from "../../apollo";
-import { Register } from "./register";
+import { RegisterComponent as Register } from "./register";
 import { meQuery } from "@ourhands/controller";
+import Box from "@material-ui/core/Box";
 
 export const Header = (props: any) => {
+  const { hasShadow = true, position = "fixed" } = props;
   const { me }: any = client.readQuery({
     query: meQuery
   });
@@ -33,22 +35,18 @@ export const Header = (props: any) => {
   };
 
   return (
-    <Container isTall={!Boolean(me)}>
+    <Container position={position} hasShadow={hasShadow} isTall={!Boolean(me)}>
       <Inner isTall={!Boolean(me)} justify="space-between">
         <Link to="/">
           <Icon size={11} name="logo" />
         </Link>
         <Flex>
           {me ? (
-            <Button type="primary" onClick={onCreate}>
+            <Button variant="contained" color="primary" onClick={onCreate}>
               Ask a question
             </Button>
-          ) : showRegister ? (
-            <Register />
           ) : (
-            <Button type="default" onClick={() => setShowRegister(true)}>
-              Get Started
-            </Button>
+            <Register />
           )}
           {me ? (
             <Action onClick={toggleOpen}>
@@ -81,7 +79,7 @@ const Container = styled.div<any>`
   box-sizing: border-box;
   height: ${props => (props.isTall ? "64" : "44")}px;
   background-color: #fff;
-  position: fixed;
+  position: ${props => props.position};
   z-index: 300;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -91,5 +89,6 @@ const Container = styled.div<any>`
   width: 100vw;
   background-color: #fff;
   transition: height 200ms ease-in;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: ${props =>
+    props.hasShadow ? "0px 4px 12px rgba(0, 0, 0, 0.05)" : "initial"};
 `;

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "@emotion/styled";
 import { Text } from "../Text";
-import { Flex, TextArea, PullLeft } from "../styles";
+import { Flex, TextArea } from "../styles";
 import { useQuery, useMutation } from "react-apollo";
 import { commentsQuery, createCommentMutation } from "@ourhands/common";
 import { UserContext } from "../../modules/App/context/userContext";
@@ -118,50 +118,48 @@ export const Comments = (props: { id: string }) => {
   useEnterOnInput(input, onSubmit);
 
   return (
-    <PullLeft>
-      <Component>
-        <Container>
-          {data &&
-            data.findComments.map(
-              ({ replies, id, id: parentId, ...rest }: any) => {
-                return (
-                  <div key={id}>
-                    <CommentComp
-                      reply={onCreateReply}
-                      id={id}
-                      {...rest}
-                      parentId={parentId}
-                    />
-                    {replies &&
-                      replies.map(({ id, ...rest }: any) => (
-                        <CommentComp
-                          reply={onCreateReply}
-                          key={id}
-                          id={id}
-                          isReponse
-                          {...rest}
-                          parentId={parentId}
-                        />
-                      ))}
-                  </div>
-                );
-              }
-            )}
-          <InputWrapper>
-            <Input
-              value={text}
-              autoFocus
-              ref={input}
-              onChange={({ target: { value } }: any) =>
-                setText(value.split("\n").join(""))
-              }
-              lines={Math.max(text.length / 70, 1)}
-              placeholder="write a comment..."
-            />
-          </InputWrapper>
-        </Container>
-      </Component>
-    </PullLeft>
+    <Component>
+      <Container>
+        {data &&
+          data.findComments.map(
+            ({ replies, id, id: parentId, ...rest }: any) => {
+              return (
+                <div key={id}>
+                  <CommentComp
+                    reply={onCreateReply}
+                    id={id}
+                    {...rest}
+                    parentId={parentId}
+                  />
+                  {replies &&
+                    replies.map(({ id, ...rest }: any) => (
+                      <CommentComp
+                        reply={onCreateReply}
+                        key={id}
+                        id={id}
+                        isReponse
+                        {...rest}
+                        parentId={parentId}
+                      />
+                    ))}
+                </div>
+              );
+            }
+          )}
+        <InputWrapper>
+          <Input
+            value={text}
+            autoFocus
+            ref={input}
+            onChange={({ target: { value } }: any) =>
+              setText(value.split("\n").join(""))
+            }
+            lines={Math.max(text.length / 70, 1)}
+            placeholder="write a comment..."
+          />
+        </InputWrapper>
+      </Container>
+    </Component>
   );
 };
 

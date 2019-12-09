@@ -51,7 +51,7 @@ export const PostView = ({
     owner
   } = data;
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
-  console.log("data", data);
+
   // useEffect(() => {
   //   if (isInViewport) {
   //     console.log(`${title} is now in view`);

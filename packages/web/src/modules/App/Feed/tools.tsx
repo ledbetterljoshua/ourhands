@@ -7,6 +7,9 @@ import { Text } from "../../../components/Text";
 import { useAppContext, rangeOptions } from "../context/appContext";
 import { client } from "../../../apollo";
 import { meQuery } from "@ourhands/controller";
+import { Button } from "../../../components/Button";
+import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
+import { Menu, MenuItem, Typography } from "@material-ui/core";
 
 type option = {
   value: string;
@@ -15,6 +18,16 @@ type option = {
 
 export const Tools = () => {
   const { useDispatch, useState } = useAppContext();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (option: option) => {
+    setAnchorEl(null);
+    option.value && handleChange(option);
+  };
 
   const { rangeOption } = useState();
 
@@ -23,7 +36,9 @@ export const Tools = () => {
   }: any = client.readQuery({
     query: meQuery
   });
+
   const dispatch = useDispatch();
+
   const handleChange = (option: option) => {
     dispatch({
       type: "setOptionRange",
@@ -34,7 +49,28 @@ export const Tools = () => {
   return (
     <Container>
       <Component>
-        <Dropdown
+        <Button variant="text" color="default" onClick={handleClick}>
+          <Typography variant="body2">{rangeOption.label}</Typography>
+          <ArrowDropDown fontSize="large" />
+          <Typography variant="body2">{rangeOption.label}</Typography>
+          {domain ? (
+            <Typography variant="body2">{`@${domain.name}`}</Typography>
+          ) : null}
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {rangeOptions.map(({ label, value }) => (
+            <MenuItem onClick={() => handleClose({ label, value })}>
+              {label}
+            </MenuItem>
+          ))}
+        </Menu>
+        {/* <Dropdown
           selectedOption={rangeOption}
           onChange={(e: option) => handleChange(e)}
           options={rangeOptions}
@@ -48,7 +84,7 @@ export const Tools = () => {
             </Flex>
             {domain ? <Text>{`@${domain.name}`}</Text> : null}
           </Action>
-        </Dropdown>
+        </Dropdown> */}
       </Component>
       <Hr style={{ marginBottom: "2.5rem" }} />
     </Container>
@@ -65,9 +101,7 @@ const Action = styled(Flex)`
     background: #f1f1f1;
   }
 `;
-const Container = styled.div`
-  margin-left: -39px;
-`;
+const Container = styled.div``;
 const Component = styled.div`
   padding-left: 19px;
 `;

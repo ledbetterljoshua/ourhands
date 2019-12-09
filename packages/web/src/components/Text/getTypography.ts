@@ -39,16 +39,14 @@ export const weights = {
 };
 
 type FontType = "serif" | "sans-serif";
-type theme = {
-  fontType: FontType;
-};
+type family = FontType;
 
 const base = (fontFamily: FontType) => {
   return `
     font-smoothing: antialiased;
     font-family: ${
       fontFamily === "serif"
-        ? 'Georgia,Cambria,"Times New Roman",Times,serif'
+        ? 'Merriweather,Georgia,Cambria,"Times New Roman",Times,serif'
         : "Roboto"
     }, 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, Sans-Serif;
     margin: 0;
@@ -71,12 +69,12 @@ const initBase = (
 };
 
 export const getTypography = (
-  theme: theme,
+  family: FontType,
   size: textType = "body",
   color: colorType = "dark",
   weight: weightType = "regular"
 ) => {
-  const getSize = initBase(theme.fontType, color, weight);
+  const getSize = initBase(family, color, weight);
 
   switch (size) {
     case "h1": {
@@ -98,16 +96,15 @@ export const getTypography = (
       return getSize(2, 0.15);
     }
     case "subtitle": {
-      return getSize(1.6, 0.15);
+      return getSize(1.6, 0);
     }
     case "subtitle2": {
       return getSize(1.4, 0.1);
     }
     case "button-text": {
-      return `${getSize(1.8, 0.1)} 
+      return `${getSize(1.6, 0.1)} 
       text-align: center; 
       font-weight: bold;
-      text-transform: uppercase;
       `;
     }
     case "link": {

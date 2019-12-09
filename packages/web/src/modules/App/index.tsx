@@ -8,7 +8,8 @@ import {
   Switch,
   useLocation,
   useHistory,
-  useRouteMatch
+  useRouteMatch,
+  BrowserRouter as Router
 } from "react-router-dom";
 import { usePageViews } from "../../hooks/usePageViews";
 import posed, { PoseGroup } from "react-pose";
@@ -36,7 +37,7 @@ export const AppView = () => {
       <Container>
         <ContentWrapper>
           <LeftMenu />
-          <Content>
+          <Content elevation={0}>
             <InnerContent>
               <PoseGroup>
                 <RouteContainer
@@ -50,6 +51,9 @@ export const AppView = () => {
                     </Route>
                     <Route path={`${match!.url}me`}>
                       <MeView />
+                    </Route>
+                    <Route path={`/about`}>
+                      <AboutContent />
                     </Route>
                   </Switch>
                 </RouteContainer>

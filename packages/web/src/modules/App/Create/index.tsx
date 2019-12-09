@@ -6,7 +6,6 @@ import { TextArea, Hr } from "../../../components/styles";
 import { Button } from "../../../components/Button";
 import { Text } from "../../../components/Text";
 import { Flex } from "../../../components/styles";
-import { PullLeft } from "../../../components/styles";
 import { getTypography } from "../../../components/Text/getTypography";
 import posed, { PoseGroup } from "react-pose";
 import { useEffect } from "react";
@@ -32,7 +31,6 @@ export const CreateView = () => {
   const [details, setDetails] = useState("");
   const [create] = useMutation(createPostMutation, {
     update(cache, { data: { createPost } }) {
-      debugger;
       const { id } = createPost[0].post;
       const data = cache.readQuery({
         query: postsQuery,
@@ -137,10 +135,15 @@ export const CreateView = () => {
         </Content>
         {active && (
           <Footer justify="flex-end">
-            <Text onClick={() => setActive(false)} margin="right" color="light">
+            <Button color="default" onClick={() => setActive(false)}>
               cancel
-            </Text>
-            <Button disabled={!title.length} type="primary" onClick={onCreate}>
+            </Button>
+            <Button
+              disabled={!title.length}
+              variant="contained"
+              color="primary"
+              onClick={onCreate}
+            >
               ask it
             </Button>
           </Footer>
@@ -187,9 +190,10 @@ const Body = styled(TextArea)<any>`
   }
 `;
 
-const Container = styled(PullLeft)<any>`
+const Container = styled.div<any>`
   border-radius: 0.6rem;
   margin-bottom: 4rem;
+  display: ${props => (props.active ? "block" : "none")};
   z-index: ${props => (props.active ? "321" : "inherit")};
   position: relative;
   background: #fff;

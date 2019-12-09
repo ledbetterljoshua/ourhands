@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ThemeProvider } from "@material-ui/styles";
 import "./normalize.css";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { ApolloProvider } from "react-apollo";
 import { client } from "./apollo";
 import { Routes } from "./routes";
+import theme from "./theme";
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Routes />
+    <ThemeProvider theme={theme}>
+      <Routes />
+    </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );

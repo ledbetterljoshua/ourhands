@@ -1,222 +1,173 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Header } from "../../components/Header";
 import { usePageViews } from "../../hooks/usePageViews";
 import { Text } from "../../components/Text";
-import { Container, Flex, Br } from "../../components/styles";
+import { LandingWrap, Hr, Image } from "../../components/styles";
 import styled from "@emotion/styled";
 import { Onboarding } from "../Onboarding";
-import { Icon } from "../../components/Icon";
 import { Button } from "../../components/Button";
 import useMediaQuery from "use-media-query-hook";
-import { useEnterOnInput } from "../../hooks/useEnterOnInput";
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/styles";
+import { createStyles, Theme, Fade, Grid } from "@material-ui/core";
 import {
   useOnboardingContext,
-  safty_in_numbers
-} from "../App/context/onboardingContext";
+  not_started,
+  register
+} from "../../modules/App/context/onboardingContext";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    modalContainer: {
+      minWidth: 596
+    },
+    modalContainerMobile: {
+      width: "100%",
+      borderRadius: "8px",
+      background: "rgb(255, 255, 255)",
+      position: "absolute",
+      top: "0",
+      bottom: "0",
+      marginBottom: "0 !important",
+      overflow: "scroll"
+    }
+  })
+);
+
+const Footer = () => (
+  <Box style={{ padding: "5rem" }}>
+    <Grid alignItems={"center"} justify="center" container>
+      <Button onClick={() => null} variant="text">
+        <Text color="light">About Us</Text>
+      </Button>
+      <Button onClick={() => null} variant="text">
+        <Text color="light">Support Us</Text>
+      </Button>
+      <Button onClick={() => null} variant="text">
+        <Text color="light">Help</Text>
+      </Button>
+    </Grid>
+  </Box>
+);
 
 export const Landing = () => {
   usePageViews();
-  const isMobile = useMediaQuery("(max-width: 930px)");
-  const input1 = useRef(null);
-  const input2 = useRef(null);
-
   const { useDispatch, useState } = useOnboardingContext();
-  const { registerEmail } = useState();
-
   const dispatch = useDispatch();
+  const classes = useStyles();
+  const isMobile = useMediaQuery("(max-width: 750px)");
 
-  const setEmail = (email: string) => {
-    dispatch({ type: "setRegisterEmail", payload: email });
+  const showModal = () => {
+    dispatch({ type: "setStage", payload: register });
   };
-  const onSubmit = async () => {
-    dispatch({ type: "setStage", payload: safty_in_numbers });
+  const hideModal = () => {
+    dispatch({ type: "setStage", payload: not_started });
   };
 
-  useEnterOnInput(input1, onSubmit);
-  useEnterOnInput(input2, onSubmit);
+  const { stage } = useState();
   return (
     <>
-      <Header />
-      <Container style={{ backgroundColor: "#fff", flexDirection: "column" }}>
-        <ContentFlex>
-          <Content>
+      <Header position={"static"} hasShadow={false} />
+      <LandingWrap style={{ backgroundColor: "#fff", flexDirection: "column" }}>
+        <Content>
+          <div style={{ marginBottom: 40 }}>
             <div style={{ marginBottom: 40 }}>
-              <div style={{ marginBottom: 20 }}>
-                <Text color="dark" display="block" type="h4">
-                  Ask Questions
-                </Text>
-                <Text weight="bold" color="active" display="block" type="h3">
-                  Anonymously
-                </Text>
-              </div>
-              <Text type="document" display="block">
-                This is a space where employees can speak freely to their entire
-                company without fear of retaliation. Companies thrive when
-                employees speak out and management listens.{" "}
+              <Text
+                family="serif"
+                align="center"
+                color="dark"
+                display="block"
+                type="h4"
+              >
+                Speak Out
+              </Text>
+              <Text
+                family="serif"
+                weight="bold"
+                align="center"
+                color="dark"
+                display="block"
+                type="h2"
+              >
+                Anonymously
               </Text>
             </div>
-            <InputContent>
-              <Text color="dark" type="document">
-                Start With Your Company Email
+            <Box style={{ maxWidth: 522, margin: "0 auto" }}>
+              <Text align="center" type="p" display="block">
+                This is a space where co-workers can speak freely to their
+                entire company without fear of retaliation. Companies thrive
+                when employees speak out and management listens.{" "}
               </Text>
-              <InputWrap>
-                <Input
-                  ref={input1}
-                  name="register"
-                  autoFocus
-                  value={registerEmail}
-                  onChange={({ target: { value } }) => setEmail(value)}
-                  placeholder="joshua@ourhands.app"
-                />
-                <Icon size={3} margin="right" name="mail" />
-              </InputWrap>
-              <Br />
-              <Button onClick={() => null} type="primary">
-                Sign Up
-              </Button>
-            </InputContent>
-          </Content>
-          <ContentBody>
-            <Image
-              src={isMobile ? "/character-mobile-color.png" : "character.png"}
-            />
-          </ContentBody>
-        </ContentFlex>
-        <BodyPadding>
-          <Text weight="bold" color="dark" display="block" type="h4">
-            How It Works
-          </Text>
-          <ContentFlex>
-            <BlockBox>
-              <Text type="h5">
-                Sign up with your company email. We’ll make sure it’s secure.
-              </Text>
-            </BlockBox>
-            <BlockBox>
-              <Text type="h5">
-                See comments and questions posted anonymously by your coworkers
-              </Text>
-            </BlockBox>
-            <BlockBox>
-              <Text type="h5">
-                Ask an anonymous question. We'll make sure it's seen.
-              </Text>
-            </BlockBox>
-          </ContentFlex>
-        </BodyPadding>
-        <ContentFlex reverse>
-          <Box style={{ flex: 1 }}>
-            <Text weight="bold" color="dark" display="block" type="h4">
-              In a Nutshell
-            </Text>
-            <Br />
-            <Text type="document" display="block">
-              There are a lot of questions an employee may have about their
-              company that they might not feel comfortable asking directly
-              during an all hands meeting, either due to fear of retalitation,
-              or fear of conflict.
-            </Text>
-            <Br />
-            <Text type="document" display="block">
-              A good manager and employer want to know and understand the
-              concerns of the people they work with. They can't fix problems
-              they can't see.
-            </Text>
-            <Br />
-            <Text type="document" display="block">
-              This platform gives you a voice.
-            </Text>
+            </Box>
+          </div>
+          <Box
+            style={{
+              margin: "0 auto",
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={showModal}>
+              Get Started
+            </Button>
           </Box>
-          <ContentBody>
-            <Image src="/character-group-color.png" />
-          </ContentBody>
-        </ContentFlex>
-        <Box>
-          <Flex direction="column">
-            <InputContent>
-              <Text color="dark" type="document">
-                Get Started
-              </Text>
-              <InputWrap>
-                <Input
-                  ref={input2}
-                  name="register"
-                  value={registerEmail}
-                  onChange={({ target: { value } }) => setEmail(value)}
-                  placeholder="joshua@ourhands.app"
-                />
-                <Icon size={3} margin="right" name="mail" />
-              </InputWrap>
-              <Br />
-              <Button onClick={() => null} type="primary">
-                Sign Up
-              </Button>
-            </InputContent>
-          </Flex>
-        </Box>
+        </Content>
+        <ContentBody>
+          <Image
+            src={
+              isMobile
+                ? "stand-out-from-the-crowd.png"
+                : "stand-out-from-the-crowd.png"
+            }
+          />
+        </ContentBody>
         <Onboarding />
-      </Container>
+      </LandingWrap>
+      <Hr />
+      <Footer />
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={stage !== not_started}
+        onClose={hideModal}
+        // onEscapeKeyDown
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        BackdropProps={{
+          timeout: 500
+        }}
+      >
+        <Fade
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0
+          }}
+          in={stage !== not_started}
+        >
+          <Box
+            className={
+              isMobile ? classes.modalContainerMobile : classes.modalContainer
+            }
+            style={{ borderRadius: 8, background: "#fff" }}
+          >
+            <Onboarding isModal />
+          </Box>
+        </Fade>
+      </Modal>
     </>
   );
 };
 
-const ContentFlex = styled(Flex)`
-flex-direction column;
-margin-bottom: 4rem;
-margin-right: 0;
-@media (min-width: 930px) {
-  margin-bottom: 8rem;
-  flex-direction ${props => (props.reverse ? "row-reverse" : "row")};
-}
-`;
-const BlockBox = styled.div`
-  padding: 3rem 2rem;
-  background: #f6f6f6;
-  margin: 2rem 0;
-  border-radius: 6px;
-  @media (min-width: 930px) {
-    margin-right: 2rem;
-  }
-`;
 const BodyPadding = styled.div`
   padding: 1.5rem;
 `;
-
-const InputContent = styled.div`
-  min-width: 300px;
-  width: 100%;
-  @media (min-width: 930px) {
-    max-width: 420px;
-  }
-`;
 const Box = styled(BodyPadding)`
   margin-bottom: 20px;
-`;
-
-const InputWrap = styled(Flex)`
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding-right: 1rem;
-  margin-right: 0;
-`;
-const Image = styled.img`
-  width: 100%;
-  display: block;
-  width: 100%;
-  @media (min-width: 930px) {
-    max-width: 550px;
-    margin: 0 auto;
-  }
-`;
-const Input = styled.input`
-  font-size: 2rem;
-  padding: 0 1rem;
-  flex: 1;
-  border: none;
-  margin: 2rem 1rem;
-  &:focus {
-    outline: none;
-  }
 `;
 const ContentBody = styled(BodyPadding)`
   margin-top: 14px;

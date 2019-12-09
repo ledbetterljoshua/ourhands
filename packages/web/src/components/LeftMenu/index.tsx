@@ -10,6 +10,7 @@ import { useAppContext } from "../../modules/App/context/appContext";
 import posed from "react-pose";
 import gql from "graphql-tag";
 import { client } from "../../apollo";
+import Fab from "@material-ui/core/Fab";
 
 const Wrapper = posed.div({
   open: {
@@ -70,8 +71,17 @@ export const LeftMenu = () => {
     <Wrapper pose="open">
       <Container className={open ? "active" : ""}>
         <div>
+          <FabWrap>
+            <Fab
+              style={{ background: "#fff", width: "90%" }}
+              variant="extended"
+            >
+              Say Something
+            </Fab>
+          </FabWrap>
           {domain ? renderItem("/", "home", `@${domain.name}`) : null}
           {renderItem("/me", "user", "My Questions")}
+          {renderItem("/rooms", "room", "Rooms")}
         </div>
         <Footer>
           <Text margin="right" type="button-text" onClick={onLogout}>
@@ -86,6 +96,9 @@ export const LeftMenu = () => {
   );
 };
 
+export const FabWrap = styled.div`
+  margin-bottom: 40px;
+`;
 export const IconWrapper = styled.span``;
 export const Footer = styled.div`
   padding-bottom: 4rem;
@@ -124,7 +137,6 @@ export const Container = styled.div`
   position: fixed;
   overflow-x: hidden;
   overflow-y: hidden;
-  border-right: 1px solid #dcdcdc;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

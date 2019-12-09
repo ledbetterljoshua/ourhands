@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Paper from "@material-ui/core/Paper";
 
 export const Backdrop = styled.div`
   opacity: 0.6;
@@ -44,24 +45,28 @@ export const TextArea = styled.textarea<any>`
   }
 `;
 
-export const PullLeft = styled.div`
-  margin-left: -2.6rem;
-  @media (max-width: 930px) {
-    margin-left: 0rem;
-  }
-`;
-
 export const Container = styled.div`
-  max-width: 1224px;
-  background-color: #eaebee;
+  background-color: #fff;
   animation-name: effect-fade-in;
   animation-duration: 120ms;
   display: flex;
   justify-content: center;
   min-height: calc(100vh);
   margin-left: calc(100vw - 100%);
+`;
+export const LandingWrap = styled(Container)`
+  max-width: 816px;
   margin: 0 auto;
   margin-top: 64px;
+`;
+export const Image = styled.img`
+  width: 100%;
+  display: block;
+  width: 100%;
+  @media (min-width: 930px) {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 `;
 export const ContentWrapper = styled.div`
   width: 922px;
@@ -74,15 +79,15 @@ export const InnerContent = styled.div`
   animation-name: effect-fade-in;
   animation-duration: 120ms;
   vertical-align: top;
-  padding-left: 39px;
+  padding-left: 9px;
   padding-right: 9px;
-  padding-top: 90px;
+  padding-top: 74px;
   padding-bottom: 84px;
   @media (max-width: 930px) {
     padding-left: 9px;
   }
 `;
-export const Content = styled.div`
+export const Content = styled(Paper)`
   width: auto !important;
   padding: 0;
   z-index: 100;
@@ -90,9 +95,7 @@ export const Content = styled.div`
   min-height: 380px;
   background-color: #fff;
   margin-left: 266px;
-  border-right: 1px solid #dcdcdc;
   min-height: calc(100vh);
-  transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
   @media (max-width: 930px) {
     width: 100%;
     margin-left: 0;

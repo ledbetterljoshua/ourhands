@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { LandingAuthRoute } from "./landing-auth";
 import { useAppContext } from "../modules/App/context/appContext";
 import { useOnboardingContext } from "../modules/App/context/onboardingContext";
 import { AboutContent } from "../modules/About";
@@ -20,17 +19,23 @@ export const Routes = () => {
   return data && !data.loading ? (
     <Provider>
       <OnboardingProvider>
-        <Router>
-          <Switch>
-            <Route exact path={"/"}>
-              {!data.me ? <Landing /> : <AppView />}
-            </Route>
-            <Route path={`/about`}>
-              <AboutContent />
-            </Route>
-            <Route>nothing here</Route>
-          </Switch>
-        </Router>
+        {data.me ? (
+          <Router>
+            <AppView />
+          </Router>
+        ) : (
+          <Router>
+            <Switch>
+              <Route exact path={"/"}>
+                <Landing />
+              </Route>
+              <Route path={`/about`}>
+                <AboutContent />
+              </Route>
+              <Route>nothing here</Route>
+            </Switch>
+          </Router>
+        )}
       </OnboardingProvider>
     </Provider>
   ) : null;
