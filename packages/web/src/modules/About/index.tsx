@@ -10,12 +10,8 @@ export const AboutContent = () => {
   return (
     <ThemeProvider theme={theme}>
       <Section>
-        <Text color="dark" type="h3">
-          Our Hands
-        </Text>
-        <Text color="dark" type="h5">
-          What is it? Why did you build it? How does it work? All these
-          questions and more will be answered here.
+        <Text family="serif" color="dark" type="h3">
+          What Is Our Hands?
         </Text>
       </Section>
       <Section>
@@ -43,10 +39,10 @@ export const AboutContent = () => {
         </Text>
       </Section>
       <Section>
-        <Text color="dark" type="h4">
+        <Text family="serif" color="dark" type="h4">
           Getting Started - Safety in Numbers
         </Text>
-        <Text type="h5" color="dark">
+        <Text type="h5" color="light">
           The Meddling Manager Problem
         </Text>
       </Section>
@@ -67,9 +63,9 @@ export const AboutContent = () => {
       </Section>
       <Section>
         <Text type="document">
-          After you register, and before we send you a confirmation email, we
-          ask for other emails of people at your company. Then, we send out the
-          same email to everyone saying:
+          When you register, and before we send you a confirmation email, we ask
+          for other emails of people at your company. Then, we send out the same
+          email to everyone saying:
         </Text>
       </Section>
       <Quote>
@@ -83,7 +79,7 @@ export const AboutContent = () => {
           Even if no one else signs up after you, this solves the problem.
         </Text>
       </Section>
-      <Text color="dark" type="h4">
+      <Text family="serif" color="dark" type="h4">
         Staying Anonymous
       </Text>
       <Section>
@@ -103,7 +99,7 @@ export const AboutContent = () => {
           come back to haunt you.
         </Text>
       </Section>
-      <Text color="dark" type="h4">
+      <Text family="serif" color="dark" type="h4">
         Deleting Data
       </Text>
       <Section>
@@ -137,7 +133,7 @@ export const AboutContent = () => {
           better, just send me a tweet.
         </Text>
       </Section>
-      <Text color="dark" type="h4">
+      <Text family="serif" color="dark" type="h4">
         How does this make money?
       </Text>
       <Section>
@@ -162,7 +158,7 @@ export const AboutContent = () => {
           after this, then the cost will jump to $10 a year.
         </Text>
       </Section>
-      <Text color="dark" type="h4">
+      <Text family="serif" color="dark" type="h4">
         The Future
       </Text>
       <Section>

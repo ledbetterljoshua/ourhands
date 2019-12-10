@@ -81,7 +81,7 @@ export const InnerContent = styled.div`
   vertical-align: top;
   padding-left: 9px;
   padding-right: 9px;
-  padding-top: 74px;
+  padding-top: 104px;
   padding-bottom: 84px;
   @media (max-width: 930px) {
     padding-left: 9px;
@@ -94,7 +94,7 @@ export const Content = styled(Paper)`
   width: 600px;
   min-height: 380px;
   background-color: #fff;
-  margin-left: 266px;
+  margin-left: 296px;
   min-height: calc(100vh);
   @media (max-width: 930px) {
     width: 100%;

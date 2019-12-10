@@ -68,6 +68,11 @@ export default {
     letterSpacing: "-0.04px",
     lineHeight: "18px"
   },
+  body3: {
+    color: palette.text.primary,
+    fontWeight: "bold",
+    fontSize: "16px"
+  },
   button: {
     color: palette.text.primary,
     fontSize: "14px",

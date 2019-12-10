@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
-import { Dropdown } from "../../../components/Dropdown";
 import styled from "@emotion/styled";
-import { Hr, Flex } from "../../../components/styles";
-import { Icon } from "../../../components/Icon";
-import { Text } from "../../../components/Text";
-import { useAppContext, rangeOptions } from "../context/appContext";
-import { client } from "../../../apollo";
+import {
+  useAppContext,
+  rangeOptions
+} from "../../modules/App/context/appContext";
+import { client } from "../../apollo";
 import { meQuery } from "@ourhands/controller";
-import { Button } from "../../../components/Button";
+import { Button } from "../../components/Button";
+import { Text } from "../../components/Text";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
-import { Menu, MenuItem, Typography } from "@material-ui/core";
+import { Menu, MenuItem, Typography, Box, Divider } from "@material-ui/core";
 
 type option = {
   value: string;
@@ -50,12 +50,12 @@ export const Tools = () => {
     <Container>
       <Component>
         <Button variant="text" color="default" onClick={handleClick}>
-          <Typography variant="body2">{rangeOption.label}</Typography>
+          <Box position="relative">
+            <Text weight="bold">{rangeOption.label}</Text>
+            <Hr />
+          </Box>
           <ArrowDropDown fontSize="large" />
-          <Typography variant="body2">{rangeOption.label}</Typography>
-          {domain ? (
-            <Typography variant="body2">{`@${domain.name}`}</Typography>
-          ) : null}
+          {domain ? <Text>{`@${domain.name}`}</Text> : null}
         </Button>
         <Menu
           id="simple-menu"
@@ -70,38 +70,19 @@ export const Tools = () => {
             </MenuItem>
           ))}
         </Menu>
-        {/* <Dropdown
-          selectedOption={rangeOption}
-          onChange={(e: option) => handleChange(e)}
-          options={rangeOptions}
-        >
-          <Action>
-            <Flex>
-              <span style={{ marginRight: 5 }}>
-                <Text color="active">{rangeOption.label}</Text>
-              </span>
-              <Icon name="carrot" />
-            </Flex>
-            {domain ? <Text>{`@${domain.name}`}</Text> : null}
-          </Action>
-        </Dropdown> */}
       </Component>
-      <Hr style={{ marginBottom: "2.5rem" }} />
     </Container>
   );
 };
 
-const Action = styled(Flex)`
-  padding: 10px 20px;
-  cursor: pointer;
-  background: #fff;
-  border-radius: 4px;
-  transition: background 120ms ease-in-out;
-  &:hover {
-    background: #f1f1f1;
-  }
+const Hr = styled(Divider)`
+  margin-top: 15px !important;
+  position: absolute;
+  width: 104%;
+  background-color: #000 !important;
+  top: 100%;
 `;
-const Container = styled.div``;
-const Component = styled.div`
-  padding-left: 19px;
+const Container = styled.div`
+  margin-left: 296px;
 `;
+const Component = styled.div``;

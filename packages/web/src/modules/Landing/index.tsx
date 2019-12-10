@@ -15,6 +15,7 @@ import {
   not_started,
   register
 } from "../../modules/App/context/onboardingContext";
+import { AboutContent } from "../About";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -123,6 +124,10 @@ export const Landing = () => {
         </ContentBody>
         <Onboarding />
       </LandingWrap>
+      {/* <Hr />
+      <AboutWrap>
+        <AboutContent />
+      </AboutWrap> */}
       <Hr />
       <Footer />
       <Modal
@@ -163,6 +168,10 @@ export const Landing = () => {
   );
 };
 
+const AboutWrap = styled.div`
+  max-width: 680px;
+  margin: 80px auto;
+`;
 const BodyPadding = styled.div`
   padding: 1.5rem;
 `;

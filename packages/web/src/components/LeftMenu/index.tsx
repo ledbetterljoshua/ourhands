@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "react-apollo";
 import { logoutMutation, meQuery } from "@ourhands/controller";
 import { UserContext } from "../../modules/App/context/userContext";
@@ -44,6 +44,19 @@ export const LeftMenu = () => {
       window.location.reload();
     }
   };
+  const { useDispatch } = useAppContext();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const onCreate = () => {
+    dispatch({ type: "showCreate" });
+    //if not on root, then push /
+    if (history.location.pathname !== "/") {
+      history.push("/");
+    }
+    window.scrollTo(0, 0);
+  };
+
   const renderItem = (view: string, icon: string, name: string) => {
     const isCurrent = pathname === view;
 
@@ -75,6 +88,7 @@ export const LeftMenu = () => {
             <Fab
               style={{ background: "#fff", width: "90%" }}
               variant="extended"
+              onClick={onCreate}
             >
               Say Something
             </Fab>
@@ -84,11 +98,11 @@ export const LeftMenu = () => {
           {renderItem("/rooms", "room", "Rooms")}
         </div>
         <Footer>
-          <Text margin="right" type="button-text" onClick={onLogout}>
+          <Text color="light" margin="right" type="body" onClick={onLogout}>
             logout
           </Text>
           <Link to="/about">
-            <Text type="button-text">About</Text>
+            <Text color="light">About</Text>
           </Link>
         </Footer>
       </Container>
@@ -130,8 +144,8 @@ export const Item = styled.div<any>`
 export const Container = styled.div`
   user-select: none !important;
   width: 266px;
-  height: calc(100vh - 74px);
-  padding-top: 74px;
+  height: calc(100vh - 104px);
+  padding-top: 104px;
   padding-left: 32px;
   margin-left: -32px;
   position: fixed;

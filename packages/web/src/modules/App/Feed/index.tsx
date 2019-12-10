@@ -3,7 +3,6 @@ import { postsQuery } from "@ourhands/controller";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "@emotion/styled";
 import { PostList } from "../../../components/Post";
-import { Tools } from "./tools";
 import { CreateView } from "../Create";
 import { useAppContext } from "../context/appContext";
 
@@ -34,7 +33,6 @@ export const FeedView = () => {
 
   return (
     <Container>
-      <Tools />
       <CreateView />
       <PostList posts={data.findPosts} />
     </Container>
