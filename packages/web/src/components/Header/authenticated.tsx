@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { useHistory } from "react-router-dom";
 import { Flex } from "../styles";
 import { Icon } from "../Icon";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../../modules/App/context/appContext";
-import { client } from "../../apollo";
-import { meQuery } from "@ourhands/controller";
-import { Tools } from "./tools";
+import { Tools, toolProps } from "./tools";
 
-export const AuthenticatedHeader = (props: any) => {
-  const { me }: any = client.readQuery({
-    query: meQuery
-  });
+export const AuthenticatedHeader = (props: toolProps) => {
   const history = useHistory();
   const { useDispatch } = useAppContext();
   const dispatch = useDispatch();
@@ -30,7 +25,7 @@ export const AuthenticatedHeader = (props: any) => {
           <Icon size={11} name="logo" />
         </Link>
       </Thing>
-      {isHome ? <Tools /> : null}
+      {isHome ? <Tools smDown={true} /> : null}
       <Flex>
         <Action onClick={toggleOpen}>
           <Icon size={2.7} name="menu" />

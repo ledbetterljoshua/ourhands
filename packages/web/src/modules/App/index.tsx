@@ -3,14 +3,7 @@ import { LeftMenu } from "../../components/LeftMenu";
 import { FeedView } from "./Feed";
 import { MeView } from "./Me";
 import { Header } from "../../components/Header";
-import {
-  Route,
-  Switch,
-  useLocation,
-  useHistory,
-  useRouteMatch,
-  BrowserRouter as Router
-} from "react-router-dom";
+import { Route, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import { usePageViews } from "../../hooks/usePageViews";
 import posed, { PoseGroup } from "react-pose";
 import {

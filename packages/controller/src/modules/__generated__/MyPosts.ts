@@ -6,6 +6,12 @@
 // GraphQL query operation: MyPosts
 // ====================================================
 
+export interface MyPosts_me_posts_owner {
+  __typename: "User";
+  id: string | null;
+  email: string | null;
+}
+
 export interface MyPosts_me_posts {
   __typename: "Post";
   id: string;
@@ -15,6 +21,8 @@ export interface MyPosts_me_posts {
   upvoteCount: number;
   commentCount: number;
   upvoted: boolean;
+  isOwner: boolean | null;
+  owner: MyPosts_me_posts_owner | null;
 }
 
 export interface MyPosts_me {

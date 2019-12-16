@@ -1,6 +1,7 @@
-import React, { useState, useRef, useContext } from "react";
-import { createPostMutation, postsQuery } from "@ourhands/controller";
-import { useMutation } from "@apollo/react-hooks";
+import React, { useState, useRef } from "react";
+import { createPostMutation, meQuery } from "@ourhands/controller";
+import { addPostToCache } from "../../../utils/posts/addPostToCache";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import styled from "@emotion/styled";
 import { TextArea, Hr } from "../../../components/styles";
 import { Button } from "../../../components/Button";
@@ -11,7 +12,6 @@ import posed, { PoseGroup } from "react-pose";
 import { useEffect } from "react";
 import { useAppContext } from "../context/appContext";
 import { AnonToggle } from "./anonToggle";
-import { UserContext } from "../context/userContext";
 import { usePostCreateState } from "../context/postCreateContext";
 
 export const FadeIn = posed.div({});
@@ -19,7 +19,8 @@ export const FadeIn = posed.div({});
 export const CreateView = () => {
   const [postCreateState, dispatchCreateState] = usePostCreateState();
   const { useDispatch, useState: useAppState } = useAppContext();
-  const me = useContext(UserContext);
+  const { data: myData } = useQuery(meQuery);
+  const me = myData.me;
   const bodyRef = useRef(null);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
@@ -32,26 +33,12 @@ export const CreateView = () => {
   const [create] = useMutation(createPostMutation, {
     update(cache, { data: { createPost } }) {
       const { id } = createPost[0].post;
-      const data = cache.readQuery({
-        query: postsQuery,
-        variables: { range: "THIS_WEEK" }
-      }) as any;
-      const { findPosts: posts } = data;
-      const newPost = {
+      // const { option } = postCreateState;
+      addPostToCache(cache)({
         id,
         title,
         details,
-        user: me,
-        upvoted: true,
-        upvoteCount: 1,
-        createdAt: Date.now(),
-        commentCount: 0,
-        __typename: "Post"
-      };
-      cache.writeQuery({
-        query: postsQuery,
-        variables: { range: "THIS_WEEK" },
-        data: { findPosts: [newPost, ...posts] }
+        owner: { __typename: "User", id: me.id, email: me.email }
       });
     }
   });
@@ -86,7 +73,7 @@ export const CreateView = () => {
       const ref = contentRef!.current as any;
       if (ref) {
         if (window.scrollY >= ref.clientHeight + ref.offsetTop) {
-          setActive(false);
+          dispatch({ type: "hideCreate" });
         }
       }
     };
@@ -97,7 +84,7 @@ export const CreateView = () => {
     } else {
       window.removeEventListener("scroll", setInactiveOnScroll);
     }
-  }, [active]);
+  }, [active, dispatch]);
 
   return (
     <>

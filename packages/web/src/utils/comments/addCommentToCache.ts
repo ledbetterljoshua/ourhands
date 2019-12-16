@@ -15,6 +15,7 @@ export const addCommentToCache = (cache: DataProxy, me: any) => ({
   postId,
   text
 }: Props) => {
+  console.log("postId1", postId);
   const { findComments: comments } = cache.readQuery({
     query: commentsQuery,
     variables: { postId }
@@ -25,14 +26,15 @@ export const addCommentToCache = (cache: DataProxy, me: any) => ({
     const comment = comments[commentIndex];
     const newComment = {
       ...comment,
-      replies: [...comment.replies, buildComment(id, text, postId, me)]
+      replies: [...comment.replies, buildComment({ id, text, parentId, me })]
     };
 
     updatedComments[commentIndex] = newComment;
   } else {
-    const newComment = buildComment(id, text, postId, me);
+    const newComment = buildComment({ id, text, me });
     updatedComments = [...comments, newComment];
   }
+  console.log("postId", postId);
   cache.writeQuery({
     query: commentsQuery,
     variables: { postId: postId, parentId: parentId },

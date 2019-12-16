@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useContext } from "react";
 import styled from "@emotion/styled";
 import { Text } from "../Text";
 import { Flex, TextArea } from "../styles";
@@ -6,7 +6,7 @@ import { useQuery, useMutation } from "react-apollo";
 import { commentsQuery, createCommentMutation } from "@ourhands/common";
 import { UserContext } from "../../modules/App/context/userContext";
 import moment from "moment";
-import { addCommentToCache } from "../../utils/addCommentToCache";
+import { addCommentToCache } from "../../utils/comments/addCommentToCache";
 import { useEnterOnInput } from "../../hooks/useEnterOnInput";
 
 const CommentComp = ({
@@ -72,6 +72,7 @@ const CommentComp = ({
 export const Comments = (props: { id: string }) => {
   const me = useContext(UserContext);
   const input = useRef(null);
+
   const [create] = useMutation(createCommentMutation, {
     update(cache, { data: { createComment } }) {
       const { id, parentId, text } = createComment[0].comment;
@@ -87,7 +88,7 @@ export const Comments = (props: { id: string }) => {
     }
   });
   const [text, setText] = useState("");
-  const { loading, data, error } = useQuery(commentsQuery, {
+  const { data } = useQuery(commentsQuery, {
     variables: { postId: props.id }
   });
 
@@ -104,7 +105,8 @@ export const Comments = (props: { id: string }) => {
     await create({
       variables: {
         text,
-        parentId
+        parentId,
+        postId: props.id
       }
     });
   };
@@ -154,7 +156,6 @@ export const Comments = (props: { id: string }) => {
             onChange={({ target: { value } }: any) =>
               setText(value.split("\n").join(""))
             }
-            lines={Math.max(text.length / 70, 1)}
             placeholder="write a comment..."
           />
         </InputWrapper>

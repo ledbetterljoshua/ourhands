@@ -45,31 +45,41 @@ const ranges: any = {
   EVERYTHING: "10/01/2019"
 };
 
+export const getCommentCount = async (post: any) => {
+  return (post.comments && post.comments.length) || 0;
+};
+export const getUpvoteCount = async (post: any) => {
+  return (post.upvotes && post.upvotes.length) || 0;
+};
+
+export const getUpvotedBool = async (post: any, _: any, { viewer }: any) => {
+  const getUpvoted = (vote: Upvote) => {
+    if (!vote || !viewer) return;
+    return vote.userId === viewer.id;
+  };
+  if (!post.upvotes || !post.upvotes.length) return false;
+  const userUpvoted = post.upvotes.map(getUpvoted).filter(Boolean);
+  return Boolean(userUpvoted.length);
+};
+
+export const getOwner = async (post: any, __: any, context: any) => {
+  if (!post.owner && !post.ownerId) return false;
+  const isOwner = checkIsOwner(post, __, context);
+  if (post.userIsPublic || isOwner) {
+    if (post.ownerId === context.viewer.id) {
+      return context.viewer;
+    }
+    return post.owner;
+  }
+};
+
 export const resolvers: ResolverMap = {
   Post: {
     isOwner: checkIsOwner,
-    commentCount: async post => {
-      return (post.comments && post.comments.length) || 0;
-    },
-    upvoteCount: async post => {
-      return (post.upvotes && post.upvotes.length) || 0;
-    },
-    upvoted: async (post, _, { viewer }) => {
-      const getUpvoted = (vote: Upvote) => {
-        if (!vote || !viewer) return;
-        return (vote.userId = viewer.id);
-      };
-      if (!post.upvotes) return false;
-      const userUpvoted = post.upvotes.map(getUpvoted);
-      return Boolean(userUpvoted.length);
-    },
-    owner: async (post, __, context) => {
-      if (!post.owner) return false;
-      const isOwner = checkIsOwner(post, __, context);
-      if (post.userIsPublic || isOwner) {
-        return post.owner;
-      }
-    }
+    commentCount: getCommentCount,
+    upvoteCount: getUpvoteCount,
+    upvoted: getUpvotedBool,
+    owner: getOwner
   },
   Query: {
     findPosts: async (_, { range }: { range: RANGE }, { viewer }) => {

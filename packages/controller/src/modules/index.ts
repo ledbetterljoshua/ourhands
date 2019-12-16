@@ -26,6 +26,11 @@ export const myPosts = gql`
         upvoteCount
         commentCount
         upvoted
+        isOwner
+        owner {
+          id
+          email
+        }
       }
     }
   }
@@ -61,6 +66,7 @@ export const postsQuery = gql`
       upvoteCount
       commentCount
       upvoted
+      isOwner
       owner {
         id
         email

@@ -35,6 +35,7 @@ export const sendEmail = async (
     transporter.sendMail(message, (err, info) => {
       if (err) {
         console.log("Error occurred. " + err.message);
+        return;
       }
 
       console.log("Message sent: %s", info.messageId);

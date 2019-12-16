@@ -1,9 +1,6 @@
-import styled from "@emotion/styled";
 import React from "react";
-import { Text } from "../Text";
-import { colors } from "../Text/getTypography";
 import MButton from "@material-ui/core/Button";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
   margin: {

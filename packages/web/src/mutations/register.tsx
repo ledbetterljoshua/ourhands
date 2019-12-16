@@ -1,4 +1,3 @@
-import React from "react";
 import { registerMutation } from "@ourhands/controller";
 import { useMutation } from "@apollo/react-hooks";
 import {
@@ -14,11 +13,11 @@ export const Register = ({
   emails: string[];
 }) => {
   const [register] = useMutation(registerMutation);
-  const { useDispatch, useState } = useOnboardingContext();
+  const { useDispatch } = useOnboardingContext();
   const dispatch = useDispatch();
 
   const submit = async () => {
-    const { data } = await register({ variables: { email: emails[0] } });
+    await register({ variables: { email: emails[0] } });
     dispatch({ type: "setStage", payload: submitted });
   };
   return children({ submit });

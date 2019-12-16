@@ -13,7 +13,7 @@ export const Header = (props: any) => {
 
   return (
     <Container position={position} hasShadow={hasShadow}>
-      {me ? <AuthenticatedHeader /> : <UnathenticatedHeader />}
+      {me ? <AuthenticatedHeader {...props} /> : <UnathenticatedHeader />}
     </Container>
   );
 };

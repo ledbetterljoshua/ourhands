@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import useIsInViewport from "use-is-in-viewport";
 import { upvoteMutation } from "@ourhands/controller";
@@ -10,7 +10,6 @@ import { Details } from "./details";
 import { Flex, Hr } from "../styles";
 import { Comments } from "./comments";
 import { Options } from "./options";
-import { useEffect } from "react";
 
 interface User {
   email: string;
@@ -26,32 +25,25 @@ interface Post {
   upvoted: boolean;
   createdAt: Date;
   commentCount?: number;
+  isOwner: Boolean;
   owner?: {
     email: string;
   };
 }
 
-export const PostView = ({
-  data,
-  ndx,
-  mine
-}: {
-  data: Post;
-  ndx: number;
-  mine?: boolean;
-}) => {
+export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
   const {
     id,
     title,
     details,
     createdAt,
     upvoted,
-    user,
+    isOwner,
     commentCount,
     owner
   } = data;
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
-
+  // console.log(isInViewport);
   // useEffect(() => {
   //   if (isInViewport) {
   //     console.log(`${title} is now in view`);
@@ -61,31 +53,39 @@ export const PostView = ({
   // }, [isInViewport]);
 
   const [commentsVisible, setCommentsVisible] = useState(false);
+  const [mouseOver, setMouseOver] = useState(false);
   const [upvote] = useMutation(upvoteMutation);
-  const isOwned = mine || Boolean(user);
+  const isOwned = isOwner;
 
   return (
-    <Container ref={targetRef}>
+    <Container
+      onMouseLeave={() => setMouseOver(false)}
+      onMouseOver={() => setMouseOver(true)}
+      ref={targetRef}
+    >
       <Head direction="row" justify="space-between">
         {owner && owner.email ? (
           <Text color="light">{owner.email}</Text>
         ) : (
           <Text color="light">Anonymous</Text>
         )}
-        <Flex className="flex" direction="row">
-          <Text type="caption" color="light">
-            {moment(Number(createdAt)).fromNow()}
-          </Text>
-          {ndx === 0 ? (
-            <>
-              <Dot />
-              <Text weight="bold" type="caption" color="active">
-                top voted
-              </Text>
-            </>
-          ) : null}
-        </Flex>
-        {isOwned ? <Options id={id} /> : null}
+        {mouseOver && isOwned ? (
+          <Options id={id} />
+        ) : (
+          <Flex className="flex" direction="row">
+            <Text type="caption" color="light">
+              {moment(Number(createdAt)).fromNow()}
+            </Text>
+            {ndx === 0 ? (
+              <>
+                <Dot />
+                <Text weight="bold" type="caption" color="active">
+                  top voted
+                </Text>
+              </>
+            ) : null}
+          </Flex>
+        )}
       </Head>
       <Body hasDetails={details && details.length > 0}>
         <Title>
@@ -114,27 +114,21 @@ export const PostView = ({
   );
 };
 
-const renderPost = (post: Post, ndx: number, mine?: boolean) => {
+const renderPost = (post: Post, ndx: number) => {
   return (
     <div key={post.id}>
-      <PostView mine={mine} data={post} ndx={ndx} />
+      <PostView data={post} ndx={ndx} />
     </div>
   );
 };
 
-export const PostList = ({
-  posts,
-  mine
-}: {
-  posts: Post[];
-  mine?: boolean;
-}) => {
+export const PostList = ({ posts }: { posts: Post[] }) => {
   return (
     <List>
       {!posts || (posts && posts.length < 1) ? (
         <Image src="/character.png" />
       ) : (
-        posts.map((o, i) => renderPost(o, i, mine))
+        posts.map((o, i) => renderPost(o, i))
       )}
     </List>
   );
@@ -147,7 +141,7 @@ const Title = styled.div`
 const Body = styled.div<any>`
   padding-bottom: ${props => (props.hasDetails ? "1rem" : "")};
 `;
-const Container = styled.div`
+const Container = styled.div<any>`
   padding-bottom: 3rem;
 `;
 const Image = styled.img`

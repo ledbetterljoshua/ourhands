@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 export const Backdrop = styled.div`
   opacity: 0.6;
@@ -34,7 +35,7 @@ export const Hr = styled.hr`
   padding: 0;
 `;
 
-export const TextArea = styled.textarea<any>`
+export const TextArea = styled(TextareaAutosize)<any>`
   width: 100%;
   display: block;
   resize: none;

@@ -12,6 +12,7 @@ export interface PostsQuery_findPosts {
     upvoteCount: number;
     commentCount: number;
     upvoted: boolean;
+    isOwner: boolean | null;
     owner: PostsQuery_findPosts_owner | null;
 }
 export interface PostsQuery {

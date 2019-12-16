@@ -6,9 +6,9 @@
 
 import { useReducer } from "react";
 
-const PUBLIC = "PUBLIC";
-const PRIVATE = "PRIVATE";
-const ANONYMOUS = "ANONYMOUS";
+export const PUBLIC = "PUBLIC";
+export const PRIVATE = "PRIVATE";
+export const ANONYMOUS = "ANONYMOUS";
 
 type option = {
   value: string;

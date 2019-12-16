@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import { useMutation, useQuery } from "react-apollo";
+import { useMutation } from "react-apollo";
 import { logoutMutation, meQuery } from "@ourhands/controller";
-import { UserContext } from "../../modules/App/context/userContext";
 import { useAppContext } from "../../modules/App/context/appContext";
 import posed from "react-pose";
-import gql from "graphql-tag";
 import { client } from "../../apollo";
 import Fab from "@material-ui/core/Fab";
 
@@ -27,16 +25,17 @@ const Child = posed.div({
 
 export const LeftMenu = () => {
   const {
-    me: { domain, ...rest }
+    me: { domain }
   }: any = client.readQuery({
     query: meQuery
   });
-  console.log("rest", rest);
+
   const { useState } = useAppContext();
   const { pathname } = useLocation();
   const {
     sideNav: { open }
   } = useState();
+
   const [logout] = useMutation(logoutMutation);
   const onLogout = async () => {
     const { data } = await logout();
@@ -101,8 +100,8 @@ export const LeftMenu = () => {
           <Text color="light" margin="right" type="body" onClick={onLogout}>
             logout
           </Text>
-          <Link to="/about">
-            <Text color="light">About</Text>
+          <Link to="/support">
+            <Text color="light">Support</Text>
           </Link>
         </Footer>
       </Container>

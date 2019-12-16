@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { PostList } from "../../../components/Post";
 import { CreateView } from "../Create";
 import { useAppContext } from "../context/appContext";
+import { Tools } from "../../../components/Header/tools";
 
 export const FeedView = () => {
   const { useState } = useAppContext();
@@ -18,7 +19,7 @@ export const FeedView = () => {
 
   useEffect(() => {
     refetch({ range: rangeOption.value });
-  }, [rangeOption.value]);
+  }, [rangeOption.value, refetch]);
 
   if (loading) {
     return <div>loading</div>;
@@ -33,6 +34,7 @@ export const FeedView = () => {
 
   return (
     <Container>
+      <Tools smUp={true} />
       <CreateView />
       <PostList posts={data.findPosts} />
     </Container>

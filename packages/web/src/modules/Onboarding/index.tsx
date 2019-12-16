@@ -111,7 +111,8 @@ export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
   const onAddRegisterEmail = async (email: string) => {
     const isValid = await isValidEmail(email);
     if (!isValid) return;
-    const [n, ...o] = emailList;
+    const [_, ...o] = emailList;
+    console.log(_);
     setEmailList([email, ...o] as any);
     setEmail("");
     setError("");
@@ -127,7 +128,7 @@ export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
     if (email && error) {
       setError("");
     }
-  }, [email]);
+  }, [email, error]);
 
   const onDelete = (ndx: number) => {
     const filtered = emailList.filter((_: any, i: number) => i !== ndx);
