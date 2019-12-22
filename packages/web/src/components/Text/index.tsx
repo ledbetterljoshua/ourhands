@@ -17,6 +17,7 @@ interface Props {
   display?: "inline" | "block";
   align?: "center" | "left" | "right";
   family?: "sans-serif" | "serif";
+  transform?: "uppercase" | "lowercase" | "capitalize" | "inherit";
 }
 
 export const Text = ({
@@ -26,6 +27,7 @@ export const Text = ({
   type = "body",
   weight = "regular",
   family = "sans-serif",
+  transform = "inherit",
   align = "left",
   margin,
   onClick
@@ -41,6 +43,7 @@ export const Text = ({
       margin={margin}
       align={align}
       family={family}
+      transform={transform}
     >
       {children}
     </Component>
@@ -50,6 +53,7 @@ export const Text = ({
 const Component: any = styled.div`
   display: ${(props: any) => props.display};
   text-align: ${(props: any) => props.align};
+  text-transform: ${(props: any) => props.transform};
   cursor: ${(props: any) => (props.pointer ? "pointer" : "inherit")};
   ${(props: any) =>
     getTypography(props.family, props.type, props.color, props.weight)};

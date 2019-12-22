@@ -12,7 +12,7 @@ export const getExpressSession = () =>
       prefix: redisSessionPrefix
     }),
     name: "qid",
-    secret: process.env.USER_SESSION_SECRET!,
+    secret: process.env.USER_SESSION_SECRET! || "nothing",
     resave: false,
     saveUninitialized: false,
     cookie: {

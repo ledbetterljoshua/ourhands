@@ -13,7 +13,7 @@
     "format": "npm run prettier -- --write",
     "validate": "npm run lint && npm run test",
     "genMigration": "npx ts-node ./node_modules/.bin/typeorm migration:generate -d ./src/migrations -c development",
-    "build": "rimraf ./dist && tsc --allowSyntheticDefaultImports"
+    "build": "rimraf ./dist && tsc --allowSyntheticDefaultImports && copyfiles -u 1 src/**/*.graphql dist"
   },
   "husky": {
     "hooks": {
@@ -38,6 +38,7 @@
     "@types/uuid": "^3.4.5",
     "@types/ws": "^6.0.3",
     "@types/yup": "^0.26.24",
+    "copyfiles": "^2.1.1",
     "cross-env": "^6.0.3",
     "gql2ts": "^1.10.1",
     "husky": "^3.0.8",

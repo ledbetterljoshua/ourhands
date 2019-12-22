@@ -61,7 +61,9 @@ export const Tools = (props: toolProps) => {
               <Hr />
             </Box>
             <ArrowDropDown fontSize="large" />
-            {domain ? <Text>{`@${domain.name}`}</Text> : null}
+            {domain ? (
+              <Text transform="lowercase">{`@${domain.name}`}</Text>
+            ) : null}
           </Button>
           <Menu
             id="simple-menu"
@@ -88,6 +90,7 @@ export const Tools = (props: toolProps) => {
 const Hr = styled(Divider)`
   margin-top: 15px !important;
   position: absolute;
+  height: 2px !important;
   width: 104%;
   background-color: #000 !important;
   top: 100%;

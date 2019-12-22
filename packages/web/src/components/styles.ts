@@ -12,6 +12,14 @@ export const Backdrop = styled.div`
   top: 0;
 `;
 
+export const Dot = styled.span`
+  color: rgb(184, 184, 184);
+  background-color: rgb(184, 184, 184);
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+`;
+
 export const Flex: any = styled.div`
   display: flex;
   margin-right: 5px;

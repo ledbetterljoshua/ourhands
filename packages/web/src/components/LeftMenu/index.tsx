@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Icon } from "../Icon";
+import Home from "@material-ui/icons/Home";
+import HomeOutlined from "@material-ui/icons/HomeOutlined";
+import Person from "@material-ui/icons/Person";
+import PersonOutlined from "@material-ui/icons/PersonOutlined";
+import MeetingRoom from "@material-ui/icons/MeetingRoom";
+import MeetingRoomOutlined from "@material-ui/icons/MeetingRoomOutlined";
 import { Text } from "../Text";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useMutation } from "react-apollo";
@@ -9,6 +14,7 @@ import { useAppContext } from "../../modules/App/context/appContext";
 import posed from "react-pose";
 import { client } from "../../apollo";
 import Fab from "@material-ui/core/Fab";
+import { Dot } from "../styles";
 
 const Wrapper = posed.div({
   open: {
@@ -56,7 +62,12 @@ export const LeftMenu = () => {
     window.scrollTo(0, 0);
   };
 
-  const renderItem = (view: string, icon: string, name: string) => {
+  const renderItem = (
+    view: string,
+    Icon: any,
+    IconActive: any,
+    name: string
+  ) => {
     const isCurrent = pathname === view;
 
     return (
@@ -64,7 +75,11 @@ export const LeftMenu = () => {
         <Link to={view}>
           <Item isCurrent={isCurrent}>
             <IconWrapper>
-              <Icon color={isCurrent ? "dark" : "body"} name={icon} />
+              {isCurrent ? (
+                <IconActive fontSize="large" />
+              ) : (
+                <Icon fontSize="large" />
+              )}
             </IconWrapper>
             <InnerItem>
               <Text
@@ -92,16 +107,25 @@ export const LeftMenu = () => {
               Say Something
             </Fab>
           </FabWrap>
-          {domain ? renderItem("/", "home", `@${domain.name}`) : null}
-          {renderItem("/me", "user", "My Questions")}
-          {renderItem("/rooms", "room", "Rooms")}
+          {domain
+            ? renderItem("/", HomeOutlined, Home, `@${domain.name}`)
+            : null}
+          {renderItem("/me", PersonOutlined, Person, "My Questions")}
+          {renderItem("/rooms", MeetingRoomOutlined, MeetingRoom, "Rooms")}
         </div>
         <Footer>
           <Text color="light" margin="right" type="body" onClick={onLogout}>
             logout
           </Text>
+          <Dot style={{ marginRight: "1rem" }} />
           <Link to="/support">
-            <Text color="light">Support</Text>
+            <Text margin="right" color="light">
+              Support Us
+            </Text>
+          </Link>
+          <Dot style={{ marginRight: "1rem" }} />
+          <Link to="/help">
+            <Text color="light">Help</Text>
           </Link>
         </Footer>
       </Container>
@@ -112,8 +136,12 @@ export const LeftMenu = () => {
 export const FabWrap = styled.div`
   margin-bottom: 40px;
 `;
-export const IconWrapper = styled.span``;
+export const IconWrapper = styled.span`
+  margin-right: 10px;
+`;
 export const Footer = styled.div`
+  display: flex;
+  align-items: center;
   padding-bottom: 4rem;
 `;
 export const InnerItem = styled.div`

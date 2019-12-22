@@ -7,7 +7,7 @@ import moment from "moment";
 import { Text } from "../Text";
 import { Action } from "./action";
 import { Details } from "./details";
-import { Flex, Hr } from "../styles";
+import { Flex, Hr, Dot } from "../styles";
 import { Comments } from "./comments";
 import { Options } from "./options";
 
@@ -43,7 +43,7 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
     owner
   } = data;
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
-  // console.log(isInViewport);
+
   // useEffect(() => {
   //   if (isInViewport) {
   //     console.log(`${title} is now in view`);
@@ -109,7 +109,11 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
           text={`Comment ${commentCount ? `(${commentCount})` : ""}`}
         />
       </Footer>
-      {commentsVisible ? <Comments id={data.id} /> : <Hr />}
+      {commentsVisible ? (
+        <Comments id={data.id} />
+      ) : (
+        <Hr style={{ width: "40%" }} />
+      )}
     </Container>
   );
 };
@@ -148,13 +152,6 @@ const Image = styled.img`
   max-width: 70%;
   display: block;
   margin: 5rem auto;
-`;
-const Dot = styled.span`
-  color: rgb(184, 184, 184);
-  background-color: rgb(184, 184, 184);
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
 `;
 
 const Footer = styled(Flex)`

@@ -1,7 +1,10 @@
 [
   {
+    "port": 5432,
     "name": "production",
     "type": "postgres",
+    "database": "ourhands",
+    "username": "postgres",
     "synchronize": true,
     "logging": true
   },
@@ -9,7 +12,7 @@
     "name": "development",
     "type": "postgres",
     "host": "localhost",
-    "port": 4321,
+    "port": 5432,
     "username": "postgres",
     "password": "",
     "database": "ourhands",
@@ -29,7 +32,7 @@
     "name": "test",
     "type": "postgres",
     "host": "localhost",
-    "port": 4321,
+    "port": 5432,
     "username": "postgres",
     "password": "",
     "database": "testing",

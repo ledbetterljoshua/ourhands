@@ -4,10 +4,13 @@ import { Text } from "../Text";
 import { Flex, TextArea } from "../styles";
 import { useQuery, useMutation } from "react-apollo";
 import { commentsQuery, createCommentMutation } from "@ourhands/common";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { UserContext } from "../../modules/App/context/userContext";
 import moment from "moment";
 import { addCommentToCache } from "../../utils/comments/addCommentToCache";
 import { useEnterOnInput } from "../../hooks/useEnterOnInput";
+import { IconButton } from "@material-ui/core";
 
 const CommentComp = ({
   text,
@@ -71,6 +74,7 @@ const CommentComp = ({
 
 export const Comments = (props: { id: string }) => {
   const me = useContext(UserContext);
+  const [anonymous, setSnonymous] = useState(true);
   const input = useRef(null);
 
   const [create] = useMutation(createCommentMutation, {
@@ -91,6 +95,10 @@ export const Comments = (props: { id: string }) => {
   const { data } = useQuery(commentsQuery, {
     variables: { postId: props.id }
   });
+
+  const toggleAnon = () => {
+    setSnonymous(!anonymous);
+  };
 
   const onCreateComment = async () => {
     await create({
@@ -148,17 +156,34 @@ export const Comments = (props: { id: string }) => {
               );
             }
           )}
-        <InputWrapper>
-          <Input
-            value={text}
-            autoFocus
-            ref={input}
-            onChange={({ target: { value } }: any) =>
-              setText(value.split("\n").join(""))
-            }
-            placeholder="write a comment..."
-          />
-        </InputWrapper>
+        <Flex>
+          <IconButton
+            style={{ padding: 8, marginRight: 8, alignSelf: "flex-start" }}
+            onClick={toggleAnon}
+          >
+            {anonymous ? (
+              <VisibilityOff fontSize="large" />
+            ) : (
+              <Visibility fontSize="large" />
+            )}
+          </IconButton>
+          <div style={{ flex: 1 }}>
+            <InputWrapper>
+              <Input
+                value={text}
+                autoFocus
+                ref={input}
+                onChange={({ target: { value } }: any) =>
+                  setText(value.split("\n").join(""))
+                }
+                placeholder="write a comment..."
+              />
+            </InputWrapper>
+            <Text margin="left" type="caption" color="light">
+              press enter to submit
+            </Text>
+          </div>
+        </Flex>
       </Container>
     </Component>
   );

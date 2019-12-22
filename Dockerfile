@@ -1,9 +1,10 @@
 FROM node
 
-WORKDIR /airbnb_clone
+WORKDIR /ourhands
 
 COPY ./package.json .
 COPY ./packages/server/package.json ./packages/server/
+RUN ls ./packages
 COPY ./packages/common/package.json ./packages/common/
 
 RUN npm i -g yarn
