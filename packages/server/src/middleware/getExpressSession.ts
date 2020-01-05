@@ -3,6 +3,8 @@ import * as connectRedis from "connect-redis";
 import { redis } from "../redis";
 import { redisSessionPrefix } from "../constants";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const RedisStore = connectRedis(session);
 
 export const getExpressSession = () =>
@@ -17,7 +19,8 @@ export const getExpressSession = () =>
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // domain: process.env.FRONTEND_HOST,
+      secure: isProduction,
       maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
     }
   });

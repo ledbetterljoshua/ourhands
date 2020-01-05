@@ -2,9 +2,10 @@
   "private": true,
   "name": "ourhands",
   "scripts": {
+    "run:dev": "lerna run start --scope={@ourhands/web,@ourhands/server} --stream",
+    "run:web": "cd packages/web && yarn run start",
     "build:server": "lerna run build --scope={@ourhands/common,@ourhands/server}",
-    "build:web": "lerna run build --scope={@ourhands/controller,@ourhands/web}",
-    "build:web-prod": "lerna run build --scope={@ourhands/common,@ourhands/web}"
+    "build:web": "lerna run build --scope={@ourhands/controller,@ourhands/web}"
   },
   "workspaces": {
     "packages": [

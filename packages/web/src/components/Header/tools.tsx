@@ -98,7 +98,7 @@ const Hr = styled(Divider)`
 const Container = styled.div`
   margin-left: -10px;
   margin-bottom: 30px;
-  @media (min-width: 930px) {
+  @media (min-width: 600px) {
     margin-bottom: 0px;
     margin-left: 296px;
   }

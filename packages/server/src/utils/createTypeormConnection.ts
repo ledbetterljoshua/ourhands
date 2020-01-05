@@ -25,7 +25,6 @@ export const createTypeormConnection = async (): Promise<Connection | null> => {
         entities: [User, Post, Comment, CommentReply, Domain, Room, Upvote]
       }
     : defaultConnectionOptions;
-  console.log("connectionOptions", connectionOptions);
   const conn = await createConnection({
     ...connectionOptions
   });

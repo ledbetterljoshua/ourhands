@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const registerMutation = gql`
-  mutation RegisterMutation($email: String!) {
-    register(email: $email) {
+  mutation RegisterMutation($emails: [String]!) {
+    register(emails: $emails) {
       path
       message
     }

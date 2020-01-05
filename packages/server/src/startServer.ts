@@ -12,14 +12,20 @@ import { cors as corsOptions } from "./cors";
 import { getExpressRateLimit } from "./middleware/getExpressRateLimit";
 import { redis } from "./redis";
 
+const { NODE_ENV } = process.env;
+
 export const startServer = async (): Promise<Server> => {
-  if (process.env.NODE_ENV === "test") {
+  if (NODE_ENV === "test") {
     await redis.flushall();
   }
 
   const port = getServerPort();
   const server = getGraphqlServer();
   const expressApp = express();
+
+  if (NODE_ENV === "production") {
+    expressApp.set("trust proxy", 1);
+  }
 
   expressApp.use(getExpressSession());
   expressApp.use(getExpressRateLimit());

@@ -147,7 +147,7 @@ declare namespace GQL {
   }
 
   interface IRegisterOnMutationArguments {
-    email: string;
+    emails: Array<string | null>;
   }
 
   interface ICreateCommentInput {

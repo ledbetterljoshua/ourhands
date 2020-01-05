@@ -8,6 +8,8 @@ export const addUserSession = async (
   userId: string
 ) => {
   session!.userId = userId;
+  console.log("addUserSession/userId", userId);
+  console.log("addUserSession/sessionID", sessionID);
   if (sessionID) {
     await redis.lpush(`${userSessionIdPrefix}${userId}`, sessionID);
   }

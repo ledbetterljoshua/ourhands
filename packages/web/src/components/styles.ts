@@ -72,14 +72,14 @@ export const Image = styled.img`
   width: 100%;
   display: block;
   width: 100%;
-  @media (min-width: 930px) {
+  @media (min-width: 600px) {
     max-width: 900px;
     margin: 0 auto;
   }
 `;
 export const ContentWrapper = styled.div`
   width: 922px;
-  @media (max-width: 930px) {
+  @media (max-width: 600px) {
     width: 100%;
   }
 `;
@@ -92,7 +92,8 @@ export const InnerContent = styled.div`
   padding-right: 9px;
   padding-top: 104px;
   padding-bottom: 84px;
-  @media (max-width: 930px) {
+  @media (max-width: 600px) {
+    padding-top: 74px;
     padding-left: 9px;
   }
 `;
@@ -105,7 +106,7 @@ export const Content = styled(Paper)`
   background-color: #fff;
   margin-left: 296px;
   min-height: calc(100vh);
-  @media (max-width: 930px) {
+  @media (max-width: 600px) {
     width: 100%;
     margin-left: 0;
   }

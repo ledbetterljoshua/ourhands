@@ -6,6 +6,7 @@ import Person from "@material-ui/icons/Person";
 import PersonOutlined from "@material-ui/icons/PersonOutlined";
 import MeetingRoom from "@material-ui/icons/MeetingRoom";
 import MeetingRoomOutlined from "@material-ui/icons/MeetingRoomOutlined";
+import Close from "@material-ui/icons/Close";
 import { Text } from "../Text";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useMutation } from "react-apollo";
@@ -15,6 +16,7 @@ import posed from "react-pose";
 import { client } from "../../apollo";
 import Fab from "@material-ui/core/Fab";
 import { Dot } from "../styles";
+import { Box, IconButton, Hidden } from "@material-ui/core";
 
 const Wrapper = posed.div({
   open: {
@@ -62,6 +64,10 @@ export const LeftMenu = () => {
     window.scrollTo(0, 0);
   };
 
+  const hideNav = () => {
+    dispatch({ type: "hideSideNav" });
+  };
+
   const renderItem = (
     view: string,
     Icon: any,
@@ -97,6 +103,13 @@ export const LeftMenu = () => {
   return (
     <Wrapper pose="open">
       <Container className={open ? "active" : ""}>
+        <Hidden smUp>
+          <Box style={{ position: "fixed", top: 20, right: 20 }}>
+            <IconButton onClick={hideNav}>
+              <Close fontSize="large" />
+            </IconButton>
+          </Box>
+        </Hidden>
         <div>
           <FabWrap>
             <Fab
@@ -111,7 +124,7 @@ export const LeftMenu = () => {
             ? renderItem("/", HomeOutlined, Home, `@${domain.name}`)
             : null}
           {renderItem("/me", PersonOutlined, Person, "My Questions")}
-          {renderItem("/rooms", MeetingRoomOutlined, MeetingRoom, "Rooms")}
+          {/* {renderItem("/rooms", MeetingRoomOutlined, MeetingRoom, "Rooms")} */}
         </div>
         <Footer>
           <Text color="light" margin="right" type="body" onClick={onLogout}>
@@ -135,6 +148,9 @@ export const LeftMenu = () => {
 
 export const FabWrap = styled.div`
   margin-bottom: 40px;
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
 export const IconWrapper = styled.span`
   margin-right: 10px;
@@ -142,6 +158,7 @@ export const IconWrapper = styled.span`
 export const Footer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding-bottom: 4rem;
 `;
 export const InnerItem = styled.div`
@@ -181,13 +198,14 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: transparent;
-  @media (max-width: 930px) {
+  background: #fff;
+  @media (max-width: 600px) {
     transition: transform 0.2s ease-in-out;
     z-index: 300;
     width: 100%;
     transform: translateX(-1000px);
     margin-left: 0rem;
+    padding-left: 0rem;
     &.active {
       transform: translateX(0px);
     }

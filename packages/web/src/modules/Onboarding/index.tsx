@@ -11,7 +11,7 @@ import {
   register,
   not_started
 } from "../../modules/App/context/onboardingContext";
-import { useEnterOnInput } from "../../hooks/useEnterOnInput";
+import { useEnterOnInput, useEventOnInput } from "../../hooks/useEnterOnInput";
 import { Register } from "../../mutations/register";
 import { makeStyles } from "@material-ui/styles";
 import {
@@ -86,7 +86,7 @@ const renderBits = (onDelete: any) => (bit: any, ndx: number) => {
 export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
   const input1 = useRef(null);
   const input2 = useRef(null);
-  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("joshua@ourhands.app");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [emailList, setEmailList] = useState([] as any);
@@ -119,16 +119,41 @@ export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
   };
   const onSubmit = async (email: string) => {
     const isValid = await isValidEmail(email);
-    if (!isValid) return;
+    if (!isValid) return console.log("not valid", email);
     setEmailList([...((emailList || []) as any), email]);
     setEmail("");
+  };
+
+  const onBackspace = () => {
+    if (!email) {
+      const i = emailList.length - 1;
+      // const lastEmail = emailList.slice(0, i);
+      setEmail(emailList[i]);
+      setEmailList(
+        emailList.slice(0, i).concat(emailList.slice(i + 1, emailList.length))
+      );
+      // setEmail(lastEmail);
+    }
+  };
+
+  const onBlurCoworkerEmailInput = () => {
+    if (email && email.length) {
+      onSubmit(email);
+    }
+  };
+  const onSetCoworkerEmail = (val: string) => {
+    console.log(val);
+    if (val[val.length - 1] === " ") {
+      return onSubmit(email);
+    }
+    return setEmail(val);
   };
 
   useEffect(() => {
     if (email && error) {
       setError("");
     }
-  }, [email, error]);
+  }, [email]);
 
   const onDelete = (ndx: number) => {
     const filtered = emailList.filter((_: any, i: number) => i !== ndx);
@@ -137,8 +162,13 @@ export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
 
   const renderEmails = renderBits(onDelete);
 
-  useEnterOnInput(input1, () => onSubmit(email));
+  useEventOnInput(input1, {
+    onBackspace: onBackspace,
+    onEnter: () => onSubmit(email)
+  });
+
   useEnterOnInput(input2, () => onAddRegisterEmail(registerEmail));
+
   const isMobile = useMediaQuery("(max-width: 750px)");
 
   const renderSubmitted = () => (
@@ -188,11 +218,14 @@ export const Onboarding = ({ isModal = false }: { isModal?: Boolean }) => {
                   {(emailList || []).map(renderEmails)}
                   <Input
                     autoFocus
+                    onBlur={onBlurCoworkerEmailInput}
                     ref={input1}
                     value={email}
                     placeholder={"your coworkers email"}
                     className={classes.innerInput}
-                    onChange={({ target: { value } }) => setEmail(value)}
+                    onChange={({ target: { value } }) =>
+                      onSetCoworkerEmail(value)
+                    }
                   />
                 </div>
               </InputWrap>
@@ -256,7 +289,7 @@ const InputContent = styled.div<any>`
   min-width: 300px;
   width: 100%;
   max-width: 90%;
-  @media (min-width: 930px) {
+  @media (min-width: 600px) {
     max-width: 566px;
   }
 `;

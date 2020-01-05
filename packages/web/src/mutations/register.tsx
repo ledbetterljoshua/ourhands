@@ -17,7 +17,8 @@ export const Register = ({
   const dispatch = useDispatch();
 
   const submit = async () => {
-    await register({ variables: { email: emails[0] } });
+    console.log("emails", emails);
+    await register({ variables: { emails } });
     dispatch({ type: "setStage", payload: submitted });
   };
   return children({ submit });

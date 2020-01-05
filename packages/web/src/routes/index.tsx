@@ -7,6 +7,7 @@ import { useQuery } from "react-apollo";
 import { meQuery } from "@ourhands/controller";
 import { Landing } from "../modules/Landing";
 import { AppView } from "../modules/App";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 export const Routes = () => {
   const { Provider } = useAppContext();
@@ -16,10 +17,10 @@ export const Routes = () => {
   //   // loading screen
   //   return <>loading</>;
   // }
-  return data && !data.loading ? (
+  return data ? (
     <Provider>
       <OnboardingProvider>
-        {data.me ? (
+        {data && data.me ? (
           <Router>
             <AppView />
           </Router>
@@ -38,5 +39,7 @@ export const Routes = () => {
         )}
       </OnboardingProvider>
     </Provider>
-  ) : null;
+  ) : (
+    <LinearProgress />
+  );
 };

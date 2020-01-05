@@ -43,7 +43,6 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
     owner
   } = data;
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 });
-
   // useEffect(() => {
   //   if (isInViewport) {
   //     console.log(`${title} is now in view`);
@@ -89,7 +88,7 @@ export const PostView = ({ data, ndx }: { data: Post; ndx: number }) => {
       </Head>
       <Body hasDetails={details && details.length > 0}>
         <Title>
-          <Text color="dark" type="h5" weight="bold">
+          <Text color="dark" type="h6" weight="bold">
             {title}
           </Text>
         </Title>

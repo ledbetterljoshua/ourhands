@@ -38,7 +38,7 @@ export const resolvers: ResolverMap = {
       }
 
       const postInDb = await Post.findOne({ where: { id: postId } });
-      console.log("postId", postId, postInDb);
+
       if (!postInDb) {
         throw Error("post does not exist");
       }

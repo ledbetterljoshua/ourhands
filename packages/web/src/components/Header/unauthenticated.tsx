@@ -21,8 +21,9 @@ export const UnathenticatedHeader = (props: any) => {
 const Container = styled(Flex)`
   height: 100%;
   width: ${props => (props.isTall ? "1224px" : "922px")};
+  padding: 10px 0;
   padding-left: 13px;
-  @media (max-width: 930px) {
+  @media (max-width: 600px) {
     width: 100%;
   }
 `;

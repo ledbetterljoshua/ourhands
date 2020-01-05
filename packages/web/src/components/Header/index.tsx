@@ -7,13 +7,22 @@ import { UnathenticatedHeader } from "./unauthenticated";
 
 export const Header = (props: any) => {
   const { hasShadow = true, position = "fixed" } = props;
-  const { me }: any = client.readQuery({
-    query: meQuery
-  });
-
+  let query: any;
+  try {
+    query = client.readQuery({
+      query: meQuery
+    });
+  } catch (e) {
+    //user not logged in
+  }
+  const isLoggedIn = Boolean(query) && query.me;
   return (
     <Container position={position} hasShadow={hasShadow}>
-      {me ? <AuthenticatedHeader {...props} /> : <UnathenticatedHeader />}
+      {isLoggedIn ? (
+        <AuthenticatedHeader {...props} />
+      ) : (
+        <UnathenticatedHeader />
+      )}
     </Container>
   );
 };
@@ -32,7 +41,6 @@ const Container = styled.div<any>`
   width: 100vw;
   background-color: #fff;
   transition: height 200ms ease-in;
-  padding: 10px 0;
   box-shadow: ${props =>
     props.hasShadow ? "0px 4px 12px rgba(0, 0, 0, 0.05)" : "initial"};
 `;
