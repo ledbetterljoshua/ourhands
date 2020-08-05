@@ -10,7 +10,7 @@ Add a `.env` file with the following items:
 ```
 TS_NODE_FILES=true
 USER_SESSION_SECRET=whateverThing
-FRONTEND_HOST=http://http://192.168.99.102:3000
+FRONTEND_HOST=http://192.168.99.102:3000
 NODE_ENV=development
 ```
 
