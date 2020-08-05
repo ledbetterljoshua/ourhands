@@ -10,7 +10,7 @@ Add a `.env` file with the following items:
 ```
 TS_NODE_FILES=true
 USER_SESSION_SECRET=whateverThing
-FRONTEND_HOST=http://localhost:3000
+FRONTEND_HOST=http://http://192.168.99.102:3000
 NODE_ENV=development
 ```
 
@@ -22,7 +22,7 @@ Install Redis and run `redis-server` in your terminal.
 
 After this, you should be able to run `yarn test`.
 
-You can also run `yarn start`, and view the graphql playground on `localhost:4000`
+You can also run `yarn start`, and view the graphql playground on `http://192.168.99.102:4000/graphql`
 
 ## The landing Page
 
@@ -30,7 +30,9 @@ You can also run `yarn start`, and view the graphql playground on `localhost:400
 
 ## First Mock-up for the web app view
 
-![app-view][app-view]
+![app-view1][app-view1]
+![app-view2][app-view2]
 
 [landing]: resources/ourhands-landing.png?raw=true "Our Hands Landing"
-[app-view]: resources/ourhands-app-view.png?raw=true "Our Hands App View"
+[app-view1]: resources/ourhands-app-view1.png?raw=true "Our Hands App View"
+[app-view2]: resources/ourhands-app-view2.png?raw=true "Our Hands App View"
